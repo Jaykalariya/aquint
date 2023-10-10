@@ -34,7 +34,7 @@ import com.beit.aquint.auth.payload.response.MessageResponse;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/_v1/auth")
 public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
