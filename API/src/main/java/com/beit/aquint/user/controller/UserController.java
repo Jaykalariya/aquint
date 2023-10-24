@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author - jaykalariya
  * @since - 09/10/23  9:28 pm
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "**", maxAge = 3600)
 @RestController
 @RequestMapping("/_v1/user")
 public class UserController {
