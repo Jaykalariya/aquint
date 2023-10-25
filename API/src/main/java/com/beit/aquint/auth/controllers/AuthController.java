@@ -32,7 +32,7 @@ import com.beit.aquint.auth.payload.request.LoginRequest;
 import com.beit.aquint.auth.payload.response.JwtResponse;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 
-@CrossOrigin(origins = "**", maxAge = 3600)
+@CrossOrigin
 @RestController
 @RequestMapping("/_v1/auth")
 public class AuthController {
