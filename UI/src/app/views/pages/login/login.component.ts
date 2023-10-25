@@ -35,7 +35,7 @@ export class LoginComponent {
     if(this.loginForm.invalid) return;
     let loginFormValues = this.loginForm.value;
     this.commonHttpService.post({
-      uri: '/signin',
+      uri: '/auth/signin',
       object: {
         username: loginFormValues.username,
         password: loginFormValues.password
