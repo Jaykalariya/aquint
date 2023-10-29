@@ -25,7 +25,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/add")
+    @PostMapping("/details/add")
     public ResponseEntity<?> addUserDetails(@RequestBody UserDetail userDetail) {
         try {
             return ResponseEntity.ok().body(userService.addUserProfileBasicDetails(userDetail));
