@@ -3,14 +3,13 @@ package com.beit.aquint.role.controller;
 import com.beit.aquint.auth.models.Role;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.constant.Constant;
+import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.role.service.RoleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * <h1> Add heading here </h1>
@@ -43,13 +42,13 @@ public class RoleController {
     }
 
     @GetMapping(value = Constant.Mappping.ROLE_GET_ALL_WITH_PAGINATION)
-    public ResponseEntity<?> getAllRolePage(Map<String, String> pageData) {
+    public ResponseEntity<?> getAllRolePage(@RequestParam PaginationRequestDto paginationRequestDto) {
         try {
-            log.debug("Searching Role.......");
-            return ResponseEntity.ok().body(null);
+            log.debug("GETTING ROLE PAGE CONTROLLER.......");
+            return ResponseEntity.ok().body(roleService.getRolePage(paginationRequestDto));
         } catch (Exception exception) {
             log.error(exception.getMessage());
-            return ResponseEntity.badRequest().body(new MessageResponse("Role Not saved Properly"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Role List Not getting properly"));
         }
     }
 
