@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <h1> Add heading here </h1>
@@ -36,4 +37,17 @@ public class UserController {
                             HttpStatus.INTERNAL_SERVER_ERROR));
         }
     }
+
+    @PostMapping("/upload/profilePhoto")
+    public ResponseEntity<?> uploadProfilePhoto(@RequestPart("file") MultipartFile file) {
+        try {
+            return ResponseEntity.ok().body(userService.uploadProfilePhoto(file));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "Data Not Saved Properly",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
 }

@@ -23,6 +23,12 @@ public class Constant {
         public static final String ROLE_GET_ALL_WITH_PAGINATION = "/page";
     }
 
+    public class File {
+        //        Role Mapping
+        public static final String FILE_FOLDER_PATH_FOR_USER_IMAGE = "userProfile";
+        public static final String ROLE_GET_ALL_WITH_PAGINATION = "/page";
+    }
+
     public class Status {
         public static final String ACTIVE = "Active";
         public static final String IN_ACTIVE = "In Active";
