@@ -7,6 +7,7 @@ import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.service.PageUtilService;
 import com.beit.aquint.role.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -42,12 +43,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> getRolePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
+    public Page<Role> getRolePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
         try {
             Pageable pageable = pageUtilService.getPageable(paginationRequestDto);
             return roleRepository.findRolePageWithSearch(pageable, paginationRequestDto.getSearchBy());
         } catch (Exception ex) {
             throw new AquintCommonException("Role Not fetch Properly");
         }
+    }
+
+    @Override
+    public List<Role> getAllRole() {
+        return roleRepository.findAll();
     }
 }

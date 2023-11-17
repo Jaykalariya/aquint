@@ -21,6 +21,19 @@ public class Constant {
         //        Role Mapping
         public static final String ROLE_CREATE_UPDATE = "/createOrUpdate";
         public static final String ROLE_GET_ALL_WITH_PAGINATION = "/page";
+        public static final String ROLE_GET_ALL = "/getAll";
+
+
+        public static final String PRODUCT_TYPE_ADD = "/addProductType";
+        public static final String PRODUCT_TYPE_GET_ALL = "/getAllProductType";
+        public static final String PRODUCT_TYPE_GET_WITH_PAGE = "/getProductTypeByPage";
+
+
+        public static final String DEPARTMENT_ADD = "/addDepartment";
+        public static final String DEPARTMENT_GET_ALL = "/getAllDepartment";
+        public static final String DEPARTMENT_GET_PAGE = "/getDepartmentByPage";
+
+
     }
 
     public class File {

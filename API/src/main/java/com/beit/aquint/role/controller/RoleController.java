@@ -52,5 +52,16 @@ public class RoleController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.ROLE_GET_ALL)
+    public ResponseEntity<?> getAllRole() {
+        try {
+            log.debug("GETTING ROLES CONTROLLER.......");
+            return ResponseEntity.ok().body(roleService.getAllRole());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Role List Not getting properly"));
+        }
+    }
+
 
 }

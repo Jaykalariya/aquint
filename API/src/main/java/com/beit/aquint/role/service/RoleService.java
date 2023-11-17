@@ -3,6 +3,7 @@ package com.beit.aquint.role.service;
 import com.beit.aquint.auth.models.Role;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.dto.PaginationRequestDto;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface RoleService {
 
     public Role createNewRole(Role role) throws AquintCommonException;
 
-    public List<Role> getRolePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
+    public Page<Role> getRolePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
+
+    public List<Role> getAllRole();
 }
