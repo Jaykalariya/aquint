@@ -35,6 +35,10 @@ public class Constant {
         public static final String DIVISION_GET_ALL = "/getAllDivision";
         public static final String DIVISION_GET_PAGE = "/getDivisionByPage";
 
+        public static final String PLACE_OF_SUPPLY_ADD = "/addPlaceOfSupply";
+        public static final String PLACE_OF_SUPPLY_GET_ALL = "/getAllPlaceOfSupply";
+        public static final String PLACE_OF_SUPPLY_GET_PAGE = "/getPlaceOfSupplyByPage";
+
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
     }
 
