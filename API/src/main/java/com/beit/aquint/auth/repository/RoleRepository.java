@@ -18,4 +18,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Query(value = "from Role r WHERE Lower(r.name) LIKE Lower(CONCAT( '%', :search, '%'))")
     Page<Role> findRolePageWithSearch(Pageable pageable,
                                       @Param("search") String search);
+
+    @Query(value = "from Role r ")
+    Page<Role> findRolePageWithoutSearch(Pageable pageable);
 }

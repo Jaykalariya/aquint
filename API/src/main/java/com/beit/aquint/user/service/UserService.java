@@ -19,4 +19,6 @@ public interface UserService {
     public UserDetail addUserProfileBasicDetails(UserDetail userDetail);
 
     public String uploadProfilePhoto(MultipartFile multipartFile) throws IOException;
+
+    public UserDetail getUserDetail(Long userId);
 }

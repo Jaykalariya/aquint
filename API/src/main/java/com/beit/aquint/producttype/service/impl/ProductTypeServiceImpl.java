@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <h1> Add heading here </h1>
@@ -58,7 +59,11 @@ public class ProductTypeServiceImpl implements ProductTypeService {
         try {
             log.debug("Page Data Creating");
             Pageable pageable = pageUtilService.getPageable(paginationRequestDto);
-            return productTypeRepository.findProductTypePageWithSearch(pageable, paginationRequestDto.getSearchBy());
+            if (Objects.nonNull(paginationRequestDto.getSearchBy())) {
+                return productTypeRepository.findProductTypePageWithSearch(pageable, paginationRequestDto.getSearchBy());
+            } else {
+                return productTypeRepository.findProductTypePageWithoutSearch(pageable);
+            }
         } catch (Exception ex) {
             throw new AquintCommonException("Product Type Not fetch Properly");
         }

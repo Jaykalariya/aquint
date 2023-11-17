@@ -1,6 +1,7 @@
 package com.beit.aquint.user.controller;
 
 import com.beit.aquint.common.config.responses.ErrorResponse;
+import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,18 @@ public class UserController {
     public ResponseEntity<?> addUserDetails(@RequestBody UserDetail userDetail) {
         try {
             return ResponseEntity.ok().body(userService.addUserProfileBasicDetails(userDetail));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "Data Not Saved Properly",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.GET_USER_BASIC_DETAILS + "/{userId}")
+    public ResponseEntity<?> getUserDetails(@PathVariable(value = "userId") Long userId) {
+        try {
+            return ResponseEntity.ok().body(userService.getUserDetail(userId));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <h1> Add heading here </h1>
@@ -46,7 +47,11 @@ public class RoleServiceImpl implements RoleService {
     public Page<Role> getRolePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
         try {
             Pageable pageable = pageUtilService.getPageable(paginationRequestDto);
-            return roleRepository.findRolePageWithSearch(pageable, paginationRequestDto.getSearchBy());
+            if (Objects.nonNull(paginationRequestDto.getSearchBy())) {
+                return roleRepository.findRolePageWithSearch(pageable, paginationRequestDto.getSearchBy());
+            } else {
+                return roleRepository.findRolePageWithoutSearch(pageable);
+            }
         } catch (Exception ex) {
             throw new AquintCommonException("Role Not fetch Properly");
         }

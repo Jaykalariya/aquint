@@ -52,8 +52,8 @@ public class DepartmentController {
         }
     }
 
-    @GetMapping(value = Constant.Mappping.DEPARTMENT_GET_PAGE)
-    public ResponseEntity<?> getDepartmentPage(@RequestParam PaginationRequestDto paginationRequestDto) {
+    @PostMapping(value = Constant.Mappping.DEPARTMENT_GET_PAGE)
+    public ResponseEntity<?> getDepartmentPage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {
             log.debug("Getting all Department");
             return ResponseEntity.ok().body(departmentService.getDepartmentPage(paginationRequestDto));

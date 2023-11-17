@@ -27,4 +27,7 @@ public interface ProductTypeRepository extends JpaRepository<ProductType, Long> 
     @Query(value = "from ProductType pt WHERE Lower(pt.name) LIKE Lower(CONCAT( '%', :search, '%'))")
     Page<ProductType> findProductTypePageWithSearch(Pageable pageable,
                                                     @Param("search") String search);
+
+    @Query(value = "from ProductType pt")
+    Page<ProductType> findProductTypePageWithoutSearch(Pageable pageable);
 }

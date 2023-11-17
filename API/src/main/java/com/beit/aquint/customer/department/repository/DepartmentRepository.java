@@ -27,4 +27,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     @Query(value = "from Department dt WHERE Lower(dt.departmentName) LIKE Lower(CONCAT( '%', :search, '%'))")
     Page<Department> findDepartmentPageWithSearch(Pageable pageable,
                                                   @Param("search") String search);
+
+    @Query(value = "from Department dt")
+    Page<Department> findDepartmentPageWithoutSearch(Pageable pageable);
 }

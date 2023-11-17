@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <h1> Add heading here </h1>
@@ -59,7 +60,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         try {
             log.debug("Page Data Creating");
             Pageable pageable = pageUtilService.getPageable(paginationRequestDto);
-            return departmentRepository.findDepartmentPageWithSearch(pageable, paginationRequestDto.getSearchBy());
+            if (Objects.nonNull(paginationRequestDto.getSearchBy())) {
+                return departmentRepository.findDepartmentPageWithSearch(pageable, paginationRequestDto.getSearchBy());
+            } else {
+                return departmentRepository.findDepartmentPageWithoutSearch(pageable);
+            }
         } catch (Exception ex) {
             throw new AquintCommonException("Department Not fetch Properly");
         }

@@ -41,8 +41,8 @@ public class RoleController {
         }
     }
 
-    @GetMapping(value = Constant.Mappping.ROLE_GET_ALL_WITH_PAGINATION)
-    public ResponseEntity<?> getAllRolePage(@RequestParam PaginationRequestDto paginationRequestDto) {
+    @PostMapping(value = Constant.Mappping.ROLE_GET_ALL_WITH_PAGINATION)
+    public ResponseEntity<?> getAllRolePage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {
             log.debug("GETTING ROLE PAGE CONTROLLER.......");
             return ResponseEntity.ok().body(roleService.getRolePage(paginationRequestDto));

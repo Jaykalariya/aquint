@@ -51,8 +51,8 @@ public class ProductTypeController {
         }
     }
 
-    @GetMapping(value = Constant.Mappping.PRODUCT_TYPE_GET_WITH_PAGE)
-    public ResponseEntity<?> getProductTypePage(@RequestParam PaginationRequestDto paginationRequestDto) {
+    @PostMapping(value = Constant.Mappping.PRODUCT_TYPE_GET_WITH_PAGE)
+    public ResponseEntity<?> getProductTypePage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {
             log.debug("Getting all product type");
             return ResponseEntity.ok().body(productTypeService.getProductTypePage(paginationRequestDto));

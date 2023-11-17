@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
         String userFolderPath = Constant.File.FILE_FOLDER_PATH_FOR_USER_IMAGE;
         return fileUploadService.uploadFile(multipartFile, userFolderPath);
     }
+
+    @Override
+    public UserDetail getUserDetail(Long userId) {
+        return userDetailRepository.findById(userId).get();
+    }
 }

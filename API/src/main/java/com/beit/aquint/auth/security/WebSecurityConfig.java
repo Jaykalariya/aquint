@@ -75,6 +75,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/_v1/auth/**").permitAll()
                         .requestMatchers("/_v1/user/**").authenticated()
                         .requestMatchers("/_v1/productType/**").authenticated()
+                        .requestMatchers("/_v1/department/**").authenticated()
+                        .requestMatchers("/_v1/division/**").authenticated()
                         .requestMatchers("/open-api/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
