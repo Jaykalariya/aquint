@@ -1,78 +1,53 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ContentLayoutComponent } from './shared/layout-components/layout/content-layout/content-layout.component';
+import { content } from './shared/routes/routes copy';
 
-import { DefaultLayoutComponent } from './containers';
-import { Page404Component } from './views/pages/page404/page404.component';
-import { Page500Component } from './views/pages/page500/page500.component';
-import { LoginComponent } from './views/pages/login/login.component';
-import { RegisterComponent } from './views/pages/register/register.component';
+
+import { ErrorLayoutComponent } from './shared/layout-components/layout/error-layout/error-layout.component';
+import { Content_Routes } from './shared/routes/error.routes';
+import { SwitcherLayoutComponent } from './shared/layout-components/layout/switcher-layout/switcher-layout.component';
+import { SwitcherOneRoute } from './shared/routes/switchers';
+
+
 
 const routes: Routes = [
+
+  { path: '', redirectTo:'auth/login', pathMatch: 'full'},
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: '/dashboard/sales',
     pathMatch: 'full'
   },
   {
     path: '',
-    component: DefaultLayoutComponent,
-    data: {
-      title: 'Home'
-    },
-    children: [
-      {
-        path: 'dashboard',
-        loadChildren: () =>
-          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
-      },
-      {
-        path: 'pages',
-        loadChildren: () =>
-          import('./views/pages/pages.module').then((m) => m.PagesModule)
-      },
-    ]
+    component: ContentLayoutComponent,
+    children: content
   },
   {
-    path: '404',
-    component: Page404Component,
-    data: {
-      title: 'Page 404'
-    }
+    path: '',
+    component: SwitcherLayoutComponent,
+    children: SwitcherOneRoute
   },
   {
-    path: '500',
-    component: Page500Component,
-    data: {
-      title: 'Page 500'
-    }
+    path: '',
+    component: ErrorLayoutComponent,
+    children: Content_Routes
   },
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: {
-      title: 'Login Page'
-    }
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Register Page'
-    }
-  },
-  {path: '**', redirectTo: 'dashboard'}
+
+
+
+  // {
+  //   path: '**',
+  //   redirectTo: 'custompages/error400',
+  //   pathMatch: 'full'
+  // },
+
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      scrollPositionRestoration: 'top',
-      anchorScrolling: 'enabled',
-      initialNavigation: 'enabledBlocking'
-      // relativeLinkResolution: 'legacy'
-    })
-  ],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+
+export class AppRoutingModule { }

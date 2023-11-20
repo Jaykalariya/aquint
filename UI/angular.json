@@ -1,19 +1,14 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": false
-  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "coreui-free-angular-admin-template": {
+    "slica": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
-        },
-        "@schematics/angular:application": {
-          "strict": true
+          "style": "scss",
+          "skipTests":true
         }
       },
       "root": "",
@@ -23,39 +18,61 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/coreui-free-angular-admin-template",
+            "allowedCommonJsDependencies": [
+              "leaflet",
+              "dayjs",
+              "dayjs/plugin/customParseFormat",
+              "dayjs/plugin/isoWeek",
+              "dayjs/plugin/localeData",
+              "dayjs/plugin/localizedFormat",
+              "dayjs/plugin/weekOfYear",
+              "apexcharts",
+              "luxon",
+              "bezier-easing",
+              "detect-passive-events",
+              "rxjs",
+              "rxjs/operators",
+              "mousetrap",
+              "sweetalert2",
+              "@tweenjs/tween.js",
+              "lodash",
+              "quill"
+            ],
+            "outputPath": "dist/preview",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "preserveSymlinks": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/.htaccess"
             ],
             "styles": [
-              "src/scss/styles.scss"
+              "src/styles.scss"
+
             ],
-            "scripts": [],
-            "allowedCommonJsDependencies": [
-              "chart.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1500kb",
-                  "maximumError": "6mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -75,10 +92,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "coreui-free-angular-admin-template:build:production"
+              "browserTarget": "slica:build:production"
             },
             "development": {
-              "browserTarget": "coreui-free-angular-admin-template:build:development"
+              "browserTarget": "slica:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,16 +103,14 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "coreui-free-angular-admin-template:build"
+            "browserTarget": "slica:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "inlineStyleLanguage": "scss",
@@ -104,12 +119,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/scss/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "defaultProject": "preview",
+  "cli": {
+    "analytics": false
   }
 }

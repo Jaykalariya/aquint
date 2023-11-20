@@ -1,92 +1,53 @@
-import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
-
-import { NgScrollbarModule } from 'ngx-scrollbar';
-
-// Import routing module
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { OverlayModule } from "@angular/cdk/overlay";
 import { AppRoutingModule } from './app-routing.module';
-
-// Import app component
 import { AppComponent } from './app.component';
-
-// Import containers
-import { DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent } from './containers';
-
-import { SharedModule as customSharedModule } from './shared/shared.module';
-
-import {
-  AvatarModule,
-  BadgeModule,
-  BreadcrumbModule,
-  ButtonGroupModule,
-  ButtonModule,
-  CardModule,
-  DropdownModule,
-  FooterModule,
-  FormModule,
-  GridModule,
-  HeaderModule,
-  ListGroupModule,
-  NavModule,
-  ProgressModule,
-  SharedModule,
-  SidebarModule,
-  TabsModule,
-  UtilitiesModule
-} from '@coreui/angular';
-
-import { IconModule, IconSetService } from '@coreui/icons-angular';
-import { HttpClientModule } from '@angular/common/http';
-
-const APP_CONTAINERS = [
-  DefaultFooterComponent,
-  DefaultHeaderComponent,
-  DefaultLayoutComponent
-];
+import { SharedModule } from './shared/shared.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { StoreModule } from '@ngrx/store';
+import { CommonModule } from '@angular/common';
+import { ColorPickerService, ColorPickerModule } from 'ngx-color-picker';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoaderService } from './shared/services/loader/loader.service';
 
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS],
+  declarations:[
+    AppComponent,
+  ],
   imports: [
+    CommonModule,
     BrowserModule,
-    BrowserAnimationsModule,
     AppRoutingModule,
-    AvatarModule,
-    BreadcrumbModule,
-    FooterModule,
-    DropdownModule,
-    GridModule,
-    HeaderModule,
-    SidebarModule,
-    IconModule,
-    NavModule,
-    ButtonModule,
-    FormModule,
-    UtilitiesModule,
-    ButtonGroupModule,
-    ReactiveFormsModule,
-    SidebarModule,
     SharedModule,
-    TabsModule,
-    ListGroupModule,
-    ProgressModule,
-    BadgeModule,
-    ListGroupModule,
-    CardModule,
-    NgScrollbarModule,
-    HttpClientModule
+    NgbModule,
+    BrowserAnimationsModule,
+    OverlayModule,
+    ToastrModule.forRoot({
+    }),
+    ColorPickerModule,
+    // AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+
   ],
   providers: [
+    ColorPickerService,
     {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy
-    },
-    IconSetService,
-    Title
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderService,
+      multi: true,
+    }
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }
