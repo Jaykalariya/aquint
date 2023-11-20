@@ -1,6 +1,9 @@
 package com.beit.aquint.user.service;
 
 import com.beit.aquint.user.entity.UserDetail;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * <h1> Add heading here </h1>
@@ -14,4 +17,8 @@ import com.beit.aquint.user.entity.UserDetail;
 public interface UserService {
 
     public UserDetail addUserProfileBasicDetails(UserDetail userDetail);
+
+    public String uploadProfilePhoto(MultipartFile multipartFile) throws IOException;
+
+    public UserDetail getUserDetail(Long userId);
 }
