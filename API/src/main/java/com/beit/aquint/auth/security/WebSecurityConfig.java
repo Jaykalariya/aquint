@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @EnableWebSecurity
 public class WebSecurityConfig {
+
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -68,7 +69,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
+                .cors(cors-> cors.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
@@ -77,6 +78,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/_v1/productType/**").authenticated()
                         .requestMatchers("/_v1/department/**").authenticated()
                         .requestMatchers("/_v1/division/**").authenticated()
+                        .requestMatchers("/_v1/placeOfSupply/**").authenticated()
+                        .requestMatchers("/_v1/tender/stage/**").authenticated()
+                        .requestMatchers("/_v1/tender/type/**").authenticated()
                         .requestMatchers("/open-api/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
