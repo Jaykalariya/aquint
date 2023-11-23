@@ -73,9 +73,9 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/_v1/auth/**").permitAll()
-                        .requestMatchers("/_v1/user/**").authenticated()
-                        .requestMatchers("/_v1/productType/**").authenticated()
+                        .requestMatchers("/_v1/auth/*").permitAll()
+                        .requestMatchers("/_v1/user/*").authenticated()
+                        .requestMatchers("/_v1/productType/*").authenticated()
                         .requestMatchers("/_v1/department/**").authenticated()
                         .requestMatchers("/_v1/division/**").authenticated()
                         .requestMatchers("/_v1/placeOfSupply/**").authenticated()
