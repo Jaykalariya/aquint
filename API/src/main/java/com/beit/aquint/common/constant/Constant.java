@@ -40,6 +40,14 @@ public class Constant {
         public static final String PLACE_OF_SUPPLY_GET_PAGE = "/getPlaceOfSupplyByPage";
 
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
+
+        public static final String TENDER_STAGE_ADD = "/addTenderStage";
+        public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
+        public static final String TENDER_STAGE_GET_PAGE = "/getTenderStageByPage";
+
+        public static final String TENDER_TYPE_ADD = "/addTenderType";
+        public static final String TENDER_TYPE_GET_ALL = "/getAllTenderType";
+        public static final String TENDER_TYPE_GET_PAGE = "/getTenderTypeByPage";
     }
 
     public class File {

@@ -25,10 +25,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "**")
 @RestController
 @RequestMapping("/_v1/auth")
 public class AuthController {
+
     @Autowired
     AuthenticationManager authenticationManager;
 
