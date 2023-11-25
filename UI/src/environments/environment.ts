@@ -5,7 +5,8 @@ export const selfDomain = 'http://localhost:4200';
 export const environment = {
     angularDomain: `${selfDomain}`,
     production: false,
-    serverUrl: 'http://52.66.120.136:8080',
+    // serverUrl: 'http://52.66.120.136:8080',
+    serverUrl: 'http://65.0.86.93:8080',
 };
   
 /*

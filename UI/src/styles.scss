@@ -833,3 +833,11 @@ ng-dropdown-panel{
 .ql-editor  {
   height: 15rem !important;
   }
+
+  html{
+    height: 100vh;
+
+    body{
+      height: 100%;
+    }
+  }

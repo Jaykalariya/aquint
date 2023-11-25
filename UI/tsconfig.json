@@ -22,8 +22,9 @@
     "lib": [
       "es2020",
       "dom"
-    ]
-
+    ],
+    //--------------------------------------------
+    "strictPropertyInitialization": false,
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -32,8 +33,13 @@
     "strictTemplates": true,
     "allowJs": true,
     "esModuleInterop": true,
- "allowSyntheticDefaultImports": true,
- "noImplicitAny": true,
- "skipLibCheck": true
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "optionalChainNotNullable": "suppress"
+      }
+    }
   }
 }

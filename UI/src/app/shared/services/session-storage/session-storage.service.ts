@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { userProfile, token } from '../../constants';
+import { userProfile, tokenKey } from '../../constants';
 import { CommonHttpService } from '../common-http/common-http.service';
 import { CommunicationService } from '../communication/communication.service';
 
@@ -20,12 +20,12 @@ export class SessionStorageService {
 
   //#region manage access token
   getAccessToken(){
-    return sessionStorage.getItem(token);
+    return sessionStorage.getItem(tokenKey);
   }
 
   setAccessToken(loginResponse: any){
-    sessionStorage.removeItem(token);
-    sessionStorage.setItem(token, loginResponse.accessToken);
+    sessionStorage.removeItem(tokenKey);
+    sessionStorage.setItem(tokenKey, loginResponse.accessToken);
     // this.getProfileDetails();
     this.setLoggedInProfileDetails(loginResponse);
   }
