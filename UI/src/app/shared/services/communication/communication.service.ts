@@ -44,16 +44,27 @@ export class CommunicationService {
 
   storeObjectInSessionStorage(keyName: string, obj: any) {
     sessionStorage.removeItem(keyName);
-    sessionStorage.setItem(keyName, JSON.stringify(obj));
+    sessionStorage.setItem(keyName, btoa(JSON.stringify(obj)));
   }
   
   clearCurrentUser() {
-    this.currentUserSubject.next(null);
+    sessionStorage.removeItem(tokenKey);
     sessionStorage.removeItem(userProfile);
+    sessionStorage.clear();
+    this.currentUserSubject.next(null);
   }
 
   getCurrentUser(): Observable<any> {
     return this.currentUserSubject.asObservable();
+  }
+
+  getLoggedInUserDetails(){
+    var jsonString = sessionStorage.getItem(userProfile);
+    console.log(jsonString);
+    if(jsonString){
+      return JSON.parse(atob(jsonString));
+    }
+    return null;
   }
   //#endregion
 }

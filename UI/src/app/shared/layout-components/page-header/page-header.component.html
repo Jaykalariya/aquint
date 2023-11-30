@@ -1,10 +1,14 @@
 <!-- PAGE-HEADER -->
 <div class="page-header">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0)"> {{title}}</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{active_item}}</li>
+        <!-- <li class="breadcrumb-item"><a href="javascript:void(0)"> {{title}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{active_item}}</li> -->
+        <li class="breadcrumb-item" [class.active]="item.active" *ngFor="let item of items">
+            <a *ngIf="item.url; else elseCode" [href]="item.url">{{item.title}}</a>
+            <ng-template #elseCode>{{item.title}}</ng-template>
+        </li>
     </ol>
-    <div class="ms-auto">
+    <div class="ms-auto" *ngIf="showButtons">
         <a href="javascript:void(0)" class="btn btn-primary btn-icon text-white me-1">
             <i class="fe fe-plus"></i>
         </a>

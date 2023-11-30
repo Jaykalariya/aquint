@@ -10,9 +10,11 @@ export class PageHeaderComponent implements OnInit {
   @Input() title!: string;
   @Input() items!: any[];
   @Input() active_item!: string;
+  @Input() showButtons: boolean = true;
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.items);
   }
 
 }

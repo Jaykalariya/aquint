@@ -48,6 +48,8 @@
 @import "./assets/scss/variables";
 // @import '~bootstrap/scss/bootstrap';
 
+$color-red: #dc3545;
+
 body:not(.horizontal-hover) .slide-menu.open {
   display: block !important;
 }
@@ -841,3 +843,15 @@ ng-dropdown-panel{
       height: 100%;
     }
   }
+
+//   .app-content .side-app {
+//     padding: 1rem 1rem 3rem 1rem;
+//     position: relative;
+//     min-height: calc(100vh - 65px);
+// }
+
+
+.required-field::after {
+  content: " *";
+  color: $color-red;
+}

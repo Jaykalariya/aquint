@@ -45,11 +45,11 @@ export class SessionStorageService {
     this.communicationService.sendCurrentUser(userDetails);
   }
 
-  getProfileDetails(){
-    this.commonHttpService.get({
-      uri: ''
-    }).subscribe(response => {
-      this.setLoggedInProfileDetails(response);
-    })
-  }
+  // getProfileDetails(){
+  //   this.commonHttpService.get({
+  //     uri: ''
+  //   }).subscribe(response => {
+  //     this.setLoggedInProfileDetails(response);
+  //   })
+  // }
 }

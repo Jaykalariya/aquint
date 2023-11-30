@@ -112,17 +112,42 @@ export class NavService implements OnDestroy {
       Menusub: true,
       active: false,
       children: [
-        // {
-        //   title: 'Users',
-        //   icon: 'user',
-        //   type: 'sub',
-        //   Menusub: true,
-        //   active: false,
-        //   children: [
-        //     { path: '/maps/leafletmaps', title: 'Leaflet Maps', type: 'link' },
-        //   ],
-        // },
-        { path: '/configurations/users', title: 'Users', type: 'link' },
+        {
+          title: 'User Management',
+          icon: 'user',
+          type: 'sub',
+          Menusub: true,
+          active: false,
+          children: [
+            { path: '/configurations/users', title: 'Users', type: 'link' },
+            { path: '/configurations/roles', title: 'Roles', type: 'link' },
+          ],
+        },
+        {
+          title: 'Tender Management',
+          icon: 'user',
+          type: 'sub',
+          Menusub: true,
+          active: false,
+          children: [
+            { path: '/configurations/tenderType', title: 'Tender Type', type: 'link' },
+            { path: '/configurations/roles', title: 'Tender Stage', type: 'link' },
+          ],
+        },
+        {
+          title: 'Client Management',
+          icon: 'user',
+          type: 'sub',
+          Menusub: true,
+          active: false,
+          children: [
+            { path: '/configurations/division', title: 'Division', type: 'link' },
+            { path: '/configurations/department', title: 'Department', type: 'link' },
+            { path: '/configurations/supplyPlace', title: 'Place Of Supply', type: 'link' },
+            { path: '/configurations/productType', title: 'Product Type', type: 'link' },
+          ],
+        },
+        // { path: '/configurations/users', title: 'Users', type: 'link' },
       ],
     },
 

@@ -46,6 +46,7 @@ export class LoginComponent {
     }).subscribe((response: any) => {
       this.sessionStorageService.setAccessToken(response);
       if(response.accessToken){
+        console.log("in if login");
         this.router.navigate(['/dashboard']);
       }
     });
