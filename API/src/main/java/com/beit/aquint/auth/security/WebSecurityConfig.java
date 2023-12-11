@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -69,19 +68,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .cors(cors-> cors.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/_v1/auth/*").permitAll()
                         .requestMatchers("/_v1/user/*").authenticated()
                         .requestMatchers("/_v1/productType/*").authenticated()
-                        .requestMatchers("/_v1/department/**").authenticated()
-                        .requestMatchers("/_v1/division/**").authenticated()
-                        .requestMatchers("/_v1/placeOfSupply/**").authenticated()
-                        .requestMatchers("/_v1/tender/stage/**").authenticated()
-                        .requestMatchers("/_v1/tender/type/**").authenticated()
-                        .requestMatchers("/open-api/**").permitAll()
+                        .requestMatchers("/_v1/department/*").authenticated()
+                        .requestMatchers("/_v1/division/*").authenticated()
+                        .requestMatchers("/_v1/placeOfSupply/*").authenticated()
+                        .requestMatchers("/_v1/tender/stage/*").authenticated()
+                        .requestMatchers("/_v1/tender/type/*").authenticated()
+                        .requestMatchers("/open-api/*").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 );
