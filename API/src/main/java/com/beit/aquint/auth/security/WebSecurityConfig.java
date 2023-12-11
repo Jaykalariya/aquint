@@ -6,6 +6,7 @@ import com.beit.aquint.auth.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -73,21 +74,22 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/_v1/auth/*").permitAll()
-                        .requestMatchers("/_v1/user/*").authenticated()
-                        .requestMatchers("/_v1/productType/*").authenticated()
-                        .requestMatchers("/_v1/department/*").authenticated()
-                        .requestMatchers("/_v1/division/*").authenticated()
-                        .requestMatchers("/_v1/placeOfSupply/*").authenticated()
-                        .requestMatchers("/_v1/tender/stage/*").authenticated()
-                        .requestMatchers("/_v1/tender/type/*").authenticated()
-                        .requestMatchers("/open-api/*").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .anyRequest().authenticated()
-                );
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/_v1/auth/*").permitAll()
+                .requestMatchers("/_v1/user/*").authenticated()
+                .requestMatchers("/_v1/productType/*").authenticated()
+                .requestMatchers("/_v1/department/*").authenticated()
+                .requestMatchers("/_v1/division/*").authenticated()
+                .requestMatchers("/_v1/placeOfSupply/*").authenticated()
+                .requestMatchers("/_v1/tender/stage/*").authenticated()
+                .requestMatchers("/_v1/tender/type/*").authenticated()
+                .requestMatchers("/open-api/*").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .anyRequest().authenticated()
+            );
 
         http.authenticationProvider(authenticationProvider());
 
