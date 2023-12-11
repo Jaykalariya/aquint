@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { LayoutService } from '../../services/layout.service';
 import { Menu, NavService } from '../../services/nav.service';
 import { SwitcherService } from '../../services/switcher.service';
+import { CommunicationService } from '../../services/communication/communication.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -22,39 +23,40 @@ export class HeaderComponent implements OnInit {
     private modalService: NgbModal,
     public SwitcherService : SwitcherService,
     private router: Router,
+    private communicationService: CommunicationService
     // public ShopService: ShopService,
-    private store: Store<any>,
+    // private store: Store<any>,
     // private auth : AuthService
   ){
-    this.price();
+    // this.price();
   }
 
 
-  data$ = this.store.select('data')
-  totalMoney:any = 0
+  // data$ = this.store.select('data')
+  // totalMoney:any = 0
   totalLength = 1
   delectFunction = false
   getdelectData:any
 
-  price(){
-    this.data$.forEach((item) =>{
+  // price(){
+  //   this.data$.forEach((item) =>{
 
-      this.totalLength = item.length
-      if(item.length>1){
+  //     this.totalLength = item.length
+  //     if(item.length>1){
 
-        this.totalMoney =this.totalMoney+item[this.totalLength-1]?.offer_price
-      }
-      else{
-        if(item[0]?.offer_price != undefined){
-          this.totalMoney = item[0].offer_price
-        }
-      }
-      if(this.delectFunction){
-        this.totalMoney = 0
-        this.delectFunction = false
-      }
-    })
-  }
+  //       this.totalMoney =this.totalMoney+item[this.totalLength-1]?.offer_price
+  //     }
+  //     else{
+  //       if(item[0]?.offer_price != undefined){
+  //         this.totalMoney = item[0].offer_price
+  //       }
+  //     }
+  //     if(this.delectFunction){
+  //       this.totalMoney = 0
+  //       this.delectFunction = false
+  //     }
+  //   })
+  // }
 
 
 
@@ -159,6 +161,11 @@ export class HeaderComponent implements OnInit {
     this.menuItems = [];
     this.SearchResultEmpty = false;
     return this.text, this.menuItems
+  }
+
+  logout(){
+    this.communicationService.clearCurrentUser();
+    this.router.navigateByUrl('login');
   }
 
 

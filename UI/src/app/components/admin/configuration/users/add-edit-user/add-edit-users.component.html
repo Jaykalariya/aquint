@@ -1,0 +1,35 @@
+<app-page-header title="Advanced UI" active_item="Accordion" [showButtons]="false" [items]="items"></app-page-header>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form [formGroup]="userForm" name="userForm">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="form-label required-field">Enter First Name</label>
+                                <input class="form-control" formControlName="firstName" name="firstName" placeholder="First Name">
+                                <app-print-error [controlName]="userFormControls['firstName']"></app-print-error>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="form-label required-field">Enter Middle Name</label>
+                                <input class="form-control" formControlName="middleName" name="middleName" placeholder="Middle Name">
+                                <app-print-error [controlName]="userFormControls['middleName']"></app-print-error>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="form-label required-field">Enter Last Name</label>
+                                <input class="form-control" formControlName="lastName" name="lastName" placeholder="Last Name">
+                                <app-print-error [controlName]="userFormControls['lastName']"></app-print-error>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,6 +17,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderService } from './shared/services/loader/loader.service';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations:[
@@ -37,7 +39,7 @@ import { LoaderService } from './shared/services/loader/loader.service';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-
+    HttpClientModule
   ],
   providers: [
     ColorPickerService,

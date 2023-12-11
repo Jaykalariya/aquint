@@ -28,6 +28,7 @@ import { HeaderSwitcherComponent } from './layout-components/header-switcher/hea
 import { MaterialModule } from './moduels/material/material.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxMaskModule } from 'ngx-mask';
+import { PrintErrorComponent } from './components/print-error/print-error.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { NgxMaskModule } from 'ngx-mask';
     HoverEffectSidebarDirective,
     SidemenuToggleDirective,
     HeaderSwitcherComponent,
+    PrintErrorComponent
   ],
   imports: [
     CommonModule,
@@ -60,18 +62,24 @@ import { NgxMaskModule } from 'ngx-mask';
     NgbDatepicker,
     NgbTimepicker,
     MaterialModule,
-    NgxMaskModule.forRoot(),
+    NgxMaskModule.forRoot()
   ],
   exports: [
+    FooterComponent,
+    HeaderComponent,
     PageHeaderComponent,
+    RightSidebarComponent,
     TabToTopComponent,
     ContentLayoutComponent,
     ErrorLayoutComponent,
     LoaderComponent,
     SidebarComponent,
+    PrintErrorComponent,
     ToggleThemeDirective,
     SidemenuToggleDirective,
     SwitcherComponent,
+    FormsModule,
+    ReactiveFormsModule,
     NgSelectModule,
     NgScrollbarModule,
     NgbModule,
