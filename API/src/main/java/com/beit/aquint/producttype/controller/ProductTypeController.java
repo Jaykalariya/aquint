@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @author - jaykalariya
  * @since - 16/11/23  6:17 pm
  */
-@CrossOrigin("*")
+@CrossOrigin("**")
 @RestController
 @RequestMapping("/_v1/productType")
 @Slf4j
