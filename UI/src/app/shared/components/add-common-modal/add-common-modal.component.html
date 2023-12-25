@@ -1,0 +1,27 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <span class="h5">{{id ? 'Update' : 'Add'}}  {{title}}</span>
+        <i class="material-icons ml-auto cursor-pointer" data-dismiss="modal" (click)="closeModal()">close</i>
+    </div>
+    <div class="modal-body">
+        <div class="row mb-3">
+            <div class="col-sm-3 d-flex align-items-center justify-content-end">
+                <label class="form-control-label required-field" for="inputTitle">{{fieldName}}</label>
+            </div>
+            <div class="col-sm-9">
+                <input class="form-control" required name="inputTitle" [placeholder]="placeholder" [(ngModel)]="inputTitle"
+                    type="text">
+                <div class="text-danger" *ngIf="formSubmitted && (!inputTitle || inputTitle.trim() == '')">{{fieldName}} is requried.</div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-pill btn-secondary me-1" data-dismiss="modal"
+                (click)='closeModal()'>Cancel</button>
+            <!-- <button type="button" class="btn btn-pill btn-danger me-1" (click)="onSubmit()">Delete</button> -->
+            <button type="button" class="btn btn-pill btn-primary" 
+                (click)="onSubmit()">Save</button>
+        </div>
+    </div>
+    <!-- <div class="modal-footer">
+    </div> -->
+</div>

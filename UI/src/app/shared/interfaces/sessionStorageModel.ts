@@ -1,14 +1,9 @@
-import { UserChat, UserSession, UserStudent, userBusiness } from "../models/common.model";
 
 export interface identityModel {
     expiresIn: string;
     lastLogin: string;
     createdAt: string;
     accessToken: string;
-    currentBusinessId: string;
-    currentBusinessName: string;
-    currentBusinessShortName: string;
-    currentBusinessLogo: string;
     permissions: string;
     latitude: string;
     longitude: string;
@@ -18,40 +13,21 @@ export interface identityModel {
 }
 
 export interface User {
+    id: number;
     userId: string;
-    avatarUrl: string;
     firstName: string;
+    middleName: string;
     lastName: string;
     email: string;
-    phone: string;
-    addressLine1: string;
-    addressLine2: string;
-    zip: string;
-    state: string;
-    city: string;
-    emailVerified: boolean;
-    phoneVerified: boolean;
-    hasPhotoAgreement: boolean;
-    status: any;
-    isFixedRate: boolean;
-    defaultFixedRate: any;
-    defaultAssistantFixedRate: any;
-    defaultVariableRate: any;
-    userBusiness: userBusiness[];
-    userStudent: UserStudent[];
-    userSession: UserSession[];
-    userChat: UserChat[];
-    created: string;
-    modified: string;
-    stripeCustomerId: string;
-    enableNewsLettersNotification: boolean;
-    enableSessionsNotification: boolean;
-    enableProgramsNotification: boolean;
-    enableSchoolUpdatesNotification: boolean;
-    enableChatUpdatesNotification: boolean;
-    enableRosterUpdatesNotification: boolean;
-    onboardingProcessCompleted: boolean;
-    userBusinessRole: string;
+    mobileNumber: string;
+    birthDate: Date;
+    gender: string;
+    bloodGroup: string;
+    maritalStatus: string;
+    anniversaryDate: Date;
+    nationality: string;
+    religion: string;
+    imageUrl: string;
 }
 
 export enum StatusType

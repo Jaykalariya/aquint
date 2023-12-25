@@ -16,8 +16,9 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoaderService } from './shared/services/loader/loader.service';
+import { LoaderService } from './shared/interceptors/loader/loader.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthHttpInterceptor } from './shared/interceptors/auth/auth-http.interceptor';
 
 
 @NgModule({
@@ -46,6 +47,11 @@ import { HttpClientModule } from '@angular/common/http';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
       multi: true,
     }
   ],

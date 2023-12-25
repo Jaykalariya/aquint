@@ -1,0 +1,19 @@
+<div class="modal-content">
+    <div *ngIf='header' class="modal-header">
+        {{header}}
+        <i class="material-icons ml-auto cursor-pointer"  data-dismiss="modal" (click)="closeSendReminderModal('yes')">close</i>
+    </div>
+    <div class="modal-body">
+        <div class="clearfix">
+            <p class="text-{{textAlign}}" *ngIf="innerHtml" [innerHtml]="innerHtml | safe:'html'"></p>
+            <p *ngIf="!innerHtml">
+                {{msg}}
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="showCancelBtn" type="button" class="btn btn-pill btn-secondary"
+            data-dismiss="modal" (click)='closeSendReminderModal()'>{{cancelBtnName}}</button>
+        <button type="button" class="btn btn-pill btn-danger" (click)="onSubmit()">{{successBtnName}}</button>
+    </div>
+</div>

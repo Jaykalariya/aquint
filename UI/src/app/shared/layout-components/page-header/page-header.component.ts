@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-page-header',
@@ -11,10 +11,20 @@ export class PageHeaderComponent implements OnInit {
   @Input() items!: any[];
   @Input() active_item!: string;
   @Input() showButtons: boolean = true;
+  @Output() addNew: EventEmitter<any> = new EventEmitter();
+  @Output() goBack: EventEmitter<any> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.items);
+  }
+
+  emitAddNew(){
+    this.addNew.emit();
+  }
+
+  emitGoBack(){
+    this.goBack.emit();
   }
 
 }

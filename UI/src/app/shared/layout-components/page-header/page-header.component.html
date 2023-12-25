@@ -9,15 +9,15 @@
         </li>
     </ol>
     <div class="ms-auto" *ngIf="showButtons">
-        <a href="javascript:void(0)" class="btn btn-primary btn-icon text-white me-1">
+        <a (click)="emitAddNew()" class="btn btn-primary btn-icon text-white me-1">
             <i class="fe fe-plus"></i>
         </a>
-        <a href="javascript:void(0)" class="btn btn-secondary btn-icon text-white me-1">
+        <a (click)="emitGoBack()" class="btn btn-secondary btn-icon text-white me-1">
             <i class="fe fe-log-in"></i>
         </a>
-        <a href="javascript:void(0)" class="btn btn-orange btn-icon text-white">
+        <!-- <a href="javascript:void(0)" class="btn btn-orange btn-icon text-white">
             <i class="fe fe-rotate-cw me-1"></i>  Upgrade Account
-        </a>
+        </a> -->
     </div>
 </div>
 <!-- PAGE-HEADER END -->

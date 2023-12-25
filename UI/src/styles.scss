@@ -844,14 +844,47 @@ ng-dropdown-panel{
     }
   }
 
-//   .app-content .side-app {
-//     padding: 1rem 1rem 3rem 1rem;
-//     position: relative;
-//     min-height: calc(100vh - 65px);
-// }
-
+  .app-content .side-app {
+    padding: 1rem 1rem 3rem 1rem;
+    position: relative;
+    min-height: calc(100vh - 65px);
+}
 
 .required-field::after {
   content: " *";
   color: $color-red;
+}
+
+
+.custom-modal .modal-body {
+  max-height: calc(100vh - 185px);
+  overflow: scroll;
+}
+
+
+@media (max-width: 990px){
+  .custom-modal-lg{
+    .modal-dialog{
+      width: 80% !important;
+      max-width: 1200px !important;
+    }
+  }
+}
+
+@media (min-width: 991px){
+  .custom-modal-lg{
+    .modal-dialog{
+      width: 70% !important;
+      max-width: 1300px !important;
+
+      .modal-body{
+        max-height: 550px;
+        overflow-y: scroll;
+      }
+    }
+  }
+}
+
+a{
+  cursor: pointer !important;
 }

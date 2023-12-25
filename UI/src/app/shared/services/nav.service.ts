@@ -119,8 +119,8 @@ export class NavService implements OnDestroy {
           Menusub: true,
           active: false,
           children: [
-            { path: '/configurations/users', title: 'Users', type: 'link' },
-            { path: '/configurations/roles', title: 'Roles', type: 'link' },
+            { path: '/configurations/users/users', title: 'Users', type: 'link' },
+            { path: '/configurations/users/roles', title: 'Roles', type: 'link' },
           ],
         },
         {
@@ -130,8 +130,8 @@ export class NavService implements OnDestroy {
           Menusub: true,
           active: false,
           children: [
-            { path: '/configurations/tenderType', title: 'Tender Type', type: 'link' },
-            { path: '/configurations/roles', title: 'Tender Stage', type: 'link' },
+            { path: '/configurations/tenders/stage', title: 'Tender Stage', type: 'link' },
+            { path: '/configurations/tenders/type', title: 'Tender Type', type: 'link' },
           ],
         },
         {

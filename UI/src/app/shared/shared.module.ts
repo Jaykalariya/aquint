@@ -29,12 +29,18 @@ import { MaterialModule } from './moduels/material/material.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxMaskModule } from 'ngx-mask';
 import { PrintErrorComponent } from './components/print-error/print-error.component';
+import { ConfirmationModelComponent } from './components/confirmation-model/confirmation-model.component';
+import { SafePipe } from './pipes/safe/safe.pipe';
+import { LocaldatePipe } from './pipes/localdate/localdate.pipe';
+import { AddCommonModalComponent } from './components/add-common-modal/add-common-modal.component';
+import { CommonTableComponent } from './components/common-table/common-table.component';
 
 @NgModule({
   declarations: [
     FooterComponent,
     HeaderComponent,
     LoaderComponent,
+    CommonTableComponent,
     PageHeaderComponent,
     SidebarComponent,
     SwitcherLayoutComponent,
@@ -48,7 +54,11 @@ import { PrintErrorComponent } from './components/print-error/print-error.compon
     HoverEffectSidebarDirective,
     SidemenuToggleDirective,
     HeaderSwitcherComponent,
-    PrintErrorComponent
+    PrintErrorComponent,
+    ConfirmationModelComponent,
+    SafePipe,
+    LocaldatePipe,
+    AddCommonModalComponent
   ],
   imports: [
     CommonModule,
@@ -75,6 +85,8 @@ import { PrintErrorComponent } from './components/print-error/print-error.compon
     LoaderComponent,
     SidebarComponent,
     PrintErrorComponent,
+    ConfirmationModelComponent,
+    CommonTableComponent,
     ToggleThemeDirective,
     SidemenuToggleDirective,
     SwitcherComponent,

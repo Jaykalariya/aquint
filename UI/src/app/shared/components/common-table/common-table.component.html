@@ -1,0 +1,177 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header" *ngIf="applyExtraInfo && applyExtraInfo.title">
+                <h3 class="card-title" *ngIf="applyExtraInfo.title">
+                    {{applyExtraInfo.title}}
+                </h3>
+                <div class="card-options" *ngIf="applyExtraInfo">
+                    <div class="btn-list">
+                        <button type="button" 
+                            (click)="createNewData2()"
+                            *ngIf="applyExtraInfo.createNewBtnText2"
+                            class="btn btn-pill btn-primary">
+                            <i class="fe fe-plus me-2"></i>{{applyExtraInfo.createNewBtnText2}}
+                        </button>
+                        <button type="button" 
+                            (click)="createNewData()"
+                            *ngIf="applyExtraInfo.createNewBtnText"
+                            class="btn btn-pill btn-primary">
+                            <i class="fe fe-plus me-2"></i>{{applyExtraInfo.createNewBtnText}}
+                        </button>
+                        <button type="button" 
+                            (click)="generalFunc()"
+                            *ngIf="applyExtraInfo.generalNewBtnText"
+                            class="btn btn-pill btn-primary">
+                            <i class="mdi mdi-account-multiple mdi-48px"  *ngIf = "applyExtraInfo.generalNewBtnText == 'Roles'"></i>
+                            {{applyExtraInfo.generalNewBtnText}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="showFilters">
+                    <div class="col-12">
+                        <mat-form-field style="width: 100%;">
+                            <mat-label>Filter</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="table-responsive" *ngIf="matDataSource">
+                <!-- <div class="table-responsive" *ngIf="tableData"> -->
+                    <table mat-table [dataSource]="matDataSource" matSort  
+                        class="table card-table border table-vcenter text-nowrap  align-items-center"
+                        [class]="applyExtraInfo && applyExtraInfo.tableClass ? applyExtraInfo.tableClass : ''">
+                      
+                        <ng-container *ngFor="let column of tableData.columns; let i = index">
+                            <ng-container matColumnDef={{column.field}}>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.header}} </th>
+                                <td mat-cell 
+                                    *matCellDef="let rowData" class="data-col"> 
+                                    <!-- {{rowData[column.field]}}  -->
+                                    <!-- <app-avatar
+                                        *ngIf="column.dataType === commontTableDataType.userAvatar || column.dataType === commontTableDataType.studentAvatar"
+                                        [userModel]="rowData" [showContactDetails]="column.dataType == commontTableDataType.userAvatar">
+                                    </app-avatar> -->
+                                    <!-- <div *ngIf="column.dataType === commontTableDataType.multiAvatar">
+                                        <div class="mr-2 mb-2" *ngFor="let user of rowData[(column.field ? column.field : column.header)]">
+                                            <app-avatar [userModel]="user" [smallAvatar]="true">
+                                            </app-avatar>
+                                        </div>
+                                    </div> -->
+                                    <span class="textEllipsis"
+                                        *ngIf="!column.dataType || column.dataType === commontTableDataType.normal"
+                                        title="{{rowData[(column.field ? column.field : column.header)] | localdate}}">
+                                        {{rowData[(column.field ? column.field : column.header)] | localdate}}
+                                    </span>
+                                    <!-- <span class="textEllipsis"
+                                        *ngIf=" column.dataType === commontTableDataType.dateTime"
+                                        title="{{rowData[(column.field ? column.field : column.header)] | localdate: true}}">
+                                        <app-display-date-time [dateTimeObject]="rowData[(column.field ? column.field : column.header)]"></app-display-date-time>
+                                    </span> -->
+                                    <span class="textEllipsis"
+                                        *ngIf="column.dataType === commontTableDataType.verificationStutus"
+                                        title="{{rowData[(column.field ? column.field : column.header)] ? 'Verified' : 'Pending Verification'}}">
+                                        <em *ngIf="rowData[(column.field ? column.field : column.header)]" class="fa fa-check" style="color: rgb(136, 211, 23);"></em>
+                                        <em *ngIf="!rowData[(column.field ? column.field : column.header)]" class="fa fa-exclamation-triangle" style="color: #ffc100;"></em>
+                                    </span>
+                                    <span class="textEllipsis"
+                                        *ngIf="column.dataType === commontTableDataType.innerHtml && rowData[(column.field ? column.field + 'Html' : column.header)] != null"
+                                        [innerHTML]="rowData[(column.field ? column.field + 'Html' : column.header)] | safe:'html'"> {{rowData[(column.field ? column.field: column.header)]}}
+                                        <span style="display: none;">{{rowData[(column.field ? column.field: column.header)]}}</span>
+                                    </span>
+                                    <span class="textEllipsis"
+                                        *ngIf="column.dataType === commontTableDataType.currency"
+                                        title="{{rowData[(column.field ? column.field : column.header)] | currency}}">
+                                        <span class="lead user-name">{{rowData[(column.field ? column.field : column.header)] | currency}}</span>
+                                        <!-- <span class="sub user-id">USD</span> -->
+                                    </span>
+                                    <span class="textEllipsis"
+                                        *ngIf="column.dataType === commontTableDataType.anchor && rowData[(column.field ? column.field : column.header)]"
+                                        title="{{rowData[(column.field ? column.field : column.header)]}}">
+                                        <a href="{{rowData[(column.field ? column.field : column.header)]}}" target="_blank"><i class="zmdi zmdi-open-in-new"></i></a>                                        <!-- <span class="sub user-id">USD</span> -->
+                                    </span>
+                                </td>
+                            </ng-container>
+                        </ng-container>
+            
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>  </th>
+                            <td mat-cell *matCellDef="let rowData">
+                                <div class="text-center d-flex align-items-center justify-content-center" *ngIf="!displayActionConditionally || (displayActionConditionally && rowData.displayAction)">
+                                    <i *ngIf="showViewDetailsBtn" 
+                                        class="material-icons cursor-pointer mr"
+                                        (click)="viewDetails(rowData)"
+                                        title="View Details"
+                                        style="position: initial;">visibility</i>
+                                    <i *ngIf="showEditBtn" 
+                                        (click)="editDetails(rowData)"
+                                        title="Edit"
+                                        class="material-icons cursor-pointer mr"
+                                        style="position: initial;">edit</i>
+                                    <i *ngIf="viewPublicLinkBtn" 
+                                        class="material-icons cursor-pointer mr"
+                                        title="View Public link"
+                                        (click)="viewpublicLink(rowData)"
+                                        style="position: initial;">link</i>
+                                    <i *ngIf="viewPdfBtn" 
+                                        class="material-icons cursor-pointer mr"
+                                        title="View Pdf"
+                                        (click)="viewPdfFunc(rowData)"
+                                        style="position: initial;">picture_as_pdf</i>
+                                    <i *ngIf="reScheduleBtn" 
+                                        class="material-icons cursor-pointer mr"
+                                        title="Schedular"
+                                        (click)="reSchedule(rowData)"
+                                        style="position: initial;">edit_calendar</i>
+                                    <i *ngIf="showDeleteBtn" 
+                                        class="material-icons cursor-pointer mr"
+                                        title="delete"
+                                        (click)="deleteRecord(rowData)"
+                                        style="position: initial;">delete</i>
+                                    <span *ngFor="let action of applyExtraInfo?.actions">
+                                        <i class="material-icons cursor-pointer mr" [class]="action.cssClass"
+                                            [title]="action.label"
+                                            *ngIf="action.icon"
+                                            (click)="actionButtonPressed(action.onClick, rowData)"
+                                            style="position: initial;">{{action.icon}}</i> 
+                                        <button 
+                                            *ngIf="!action.icon"
+                                            [class]="action.cssClass"
+                                            (click)="actionButtonPressed(action.onClick, rowData)"
+                                            class="btn btn-pill mr-2" >
+                                            {{action.label}}
+                                        </button>
+                                    </span>
+                                    
+                                </div>
+                            </td>
+                        </ng-container>
+                  
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="thead-light"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="data-item"></tr>
+                    
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                <div class="row">
+                                    <!-- <div class="col-6 offset-3">
+                                        <img class="img-fluid" src="./assets/images/no-search-result.png" />
+                                    </div> -->
+                                    <div class="col p-2">
+                                        <strong>No records available.</strong>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- <div class="p-2" *ngIf="!tableData || !tableData.data || tableData.data.length < 1">
+                    <strong>No records available.</strong>
+                </div> -->
+                <mat-paginator *ngIf="showPagination" [pageSizeOptions]="[5, 10, 25, 100]" ></mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

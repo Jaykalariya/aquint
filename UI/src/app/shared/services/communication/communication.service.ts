@@ -60,7 +60,7 @@ export class CommunicationService {
 
   getLoggedInUserDetails(){
     var jsonString = sessionStorage.getItem(userProfile);
-    console.log(jsonString);
+    // console.log(jsonString);
     if(jsonString){
       return JSON.parse(atob(jsonString));
     }

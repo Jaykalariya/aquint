@@ -32,7 +32,7 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
     "allowJs": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "skipLibCheck": true,

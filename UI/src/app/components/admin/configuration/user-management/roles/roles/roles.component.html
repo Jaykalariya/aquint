@@ -1,0 +1,9 @@
+<!-- <app-page-header title="Advanced UI" active_item="Accordion" [showButtons]="false" [items]="items" [showButtons]="true" (addNew)="openaddEditRoleModal()" (goBack)="goBack()"></app-page-header> -->
+
+<app-common-table *ngIf="wholeTableData"
+    [tableFullData]="wholeTableData"
+    [applyExtraInfo]="applyExtraInfo"
+    [showViewDetailsBtn]="false"
+    [showEditBtn]="false"
+    (create)="openaddEditRoleModal()">
+</app-common-table>
