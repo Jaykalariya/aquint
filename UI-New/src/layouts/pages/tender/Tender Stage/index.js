@@ -5,24 +5,41 @@ import SoftBox from "components/SoftBox";
 import { useEffect, useState } from "react";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
-import Table from "examples/Tables/Table";
 import axiosInstance from "config/https";
 import { Chip, Icon } from "@mui/material";
-import Pagination from "./components/Pagination";
+import Nodata from "components/Nodata";
+import DataTable from "examples/Tables/DataTable";
+import UpdateForm from "./components/Update/UpdateForm";
 
 function Tenderstage() {
   const token = localStorage.getItem("token");
   const [show, setshow] = useState(false);
   const [transformedRows, setTransformedRows] = useState([]);
-  const [currentRows, setcurrentRows] = useState();
-  const [search, setsearch] = useState("");
+  const [hide, sethide] = useState(false);
+  const [selectedTenderData, setSelectedTenderData] = useState(null);
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
-  const columns = [
-    { name: "#", align: "center", width: "30px" },
-    { name: "Tender StageName", align: "center", width: "auto" },
-    { name: "status", align: "center", width: "50px" },
-    { name: "action", align: "center", width: "50px" },
-  ];
+  const tableData = {
+    columns: [
+      {
+        Header: "#",
+        accessor: "#",
+      },
+      {
+        Header: "Tender StageName",
+        accessor: "Tender StageName",
+      },
+      {
+        Header: "Status",
+        accessor: "Status",
+      },
+      {
+        Header: "Action",
+        accessor: "Action",
+      },
+    ],
+    rows: transformedRows,
+  };
 
   useEffect(() => {
     fetchData();
@@ -45,20 +62,21 @@ function Tenderstage() {
 
   const transformData = (data) => {
     const rows = data.map((item, index) => ({
+      id : item.id,
       "#": index + 1,
       "Tender StageName": item.tenderStageName,
-      status: (
+      Status: (
         <Chip
           label={item.status ? "Active" : "Inactive"}
           variant="outlined"
           style={{
-            color: "white",
-            backgroundColor: item.status ? "green" : "red",
+            color: item.status ? "green" : "red",
+            border: `1px solid ${item.status ? "green" : "red"}`,
           }}
           size="small"
         />
       ),
-      action: (
+      Action: (
         <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
           edit
         </Icon>
@@ -68,12 +86,15 @@ function Tenderstage() {
   };
 
   const handleEdit = (itemId) => {
-    console.log("Edit item with ID:", itemId);
+    setSelectedItemId(itemId);
+    sethide(true);
   };
 
-  function handelserach(event) {
-    setsearch(event.target.value);
-  }
+  useEffect(() => {
+    console.log(transformedRows);
+    const selectedTender = transformedRows.find((item) => item.id === selectedItemId);
+    setSelectedTenderData(selectedTender);
+  }, [transformedRows, selectedItemId]);
 
   return (
     <DashboardLayout>
@@ -92,21 +113,34 @@ function Tenderstage() {
           ) : (
             <>
               <div className="flex justify-end gap-2 mb-3">
-                <SoftInput
-                  onChange={handelserach}
-                  placeholder="Type here..."
-                  icon={{ component: "search", direction: "left" }}
-                />
                 <SoftButton color="info" onClick={() => setshow(!show)}>
                   +Add
                 </SoftButton>
               </div>
-              <Table columns={columns} rows={currentRows} />
-              <Pagination
-                search={search}
-                setcurrentRows={setcurrentRows}
-                transformedRows={transformedRows}
-              />
+              {transformedRows.length === 0 ? (
+                <Nodata />
+              ) : (
+                <>
+                  {hide ? (
+                    <UpdateForm
+                      selectedItemData={selectedTenderData}
+                      itemId={selectedItemId}
+                      sethide={sethide}
+                      fetchData={fetchData}
+                    />
+                  ) : (
+                    <DataTable
+                      entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
+                      canSearch={true}
+                      showTotalEntries={true}
+                      table={tableData}
+                      pagination={{ variant: "gradient", color: "info" }}
+                      isSorted={true}
+                      noEndBorder={false}
+                    />
+                  )}
+                </>
+              )}
             </>
           )}
         </div>

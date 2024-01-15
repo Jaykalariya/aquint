@@ -32,7 +32,7 @@ import Nodata from "components/Nodata";
 import DataTable from "examples/Tables/DataTable";
 import UpdateForm from "./components/Update/UpdateForm";
 
-function Addtender() {
+function Division() {
   const [show, setshow] = useState(false);
   const token = localStorage.getItem("token");
   const [transformedRows, setTransformedRows] = useState([]);
@@ -47,8 +47,8 @@ function Addtender() {
         accessor: "#",
       },
       {
-        Header: "Tender Type",
-        accessor: "Tender Type",
+        Header: "Division Name",
+        accessor: "Division Name",
       },
       {
         Header: "Status",
@@ -68,7 +68,7 @@ function Addtender() {
 
   const fetchData = async () => {
     try {
-      const result = await axiosInstance.get("/_v1/tender/type/getAllTenderType", {
+      const result = await axiosInstance.get("/_v1/division/getAllDivision", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,7 +85,7 @@ function Addtender() {
     const rows = data.map((item, index) => ({
       id: item.id,
       "#": index + 1,
-      "Tender Type": item.tenderTypeName,
+      "Division Name": item.divisionName,
       Status: (
         <Chip
           label={item.status ? "Active" : "Inactive"}
@@ -170,4 +170,4 @@ function Addtender() {
   );
 }
 
-export default Addtender;
+export default Division;

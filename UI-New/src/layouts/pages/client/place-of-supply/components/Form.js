@@ -10,25 +10,33 @@ import SoftInput from "components/SoftInput";
 
 // eslint-disable-next-line react/prop-types
 const Forms = ({ setShow, fetchData }) => {
-  const [tenderTypeName, setTendername] = useState(null);
+  const [stateName, setstateName] = useState(null);
+  const [stateCode, setstateCode] = useState(null);
   const [status, setStatus] = useState(null);
-  const [tenderTypeError, setTenderTypeError] = useState(false);
+  const [stateNameError, setstateNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
+  const [stateCodeError, setstateCodeError] = useState(false);
 
-  const handleTenderTypeChange = (event) => {
-    setTendername(event.target.value);
-    setTenderTypeError(false);
+  const handleStateNameChange = (event) => {
+    setstateName(event.target.value);
+    setstateNameError(false);
   };
 
   const handleStatusChange = (selectedOption) => {
-    setStatus(selectedOption);
+    setStatus(selectedOption.value);
     setStatusError(false);
+  };
+  const handlestateCodeChange = (event) => {
+    setstateCode(event.target.value);
+    setstateCodeError(false);
   };
 
   const handleCancel = () => {
-    setTendername(null);
+    setstateName(null);
     setStatus(null);
-    setTenderTypeError(false);
+    setstateCode(null);
+    setstateNameError(false);
+    setstateCodeError(false);
     setStatusError(false);
   };
 
@@ -36,8 +44,8 @@ const Forms = ({ setShow, fetchData }) => {
     event.preventDefault();
     let hasError = false;
 
-    if (tenderTypeName === null) {
-      setTenderTypeError(true);
+    if (stateName === null) {
+      setstateNameError(true);
       hasError = true;
     }
 
@@ -45,15 +53,19 @@ const Forms = ({ setShow, fetchData }) => {
       setStatusError(true);
       hasError = true;
     }
+    if (stateCode === null) {
+      setstateCodeError(true);
+      hasError = true;
+    }
 
     if (hasError) {
       return toast.warning("Please fill in all the details");
     }
 
-    const parsedStatus = status.value === "true";
-    const result = await Service(tenderTypeName, parsedStatus);
+    const parsedStatus = status === "true";
+    const result = await Service(stateName, stateCode, parsedStatus);
     if (result === true) {
-      toast.success("Tender add successful!");
+      toast.success("Place Of Supply add successful!");
       setShow(false);
       fetchData();
     } else {
@@ -65,12 +77,25 @@ const Forms = ({ setShow, fetchData }) => {
     <Card className="mx-24">
       <SoftBox p={2}>
         <SoftBox>
-          <label className="text-xs font-bold p-1">Tender Type</label>
+          <label className="text-xs font-bold p-1">State Name</label>
           <SoftInput
-            onChange={handleTenderTypeChange}
-            style={{ borderColor: tenderTypeError ? "red" : "" }}
+            onChange={handleStateNameChange}
+            style={{ borderColor: stateNameError ? "red" : "" }}
           />
-          {tenderTypeError && <span style={{ color: "red" ,fontSize: "12px" }}>Please enter a Tender Type</span>}
+          {stateNameError && (
+            <span style={{ color: "red", fontSize: "12px" }}>Please Enter A State Name</span>
+          )}
+          <div>
+            <label className="text-xs font-bold p-1">State Code</label>
+            <SoftInput
+              onChange={handlestateCodeChange}
+              style={{ borderColor: stateCodeError ? "red" : "" }}
+            />
+            {stateCodeError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please Enter A State Code</span>
+            )}
+          </div>
+
           <div>
             <label className="text-xs font-bold p-1">Status</label>
             <SoftSelect
@@ -82,7 +107,9 @@ const Forms = ({ setShow, fetchData }) => {
                 { value: "false", label: "Inactive" },
               ]}
             />
-            {statusError && <span style={{ color: "red" , fontSize: "12px" }}>Please select a Status</span>}
+            {statusError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please Select A Status</span>
+            )}
           </div>
           <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">
             <SoftButton onClick={handleCancel} variant="gradient" color="light">

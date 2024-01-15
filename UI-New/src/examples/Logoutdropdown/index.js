@@ -6,9 +6,14 @@ import MenuItem from "@mui/material/MenuItem";
 import { IconButton } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
 import { navbarIconButton } from "examples/Navbars/DashboardNavbar/styles";
+import { useNavigate } from "react-router-dom";
+
+
 
 const LogoutDropdown = ({ user ,setUser}) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+ 
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,6 +21,7 @@ const LogoutDropdown = ({ user ,setUser}) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+    navigate("/authentication/sign-in/cover");
   };
 
   const handleLogout = () => {

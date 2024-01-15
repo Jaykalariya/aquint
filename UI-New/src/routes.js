@@ -102,6 +102,9 @@ import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Addtender from "layouts/pages/tender/addtender";
 import Tenderstage from "layouts/pages/tender/Tender Stage";
+import Placeofsupply from "layouts/pages/client/place-of-supply";
+import Division from "layouts/pages/client/Division";
+import Department from "layouts/pages/client/Department";
 
 const routes = [
   {
@@ -164,13 +167,13 @@ const routes = [
           {
             name: "Tender Type",
             key: "Add tender",
-            route: "/configuration/tenderconfiguration/Tender-Type",
+            route: "/configuration/System-Configuration/Tender-Type",
             component: <Addtender/>,
           },
           {
             name: "Tender Stage",
             key: "Tender Stage",
-            route: "/configuration/tenderconfiguration/Tender-Stage",
+            route: "/configuration/System-Configuration/Tender-Stage",
             component: <Tenderstage/>,
           },
           // {
@@ -191,6 +194,30 @@ const routes = [
           //   route: "/pages/profile/all-projects",
           //   component: <AllProjects />,
           // },
+        ],
+      },
+      {
+        name: "Client Settings",
+        key: "Client Settings",
+        collapse: [
+          {
+            name: "Place Of Supply",
+            key: "place-of-supply",
+            route: "/configuration/System-Configuration/place-of-supply",
+            component: <Placeofsupply/>,
+          },
+          {
+            name: "Division",
+            key: "Division",
+            route: "/configuration/place-of-supply/Division",
+            component: <Division/>,
+          },
+          {
+            name: "Department",
+            key: "Department",
+            route: "/configuration/place-of-supply/Department",
+            component: <Department/>,
+          },
         ],
       },
       // {

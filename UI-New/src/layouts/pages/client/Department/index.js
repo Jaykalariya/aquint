@@ -32,7 +32,7 @@ import Nodata from "components/Nodata";
 import DataTable from "examples/Tables/DataTable";
 import UpdateForm from "./components/Update/UpdateForm";
 
-function Addtender() {
+function Department() {
   const [show, setshow] = useState(false);
   const token = localStorage.getItem("token");
   const [transformedRows, setTransformedRows] = useState([]);
@@ -47,8 +47,8 @@ function Addtender() {
         accessor: "#",
       },
       {
-        Header: "Tender Type",
-        accessor: "Tender Type",
+        Header: "Department Name",
+        accessor: "Department Name",
       },
       {
         Header: "Status",
@@ -68,12 +68,13 @@ function Addtender() {
 
   const fetchData = async () => {
     try {
-      const result = await axiosInstance.get("/_v1/tender/type/getAllTenderType", {
+      const result = await axiosInstance.get("/_v1/department/getAllDepartment", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       const transformedData = transformData(result.data);
+      console.log(result.data);
       setTransformedRows(transformedData);
     } catch (error) {
       //  throw error
@@ -85,7 +86,7 @@ function Addtender() {
     const rows = data.map((item, index) => ({
       id: item.id,
       "#": index + 1,
-      "Tender Type": item.tenderTypeName,
+      "Department Name": item.departmentName,
       Status: (
         <Chip
           label={item.status ? "Active" : "Inactive"}
@@ -103,8 +104,7 @@ function Addtender() {
         </Icon>
       ),
     }));
-
-    return rows;
+    return rows || [];
   };
 
   const handleEdit = (itemId) => {
@@ -170,4 +170,4 @@ function Addtender() {
   );
 }
 
-export default Addtender;
+export default Department;

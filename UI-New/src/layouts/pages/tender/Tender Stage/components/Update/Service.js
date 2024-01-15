@@ -1,15 +1,15 @@
 import axiosInstance from "config/https";
 
-async function Service(tenderTypeName, status) {
+async function Service(tenderStageName, status, itemId) {
   const token = localStorage.getItem("token");
-  console.log(status);
 
   try {
     const response = await axiosInstance.post(
-      "/_v1/tender/type/addTenderType",
+      "/_v1/tender/stage/addTenderStage",
       {
-        tenderTypeName,
+        tenderStageName,
         status: status,
+        id: itemId,
       },
       {
         headers: {
@@ -21,7 +21,7 @@ async function Service(tenderTypeName, status) {
     return true;
   } catch (error) {
     console.error("Error sending data:", error);
-    // throw error;
+    throw error;
   }
 }
 

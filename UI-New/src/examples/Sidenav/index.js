@@ -43,7 +43,7 @@ import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
 // Soft UI Dashboard PRO React context
 import { useSoftUIController, setMiniSidenav } from "context";
-
+import logo from "../../Image/Aquint-logo-PNG-1-e1661857588498.png";
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [openCollapse, setOpenCollapse] = useState(false);
   const [openNestedCollapse, setOpenNestedCollapse] = useState(false);
@@ -244,16 +244,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
           </SoftTypography>
         </SoftBox>
-        <SoftBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={brand} alt="Soft UI Logo" width="2rem" />}
-          <SoftBox
+        <SoftBox component={NavLink} to="/Dashboard" display="flex" alignItems="center">
+          {brand && <SoftBox component="img" src={logo} alt="Logo" width="12rem" />}
+          {/* <SoftBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
             <SoftTypography component="h6" variant="button" fontWeight="medium">
               {brandName}
             </SoftTypography>
-          </SoftBox>
+          </SoftBox> */}
         </SoftBox>
       </SoftBox>
       <Divider />

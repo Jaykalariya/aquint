@@ -8,16 +8,17 @@ import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
 
+
 // eslint-disable-next-line react/prop-types
 const Forms = ({ setShow, fetchData }) => {
-  const [tenderTypeName, setTendername] = useState(null);
+  const [departmentName, setdepartmentName] = useState(null);
   const [status, setStatus] = useState(null);
-  const [tenderTypeError, setTenderTypeError] = useState(false);
+  const [departmentNameError, setdepartmentNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
 
-  const handleTenderTypeChange = (event) => {
-    setTendername(event.target.value);
-    setTenderTypeError(false);
+  const handleStateNameChange = (event) => {
+    setdepartmentName(event.target.value);
+    setdepartmentNameError(false);
   };
 
   const handleStatusChange = (selectedOption) => {
@@ -26,9 +27,9 @@ const Forms = ({ setShow, fetchData }) => {
   };
 
   const handleCancel = () => {
-    setTendername(null);
+    setdepartmentName(null);
     setStatus(null);
-    setTenderTypeError(false);
+    setdepartmentNameError(false);
     setStatusError(false);
   };
 
@@ -36,8 +37,8 @@ const Forms = ({ setShow, fetchData }) => {
     event.preventDefault();
     let hasError = false;
 
-    if (tenderTypeName === null) {
-      setTenderTypeError(true);
+    if (departmentName === null) {
+      setdepartmentNameError(true);
       hasError = true;
     }
 
@@ -45,15 +46,14 @@ const Forms = ({ setShow, fetchData }) => {
       setStatusError(true);
       hasError = true;
     }
-
     if (hasError) {
       return toast.warning("Please fill in all the details");
     }
 
     const parsedStatus = status.value === "true";
-    const result = await Service(tenderTypeName, parsedStatus);
+    const result = await Service(departmentName, parsedStatus);
     if (result === true) {
-      toast.success("Tender add successful!");
+      toast.success("DepartmentName add successful!");
       setShow(false);
       fetchData();
     } else {
@@ -65,12 +65,15 @@ const Forms = ({ setShow, fetchData }) => {
     <Card className="mx-24">
       <SoftBox p={2}>
         <SoftBox>
-          <label className="text-xs font-bold p-1">Tender Type</label>
+          <label className="text-xs font-bold p-1">Department Name</label>
           <SoftInput
-            onChange={handleTenderTypeChange}
-            style={{ borderColor: tenderTypeError ? "red" : "" }}
+            onChange={handleStateNameChange}
+            style={{ borderColor: departmentNameError ? "red" : "" }}
           />
-          {tenderTypeError && <span style={{ color: "red" ,fontSize: "12px" }}>Please enter a Tender Type</span>}
+          {departmentNameError && (
+            <span style={{ color: "red", fontSize: "12px" }}>Please Enter A Department Name</span>
+          )}
+
           <div>
             <label className="text-xs font-bold p-1">Status</label>
             <SoftSelect
@@ -82,7 +85,9 @@ const Forms = ({ setShow, fetchData }) => {
                 { value: "false", label: "Inactive" },
               ]}
             />
-            {statusError && <span style={{ color: "red" , fontSize: "12px" }}>Please select a Status</span>}
+            {statusError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please Select A Status</span>
+            )}
           </div>
           <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">
             <SoftButton onClick={handleCancel} variant="gradient" color="light">

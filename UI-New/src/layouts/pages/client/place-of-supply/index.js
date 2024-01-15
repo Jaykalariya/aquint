@@ -32,7 +32,7 @@ import Nodata from "components/Nodata";
 import DataTable from "examples/Tables/DataTable";
 import UpdateForm from "./components/Update/UpdateForm";
 
-function Addtender() {
+function Placeofsupply() {
   const [show, setshow] = useState(false);
   const token = localStorage.getItem("token");
   const [transformedRows, setTransformedRows] = useState([]);
@@ -47,8 +47,12 @@ function Addtender() {
         accessor: "#",
       },
       {
-        Header: "Tender Type",
-        accessor: "Tender Type",
+        Header: "State Name",
+        accessor: "State Name",
+      },
+      {
+        Header: "State Code",
+        accessor: "State Code",
       },
       {
         Header: "Status",
@@ -68,7 +72,7 @@ function Addtender() {
 
   const fetchData = async () => {
     try {
-      const result = await axiosInstance.get("/_v1/tender/type/getAllTenderType", {
+      const result = await axiosInstance.get("/_v1/placeOfSupply/getAllPlaceOfSupply", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,7 +89,8 @@ function Addtender() {
     const rows = data.map((item, index) => ({
       id: item.id,
       "#": index + 1,
-      "Tender Type": item.tenderTypeName,
+      "State Name": item.stateName,
+      "State Code": item.stateCode,
       Status: (
         <Chip
           label={item.status ? "Active" : "Inactive"}
@@ -170,4 +175,4 @@ function Addtender() {
   );
 }
 
-export default Addtender;
+export default Placeofsupply;

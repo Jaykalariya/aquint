@@ -149,12 +149,14 @@ function DataTable({
         <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
           {entriesPerPage && (
             <SoftBox display="flex" alignItems="center">
-              <SoftSelect
-                defaultValue={{ value: defaultValue, label: defaultValue }}
-                options={entries.map((entry) => ({ value: entry, label: entry }))}
-                onChange={setEntriesPerPage}
-                size="small"
-              />
+              <div className="w-20">
+                <SoftSelect
+                  defaultValue={{ value: defaultValue, label: defaultValue }}
+                  options={entries.map((entry) => ({ value: entry, label: entry }))}
+                  onChange={setEntriesPerPage}
+                  size="Small"
+                />
+              </div>
               <SoftTypography variant="caption" color="secondary">
                 &nbsp;&nbsp;entries per page
               </SoftTypography>

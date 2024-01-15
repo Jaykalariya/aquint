@@ -1,15 +1,15 @@
 import axiosInstance from "config/https";
 
-async function Service(tenderTypeName, status) {
+async function Service(divisionName, status) {
   const token = localStorage.getItem("token");
-  console.log(status);
+  console.log(divisionName, status);
 
   try {
     const response = await axiosInstance.post(
-      "/_v1/tender/type/addTenderType",
+      "/_v1/division/addDivision",
       {
-        tenderTypeName,
-        status: status,
+        divisionName,
+        status,
       },
       {
         headers: {
