@@ -143,9 +143,9 @@ export default function App() {
         </div>
       )}
 
-      {!localStorage.getItem("token") ? (
+      {/* {!localStorage.getItem("token") ? (
         <Navigate to="/authentication/sign-in/cover" />
-      ) : (
+      ) : ( */}
         <>
           {layout === "dashboard" && (
             <>
@@ -168,7 +168,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/authentication/sign-in/cover" />} />
           </Routes>
         </>
-      )}
+      {/* )} */}
     </>
   );
 

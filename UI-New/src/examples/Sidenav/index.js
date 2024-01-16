@@ -44,6 +44,7 @@ import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 // Soft UI Dashboard PRO React context
 import { useSoftUIController, setMiniSidenav } from "context";
 import logo from "../../Image/Aquint-logo-PNG-1-e1661857588498.png";
+import miniSidebarImage from "../../Image/icon.png";
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [openCollapse, setOpenCollapse] = useState(false);
   const [openNestedCollapse, setOpenNestedCollapse] = useState(false);
@@ -141,7 +142,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(
-    ({type, name, icon, title, collapse, noCollapse, key, href, route}) => {
+    ({ type, name, icon, title, collapse, noCollapse, key, href, route }) => {
       let returnValue;
 
       if (type === "collapse") {
@@ -162,7 +163,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               />
             </Link>
           );
-        } else if(name === "Dashboards"){
+        } else if (name === "Dashboards") {
           returnValue = (
             <SidenavCollapse
               key={key}
@@ -170,14 +171,12 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               icon={icon}
               active={key === collapseName}
               open={openCollapse === key}
-              onClick={()=>navigate(`${collapse[0].route}`)}
+              onClick={() => navigate(`${collapse[0].route}`)}
             >
               {collapse ? renderCollapse(collapse) : null}
             </SidenavCollapse>
           );
-        }
-
-        else if (noCollapse && route) {
+        } else if (noCollapse && route) {
           returnValue = (
             <SidenavCollapse
               name={name}
@@ -244,9 +243,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             <Icon sx={{ fontWeight: "bold" }}>close</Icon>
           </SoftTypography>
         </SoftBox>
-        <SoftBox component={NavLink} to="/Dashboard" display="flex" alignItems="center">
-          {brand && <SoftBox component="img" src={logo} alt="Logo" width="12rem" />}
-          {/* <SoftBox
+        {/* <SoftBox component={NavLink} to="/Dashboard" display="flex" alignItems="center"> */}
+        {/* {brand && <SoftBox component="img" src={logo} alt="Logo" width="12rem" />} */}
+        {/* <SoftBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
@@ -254,6 +253,17 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               {brandName}
             </SoftTypography>
           </SoftBox> */}
+        {/* </SoftBox> */}
+        <SoftBox component={NavLink} to="/Dashboard" display="flex" alignItems="center">
+          {miniSidenav ? (
+            <SoftBox
+              component="img"
+              src={miniSidebarImage}
+              alt="Mini Sidebar Logo"
+            />
+          ) : (
+            <>{brand && <SoftBox component="img" src={logo} alt="Logo" width="12rem" />}</>
+          )}
         </SoftBox>
       </SoftBox>
       <Divider />
