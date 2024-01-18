@@ -105,6 +105,7 @@ import Tenderstage from "layouts/pages/tender/Tender Stage";
 import Placeofsupply from "layouts/pages/client/place-of-supply";
 import Division from "layouts/pages/client/Division";
 import Department from "layouts/pages/client/Department";
+import Illustration from "layouts/authentication/sign-in/illustration";
 
 const routes = [
   {
@@ -437,18 +438,18 @@ const routes = [
   //         //   route: "/authentication/sign-in/basic",
   //         //   component: <SignInBasic />,
   //         // },
+          // {
+          //   name: "Cover",
+          //   key: "cover",
+          //   route: "/authentication/sign-in/cover",
+          //   component: <SignInCover />,
+          // },
           {
-            name: "Cover",
-            key: "cover",
-            route: "/authentication/sign-in/cover",
-            component: <SignInCover />,
+            name: "Illustration",
+            key: "illustration",
+            route: "/authentication/sign-in/illustration",
+            component: <Illustration/>,
           },
-  //         // {
-  //         //   name: "Illustration",
-  //         //   key: "illustration",
-  //         //   route: "/authentication/sign-in/illustration",
-  //         //   component: <SignInIllustration />,
-  //         // },
         // ],
   //     },
   //     {

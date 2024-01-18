@@ -5,15 +5,15 @@ import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 import SoftSelect from "components/SoftSelect";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import Service from "../service";
+import { useToasts } from "react-toast-notifications";
 
-function Stageform({setShow, fetchData}) {
+function Stageform({ setShow, fetchData }) {
   const [tenderStageName, settenderStageName] = useState(null);
   const [status, setstatus] = useState(null);
   const [tenderStageNameError, settenderStageNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
-  
+  const { addToast } = useToasts();
 
   const handletenderStageName = (event) => {
     settenderStageName(event.target.value);
@@ -26,10 +26,7 @@ function Stageform({setShow, fetchData}) {
   };
 
   const handleCancel = () => {
-    settenderStageName(null);
-    setstatus(null);
-    settenderStageNameError(false);
-    setStatusError(false);
+    setShow(false);
   };
 
   const handleSave = async (event) => {
@@ -47,17 +44,19 @@ function Stageform({setShow, fetchData}) {
     }
 
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
-    const result = await Service(tenderStageName,parsedStatus);
+    const result = await Service(tenderStageName, parsedStatus);
     if (result === true) {
-      toast.success("Tender add successful!");
+      addToast("add TenderStage successful!", {
+        appearance: "success",
+      });
       setShow(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 

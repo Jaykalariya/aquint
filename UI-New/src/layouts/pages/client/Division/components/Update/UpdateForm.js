@@ -2,25 +2,25 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Service from "./Service";
-import { toast } from "react-toastify";
 import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
-import Division from "../..";
+import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
-const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData}) => {
+const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
   const [divisionName, setdivisionName] = useState(null);
   const [status, setStatus] = useState(null);
   const [divisionNameError, setdivisionNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
+  const { addToast } = useToasts();
 
   useEffect(() => {
     if (selectedItemData) {
-        setdivisionName(selectedItemData["Division Name"]);
-        
+      setdivisionName(selectedItemData["Division Name"]);
+
       const data =
         selectedItemData.Status.props.label === "Active"
           ? { value: "true", label: "Active" }
@@ -57,17 +57,19 @@ const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData}) => {
       hasError = true;
     }
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
     const result = await Service(divisionName, parsedStatus, itemId);
     if (result === true) {
-      toast.success("Update Division successful!");
+      addToast("Update Division successful!", {
+        appearance: "success",
+      });
       sethide(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 
