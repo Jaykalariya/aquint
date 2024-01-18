@@ -6,8 +6,10 @@ import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.repository.UserDetailRepository;
 import com.beit.aquint.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
@@ -42,6 +44,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetail getUserDetail(Long userId) {
-        return userDetailRepository.findById(userId).get();
+        UserDetail userDetail = userDetailRepository.findByUserId(userId);
+        if (userDetail == null) {
+            throw  new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No data found for userId: " + userId);
+        }
+        return userDetail;
     }
 }
