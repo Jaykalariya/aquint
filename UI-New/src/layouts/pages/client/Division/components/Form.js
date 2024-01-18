@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import Service from "../Service";
-import { toast } from "react-toastify";
 import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
@@ -26,10 +25,7 @@ const Forms = ({ setShow, fetchData }) => {
   };
 
   const handleCancel = () => {
-    setdivisionName(null);
-    setStatus(null);
-    setdivisionNameError(false);
-    setStatusError(false);
+    setShow(false);
   };
 
   const handleSave = async (event) => {
@@ -46,17 +42,19 @@ const Forms = ({ setShow, fetchData }) => {
       hasError = true;
     }
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
     const result = await Service(divisionName, parsedStatus);
     if (result === true) {
-      toast.success("Division add successful!");
+      addToast("Division add successful!", {
+        appearance: "success",
+      });
       setShow(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 

@@ -1,13 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import Service from "../Service";
-import { toast } from "react-toastify";
 import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
-
+import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
 const Forms = ({ setShow, fetchData }) => {
@@ -15,6 +14,7 @@ const Forms = ({ setShow, fetchData }) => {
   const [status, setStatus] = useState(null);
   const [departmentNameError, setdepartmentNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
+  const { addToast } = useToasts();
 
   const handleStateNameChange = (event) => {
     setdepartmentName(event.target.value);
@@ -27,10 +27,7 @@ const Forms = ({ setShow, fetchData }) => {
   };
 
   const handleCancel = () => {
-    setdepartmentName(null);
-    setStatus(null);
-    setdepartmentNameError(false);
-    setStatusError(false);
+    setShow(false);
   };
 
   const handleSave = async (event) => {
@@ -47,17 +44,19 @@ const Forms = ({ setShow, fetchData }) => {
       hasError = true;
     }
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
     const result = await Service(departmentName, parsedStatus);
     if (result === true) {
-      toast.success("DepartmentName add successful!");
+      addToast("DepartmentName add successful!", {
+        appearance: "success",
+      });
       setShow(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 

@@ -2,13 +2,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Service from "./Service";
-import { toast } from "react-toastify";
 import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
-
+import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
 const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
@@ -16,11 +15,12 @@ const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
   const [status, setStatus] = useState(null);
   const [departmentNameError, setdepartmentNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
+  const { addToast } = useToasts();
 
   useEffect(() => {
     if (selectedItemData) {
       setdepartmentName(selectedItemData["Department Name"]);
-        
+
       const data =
         selectedItemData.Status.props.label === "Active"
           ? { value: "true", label: "Active" }
@@ -57,17 +57,19 @@ const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
       hasError = true;
     }
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
-    const result = await Service(departmentName, parsedStatus,itemId);
+    const result = await Service(departmentName, parsedStatus, itemId);
     if (result === true) {
-      toast.success("Update DepartmentName successful!");
+      addToast("Update DepartmentName successful!", {
+        appearance: "success",
+      });
       sethide(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 
@@ -102,7 +104,7 @@ const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
           </div>
           <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">
             <SoftButton onClick={handleBack} variant="gradient" color="light">
-             Back
+              Back
             </SoftButton>
             <SoftButton onClick={handleSave} variant="gradient" color="dark">
               Save

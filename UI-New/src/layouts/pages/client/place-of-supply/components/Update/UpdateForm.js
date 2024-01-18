@@ -8,21 +8,22 @@ import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
+import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
-const UpdateForm = ({selectedItemData, itemId, sethide, fetchData }) => {
+const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
   const [stateName, setstateName] = useState(null);
   const [stateCode, setstateCode] = useState(null);
   const [status, setStatus] = useState(null);
   const [stateNameError, setstateNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
   const [stateCodeError, setstateCodeError] = useState(false);
-  
+  const { addToast } = useToasts();
 
   useEffect(() => {
     if (selectedItemData) {
-        setstateName(selectedItemData["State Name"]);
-        setstateCode(selectedItemData["State Code"]);
+      setstateName(selectedItemData["State Name"]);
+      setstateCode(selectedItemData["State Code"]);
       const data =
         selectedItemData.Status.props.label === "Active"
           ? { value: "true", label: "Active" }
@@ -68,17 +69,19 @@ const UpdateForm = ({selectedItemData, itemId, sethide, fetchData }) => {
     }
 
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
-    const result = await Service(stateName,stateCode, parsedStatus, itemId);
+    const result = await Service(stateName, stateCode, parsedStatus, itemId);
     if (result === true) {
-      toast.success("Update Place Of Supply successful!");
+      addToast("Update Place Of Supply successful!", {
+        appearance: "success",
+      });
       sethide(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 

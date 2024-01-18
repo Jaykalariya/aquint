@@ -14,10 +14,9 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
 import brand from "assets/images/logo-ct.png";
-import { SpinnerCircular } from "spinners-react";
 import axiosInstance from "config/https";
-import { ToastContainer } from "react-toastify";
 import routes from "routes";
+import { RingLoader } from "react-spinners";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -25,7 +24,7 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const requestInterceptor = axiosInstance.interceptors.request.use(
@@ -129,45 +128,38 @@ export default function App() {
     </SoftBox>
   );
 
-  const spinner = loading && (
-    <div className="flex justify-center content-center fixed inset-0">
-      <SpinnerCircular enabled={true} />
-    </div>
-  );
-
   const content = (
     <>
       {loading && (
-        <div className="flex justify-center content-center fixed inset-0">
-          <SpinnerCircular enabled={true} />
+        <div className="flex justify-center items-center fixed inset-0">
+          <RingLoader color="#36d7b7" />
         </div>
       )}
 
       {/* {!localStorage.getItem("token") ? (
-        <Navigate to="/authentication/sign-in/cover" />
+        <Navigate to="/authentication/sign-in/illustration" />
       ) : ( */}
-        <>
-          {layout === "dashboard" && (
-            <>
-              <Sidenav
-                color={sidenavColor}
-                brand={brand}
-                brandName="Soft UI Dashboard PRO"
-                routes={routes}
-                onMouseEnter={handleOnMouseEnter}
-                onMouseLeave={handleOnMouseLeave}
-              />
-              <Configurator />
-              {configsButton}
-            </>
-          )}
-          {layout === "vr" && <Configurator />}
-          <ToastContainer position="top-center" />
-          <Routes>
-            {getRoutes(routes)}
-            <Route path="*" element={<Navigate to="/authentication/sign-in/cover" />} />
-          </Routes>
-        </>
+      <>
+        {layout === "dashboard" && (
+          <>
+            <Sidenav
+              color={sidenavColor}
+              brand={brand}
+              brandName="Soft UI Dashboard PRO"
+              routes={routes}
+              onMouseEnter={handleOnMouseEnter}
+              onMouseLeave={handleOnMouseLeave}
+            />
+            <Configurator />
+            {configsButton}
+          </>
+        )}
+        {layout === "vr" && <Configurator />}
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="*" element={<Navigate to="/authentication/sign-in/illustration" />} />
+        </Routes>
+      </>
       {/* )} */}
     </>
   );
@@ -176,14 +168,12 @@ export default function App() {
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
-        {spinner}
         {content}
       </ThemeProvider>
     </CacheProvider>
   ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {spinner}
       {content}
     </ThemeProvider>
   );
