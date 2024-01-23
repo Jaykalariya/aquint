@@ -17,6 +17,7 @@ import brand from "assets/images/logo-ct.png";
 import axiosInstance from "config/https";
 import routes from "routes";
 import { RingLoader } from "react-spinners";
+import LoadingOverlay from "react-loading-overlay";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -130,37 +131,29 @@ export default function App() {
 
   const content = (
     <>
-      {loading && (
-        <div className="flex justify-center items-center fixed inset-0">
-          <RingLoader color="#36d7b7" />
-        </div>
-      )}
-
-      {/* {!localStorage.getItem("token") ? (
-        <Navigate to="/authentication/sign-in/illustration" />
-      ) : ( */}
-      <>
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brand}
-              brandName="Soft UI Dashboard PRO"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/authentication/sign-in/illustration" />} />
-        </Routes>
-      </>
-      {/* )} */}
+      <LoadingOverlay active={loading} spinner={<RingLoader color="#36d7b7" />}>
+        <>
+          {layout === "dashboard" && (
+            <>
+              <Sidenav
+                color={sidenavColor}
+                brand={brand}
+                brandName="Soft UI Dashboard PRO"
+                routes={routes}
+                onMouseEnter={handleOnMouseEnter}
+                onMouseLeave={handleOnMouseLeave}
+              />
+              <Configurator />
+              {configsButton}
+            </>
+          )}
+          {layout === "vr" && <Configurator />}
+          <Routes>
+            {getRoutes(routes)}
+            <Route path="*" element={<Navigate to="/authentication/sign-in/illustration" />} />
+          </Routes>
+        </>
+      </LoadingOverlay>
     </>
   );
 

@@ -67,7 +67,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
   const [user, setUser] = useState(null);
-  
 
   useEffect(() => {
     const storedData = localStorage.getItem("userProfile");
@@ -75,7 +74,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       setUser(JSON.parse(storedData));
     }
   }, []);
-  
 
   useEffect(() => {
     // Setting the navbar type
@@ -151,7 +149,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
     <AppBar
       position={absolute ? "absolute" : navbarType}
       color="inherit"
-      sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
+      sx={(theme) => ({
+        ...navbar(theme, { transparentNavbar, absolute, light }),
+        zIndex: 1,
+      })}
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
         <SoftBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
@@ -188,7 +189,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
                     </SoftTypography>
                   </IconButton>
                 </Link>
-              ) : (<LogoutDropdown user={user} setUser={setUser}/>)}
+              ) : (
+                <LogoutDropdown user={user} setUser={setUser} />
+              )}
               <IconButton
                 size="small"
                 color="inherit"

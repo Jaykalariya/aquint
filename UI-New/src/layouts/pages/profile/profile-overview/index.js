@@ -49,45 +49,60 @@ import team1 from "assets/images/team-1.jpg";
 import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
+import { useEffect, useState } from "react";
 
 function Overview() {
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("userProfile");
+    if (storedData) {
+      setUser(JSON.parse(storedData));
+      console.log(JSON.parse(storedData));
+    }
+  }, []);
+
   return (
     <DashboardLayout>
       <Header />
       <SoftBox mt={5} mb={3}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} xl={4}>
-            <PlatformSettings />
-          </Grid>
-          <Grid item xs={12} md={6} xl={4}>
             <ProfileInfoCard
               title="profile information"
-              description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+              // description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
               info={{
-                fullName: "Alec M. Thompson",
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
+                fullName: `${user.firstname} ${user.middlename} ${user.lastname}`,
+                mobile: `${user.mobileNumber}`,
+                email: `${user.email}`,
+                BirthDate: `${user.birthDate}`,
+                BloodGroup: `${user.bloodGroup}`,
+                Nationality: `${user.nationality}`,
+                Religion: `${user.religion}`,
+                Address: `${user.address}`,
               }}
-              social={[
-                {
-                  link: "https://www.facebook.com/CreativeTim/",
-                  icon: <FacebookIcon />,
-                  color: "facebook",
-                },
-                {
-                  link: "https://twitter.com/creativetim",
-                  icon: <TwitterIcon />,
-                  color: "twitter",
-                },
-                {
-                  link: "https://www.instagram.com/creativetimofficial/",
-                  icon: <InstagramIcon />,
-                  color: "instagram",
-                },
-              ]}
-              action={{ route: "", tooltip: "Edit Profile" }}
+              // social={[
+              //   {
+              //     link: "https://www.facebook.com/CreativeTim/",
+              //     icon: <FacebookIcon />,
+              //     color: "facebook",
+              //   },
+              //   {
+              //     link: "https://twitter.com/creativetim",
+              //     icon: <TwitterIcon />,
+              //     color: "twitter",
+              //   },
+              //   {
+              //     link: "https://www.instagram.com/creativetimofficial/",
+              //     icon: <InstagramIcon />,
+              //     color: "instagram",
+              //   },
+              // ]}
+              // action={{ route: "", tooltip: "Edit Profile" }}
             />
+          </Grid>
+          <Grid item xs={12} md={6} xl={4}>
+            <PlatformSettings />
           </Grid>
           <Grid item xs={12} xl={4}>
             <ProfilesList title="conversations" profiles={profilesListData} />

@@ -97,7 +97,8 @@ const pageRoutes = [
       {
         name: "Profile Overview",
         key: "profile-overview",
-        route: "/pages/profile/profile-overview",
+        route: "/Home/profile",
+        
       },
       {
         name: "Teams",

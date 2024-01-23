@@ -49,7 +49,8 @@ const LogoutDropdown = ({ user ,setUser}) => {
           </SoftTypography>
         </IconButton>
       </Button>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)}>
+        <MenuItem onClick={()=>navigate("/Home/profile")}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

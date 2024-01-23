@@ -28,7 +28,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
-      <ToastProvider autoDismissTimeout={3000}  autoDismiss= {true}>
+      <ToastProvider autoDismissTimeout={3000} autoDismiss={true}>
         <App />
       </ToastProvider>
     </SoftUIControllerProvider>

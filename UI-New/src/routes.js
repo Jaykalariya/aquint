@@ -151,7 +151,6 @@ const routes = [
       //     },
       //   ],
       // },
-      
     ],
   },
   { type: "title", title: "configuration", key: "configuration" },
@@ -169,20 +168,14 @@ const routes = [
             name: "Tender Type",
             key: "Add tender",
             route: "/configuration/System-Configuration/Tender-Type",
-            component: <Addtender/>,
+            component: <Addtender />,
           },
           {
             name: "Tender Stage",
             key: "Tender Stage",
             route: "/configuration/System-Configuration/Tender-Stage",
-            component: <Tenderstage/>,
+            component: <Tenderstage />,
           },
-          // {
-          //   name: "Profile Overview",
-          //   key: "profile-overview",
-          //   route: "/pages/profile/profile-overview",
-          //   component: <ProfileOverview />,
-          // },
           // {
           //   name: "Teams",
           //   key: "teams",
@@ -205,19 +198,19 @@ const routes = [
             name: "Place Of Supply",
             key: "place-of-supply",
             route: "/configuration/System-Configuration/place-of-supply",
-            component: <Placeofsupply/>,
+            component: <Placeofsupply />,
           },
           {
             name: "Division",
             key: "Division",
             route: "/configuration/place-of-supply/Division",
-            component: <Division/>,
+            component: <Division />,
           },
           {
             name: "Department",
             key: "Department",
             route: "/configuration/place-of-supply/Department",
-            component: <Department/>,
+            component: <Department />,
           },
         ],
       },
@@ -438,19 +431,19 @@ const routes = [
   //         //   route: "/authentication/sign-in/basic",
   //         //   component: <SignInBasic />,
   //         // },
-          // {
-          //   name: "Cover",
-          //   key: "cover",
-          //   route: "/authentication/sign-in/cover",
-          //   component: <SignInCover />,
-          // },
-          {
-            name: "Illustration",
-            key: "illustration",
-            route: "/authentication/sign-in/illustration",
-            component: <Illustration/>,
-          },
-        // ],
+  // {
+  //   name: "Cover",
+  //   key: "cover",
+  //   route: "/authentication/sign-in/cover",
+  //   component: <SignInCover />,
+  // },
+  {
+    name: "Illustration",
+    key: "illustration",
+    route: "/authentication/sign-in/illustration",
+    component: <Illustration />,
+  },
+  // ],
   //     },
   //     {
   //       name: "Sign Up",
@@ -462,12 +455,12 @@ const routes = [
   //           route: "/authentication/sign-up/basic",
   //           component: <SignUpBasic />,
   //         },
-          // {
-          //   name: "Cover",
-          //   key: "cover",
-          //   route: "/authentication/sign-up/cover",
-          //   component: <SignUpCover />,
-          // },
+  // {
+  //   name: "Cover",
+  //   key: "cover",
+  //   route: "/authentication/sign-up/cover",
+  //   component: <SignUpCover />,
+  // },
   //         {
   //           name: "Illustration",
   //           key: "illustration",
@@ -746,6 +739,12 @@ const routes = [
   //   icon: <CreditCard size="12px" />,
   //   noCollapse: true,
   // },
+  {
+    name: "Profile Overview",
+    key: "profile-overview",
+    route: "/Home/profile",
+    component: <ProfileOverview />,
+  },
 ];
 
 export default routes;
