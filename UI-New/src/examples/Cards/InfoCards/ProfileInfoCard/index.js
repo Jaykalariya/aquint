@@ -55,9 +55,15 @@ function ProfileInfoCard({ title, info }) {
   Object.values(info).forEach((el) => values.push(el));
 
   // Render the card info items
+  const maxLabelWidth = Math.max(...labels.map((label) => label.length));
   const renderItems = labels.map((label, key) => (
     <SoftBox key={label} display="flex" py={1} pr={2}>
-      <SoftTypography variant="button" fontWeight="bold" textTransform="capitalize">
+      <SoftTypography
+        variant="button"
+        fontWeight="bold"
+        textTransform="capitalize"
+        width={`${maxLabelWidth * 8}px`}
+      >
         {label}: &nbsp;
       </SoftTypography>
       <SoftTypography variant="button" fontWeight="regular" color="text">
