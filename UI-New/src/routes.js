@@ -106,6 +106,7 @@ import Placeofsupply from "layouts/pages/client/place-of-supply";
 import Division from "layouts/pages/client/Division";
 import Department from "layouts/pages/client/Department";
 import Illustration from "layouts/authentication/sign-in/illustration";
+import Roles from "layouts/pages/roles";
 
 const routes = [
   {
@@ -157,7 +158,7 @@ const routes = [
   {
     type: "collapse",
     name: "System Configuration",
-    key: "tender configuration",
+    key: "System configuration",
     icon: <Office size="12px" />,
     collapse: [
       {
@@ -213,6 +214,12 @@ const routes = [
             component: <Department />,
           },
         ],
+      },
+      {
+        name: "Roles",
+        key: "Roles",
+        route: "/configuration/Roles",
+        component: <Roles/>,
       },
       // {
       //   name: "Users",

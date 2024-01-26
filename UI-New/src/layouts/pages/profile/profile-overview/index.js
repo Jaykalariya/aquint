@@ -50,6 +50,7 @@ import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import { useEffect, useState } from "react";
+import BirthdateFormatter from "examples/BirthdateFormatter";
 
 function Overview() {
   const [user, setUser] = useState([]);
@@ -77,7 +78,7 @@ function Overview() {
                 }`,
                 mobile: `${user.mobileNumber || "N/A"}`,
                 email: `${user.email || "N/A"}`,
-                BirthDate: `${user.birthDate || "N/A"}`,
+                BirthDate: `${BirthdateFormatter(user.birthDate) || "N/A"}`,
                 BloodGroup: `${user.bloodGroup || "N/A"}`,
                 Nationality: `${user.nationality || "N/A"}`,
                 Religion: `${user.religion || "N/A"}`,

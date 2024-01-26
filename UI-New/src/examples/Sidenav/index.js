@@ -256,11 +256,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         {/* </SoftBox> */}
         <SoftBox component={NavLink} to="/Dashboard" display="flex" alignItems="center">
           {miniSidenav ? (
-            <SoftBox
-              component="img"
-              src={miniSidebarImage}
-              alt="Mini Sidebar Logo"
-            />
+            <SoftBox component="img" src={miniSidebarImage} alt="Mini Sidebar Logo" />
           ) : (
             <>{brand && <SoftBox component="img" src={logo} alt="Logo" width="12rem" />}</>
           )}
