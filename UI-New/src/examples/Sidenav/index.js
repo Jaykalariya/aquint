@@ -176,6 +176,19 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               {collapse ? renderCollapse(collapse) : null}
             </SidenavCollapse>
           );
+        } else if (name === "Tender") {
+          returnValue = (
+            <SidenavCollapse
+              key={key}
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+              open={openCollapse === key}
+              onClick={() => navigate(`${collapse[0].route}`)}
+            >
+              {collapse ? renderCollapse(collapse) : null}
+            </SidenavCollapse>
+          );
         } else if (noCollapse && route) {
           returnValue = (
             <SidenavCollapse

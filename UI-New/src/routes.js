@@ -154,6 +154,21 @@ const routes = [
       // },
     ],
   },
+  {
+    type: "collapse",
+    name: "Tender",
+    key: "Tender",
+    icon: <SettingsIcon size="12px" />,
+    collapse: [
+      {
+        name: "Kanban",
+        key: "kanban",
+        route: "/Tender",
+        component: <Kanban />,
+      },
+    ],
+  },
+
   { type: "title", title: "configuration", key: "configuration" },
   {
     type: "collapse",
@@ -219,7 +234,7 @@ const routes = [
         name: "Roles",
         key: "Roles",
         route: "/configuration/Roles",
-        component: <Roles/>,
+        component: <Roles />,
       },
       // {
       //   name: "Users",
