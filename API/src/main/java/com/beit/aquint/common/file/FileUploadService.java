@@ -39,6 +39,9 @@ public class FileUploadService {
     @Value("${amazonProperties.endpointUrl}")
     private String END_POINT_URL;
 
+    @Value(("${file.path}"))
+    private String filePath;
+
     private AmazonS3 s3client;
 
     public String uploadFile(MultipartFile multipartFile, String path) throws IOException {
@@ -62,7 +65,7 @@ public class FileUploadService {
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
+        File convFile = new File(filePath + "/" + file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();
