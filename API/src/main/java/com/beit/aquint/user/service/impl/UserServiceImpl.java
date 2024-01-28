@@ -3,6 +3,7 @@ package com.beit.aquint.user.service.impl;
 import com.beit.aquint.auth.security.services.UserDetailsImpl;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.file.FileUploadService;
+import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.repository.UserDetailRepository;
 import com.beit.aquint.user.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * <h1> Add heading here </h1>
@@ -50,6 +52,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetail getUserDetail(Long userId) {
         return userDetailRepository.findById(userId).get();
+    }
+
+    @Override
+    public List<UserBasicInfoDTO> getAllUserDetails() {
+        return userDetailRepository.findActiveUser();
     }
 
     @Override

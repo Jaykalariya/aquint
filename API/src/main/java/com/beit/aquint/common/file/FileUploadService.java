@@ -42,12 +42,18 @@ public class FileUploadService {
     private AmazonS3 s3client;
 
     public String uploadFile(MultipartFile multipartFile, String path) throws IOException {
-        initializeAmazon();
-        File file = convertMultiPartToFile(multipartFile);
-        String fileName = path + "/" + generateFileName(multipartFile);
-        uploadFileTos3bucket(fileName, file);
-        String fileUrl = END_POINT_URL + "/" + BUCKET_NAME + "/" + fileName;
-        return fileUrl;
+        try {
+            initializeAmazon();
+            File file = convertMultiPartToFile(multipartFile);
+            String fileName = path + "/" + generateFileName(multipartFile);
+            uploadFileTos3bucket(fileName, file);
+            String fileUrl = END_POINT_URL + "/" + BUCKET_NAME + "/" + fileName;
+            return fileUrl;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException();
+        }
+
     }
 
     private void initializeAmazon() {

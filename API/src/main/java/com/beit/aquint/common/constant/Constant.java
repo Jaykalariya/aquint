@@ -40,6 +40,7 @@ public class Constant {
         public static final String PLACE_OF_SUPPLY_GET_PAGE = "/getPlaceOfSupplyByPage";
 
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
+        public static final String GET_ALL_USER_BASIC_DETAILS = "/getAllUserDetails";
 
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
