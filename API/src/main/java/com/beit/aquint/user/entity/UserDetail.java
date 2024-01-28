@@ -68,5 +68,6 @@ public class UserDetail extends EntityAuditInfo implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String address;
 
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
 }

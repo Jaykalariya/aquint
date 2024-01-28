@@ -21,4 +21,6 @@ public interface UserService {
     public String uploadProfilePhoto(MultipartFile multipartFile) throws IOException;
 
     public UserDetail getUserDetail(Long userId);
+
+    public UserDetail getCurrentUserDetails();
 }

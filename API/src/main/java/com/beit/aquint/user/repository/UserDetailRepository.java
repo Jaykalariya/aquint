@@ -16,5 +16,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
 
-
+    public UserDetail findByEmail(String email);
 }

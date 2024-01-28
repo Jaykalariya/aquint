@@ -48,6 +48,8 @@ public class Constant {
         public static final String TENDER_TYPE_ADD = "/addTenderType";
         public static final String TENDER_TYPE_GET_ALL = "/getAllTenderType";
         public static final String TENDER_TYPE_GET_PAGE = "/getTenderTypeByPage";
+
+        public static final String ADD_NEW_TENDER = "/addNewTender";
     }
 
     public class File {
@@ -59,5 +61,10 @@ public class Constant {
     public class Status {
         public static final String ACTIVE = "Active";
         public static final String IN_ACTIVE = "In Active";
+    }
+
+    public class TenderHistoryConstant {
+        public static final String ADD_NEW_TENDER = "Tender Created By ";
+        public static final String ADD_NEW_MEMBER = " Was added By ";
     }
 }
