@@ -22,6 +22,6 @@ public interface TenderDetailsRepository extends JpaRepository<TenderDetails, Lo
 
     @Query(value = "select * from tender_details td \n" +
             "where td.id in \n" +
-            "(select tau.tender_id from tender_assigned_users tau where tau.user_id = :userId )", nativeQuery = true)
+            "(select tau.tender_id from tender_assigned_users tau where tau.user_id = :userId ) order by td.created on desc", nativeQuery = true)
     public List<TenderDetails> findTenderByUser(@Param(value = "userId") Long userId);
 }
