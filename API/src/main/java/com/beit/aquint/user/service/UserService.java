@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service;
 
+import com.beit.aquint.auth.models.User;
 import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,4 +28,6 @@ public interface UserService {
     public List<UserBasicInfoDTO> getAllUserDetails();
 
     public UserDetail getCurrentUserDetails();
+
+    public User getCurrentUserPrivateInfo();
 }

@@ -1,5 +1,7 @@
 package com.beit.aquint.user.service.impl;
 
+import com.beit.aquint.auth.models.User;
+import com.beit.aquint.auth.repository.UserRepository;
 import com.beit.aquint.auth.security.services.UserDetailsImpl;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.file.FileUploadService;
@@ -7,7 +9,6 @@ import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.repository.UserDetailRepository;
 import com.beit.aquint.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     FileUploadService fileUploadService;
 
     @Autowired
-    HttpServletRequest httpServletRequest;
+    UserRepository userRepository;
 
     @Override
     public UserDetail addUserProfileBasicDetails(UserDetail userDetail) {
@@ -65,5 +66,13 @@ public class UserServiceImpl implements UserService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         Long userId = userDetails.getId();
         return getUserDetail(userId);
+    }
+
+    @Override
+    public User getCurrentUserPrivateInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        return userRepository.findById(userId).get();
     }
 }

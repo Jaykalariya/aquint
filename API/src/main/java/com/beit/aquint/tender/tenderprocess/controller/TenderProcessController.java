@@ -39,4 +39,15 @@ public class TenderProcessController {
             return ResponseEntity.badRequest().body(new MessageResponse("Tender Not Saved Properly"));
         }
     }
+
+    @GetMapping(value = Constant.Mappping.GET_ALL_TENDER_BASED_ON_USER)
+    public ResponseEntity<?> getUserBasedTenders() {
+        try {
+            log.debug("Getting all Tender Based On User");
+            return ResponseEntity.ok().body(tenderStageService.getUserBasedTenderList());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Error in Getting all Tender Based On User"));
+        }
+    }
 }

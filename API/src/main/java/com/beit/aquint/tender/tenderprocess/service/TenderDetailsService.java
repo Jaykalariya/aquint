@@ -3,6 +3,8 @@ package com.beit.aquint.tender.tenderprocess.service;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
 
+import java.util.List;
+
 /**
  * <h1> Add heading here </h1>
  * <p>
@@ -15,4 +17,6 @@ import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
 public interface TenderDetailsService {
 
     public TenderDetails addTenderDetails(TenderAddRequestDto tenderAddRequestDto);
+
+    public List<TenderDetails> getUserBasedTenderList();
 }

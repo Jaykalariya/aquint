@@ -51,6 +51,8 @@ public class Constant {
         public static final String TENDER_TYPE_GET_PAGE = "/getTenderTypeByPage";
 
         public static final String ADD_NEW_TENDER = "/addNewTender";
+        public static final String GET_ALL_TENDER_BASED_ON_USER = "/getTenderList";
+
     }
 
     public class File {

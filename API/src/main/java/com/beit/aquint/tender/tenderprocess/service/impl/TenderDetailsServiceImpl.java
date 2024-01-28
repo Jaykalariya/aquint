@@ -78,4 +78,10 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
         return details;
     }
+
+    @Override
+    public List<TenderDetails> getUserBasedTenderList() {
+        Long userId = userService.getCurrentUserPrivateInfo().getId();
+        return tenderDetailsRepository.findTenderByUser(userId);
+    }
 }
