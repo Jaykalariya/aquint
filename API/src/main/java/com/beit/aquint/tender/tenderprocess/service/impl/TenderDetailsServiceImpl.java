@@ -12,12 +12,17 @@ import com.beit.aquint.tender.tenderprocess.repository.TenderHistoryRepository;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <h1> Add heading here </h1>
@@ -80,8 +85,25 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
     }
 
     @Override
-    public List<TenderDetails> getUserBasedTenderList() {
+    public List<Map<String, Object>> getUserBasedTenderList() {
         Long userId = userService.getCurrentUserPrivateInfo().getId();
-        return tenderDetailsRepository.findTenderByUser(userId);
+        List<Map<String, Object>> resultList = tenderDetailsRepository.findTenderByUser(userId);
+        List<Map<String, Object>> responseList = new ArrayList<>();
+
+        for (Map<String, Object> result : resultList) {
+            String assignedUserString = (String) result.get("assignedUser");
+            Map<String, Object> map =  new HashMap<>();
+            map.putAll(result);
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                List<Map<String, Object>> assignedUserList = objectMapper.readValue(assignedUserString, new TypeReference<List<Map<String, Object>>>() {
+                });
+                map.put("assignedUser", assignedUserList);
+                responseList.add(map);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        return responseList;
     }
 }

@@ -4,6 +4,7 @@ import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <h1> Add heading here </h1>
@@ -18,5 +19,5 @@ public interface TenderDetailsService {
 
     public TenderDetails addTenderDetails(TenderAddRequestDto tenderAddRequestDto);
 
-    public List<TenderDetails> getUserBasedTenderList();
+    public List<Map<String, Object>> getUserBasedTenderList();
 }
