@@ -24,3 +24,5 @@ hs_err_pid*
 replay_pid*
 API/.idea
 API/target
+/UI-New/node_modules
+node_modules
