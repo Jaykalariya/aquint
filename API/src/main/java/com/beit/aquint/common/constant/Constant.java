@@ -40,6 +40,7 @@ public class Constant {
         public static final String PLACE_OF_SUPPLY_GET_PAGE = "/getPlaceOfSupplyByPage";
 
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
+        public static final String GET_ALL_USER_BASIC_DETAILS = "/getAllUserDetails";
 
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
@@ -48,6 +49,10 @@ public class Constant {
         public static final String TENDER_TYPE_ADD = "/addTenderType";
         public static final String TENDER_TYPE_GET_ALL = "/getAllTenderType";
         public static final String TENDER_TYPE_GET_PAGE = "/getTenderTypeByPage";
+
+        public static final String ADD_NEW_TENDER = "/addNewTender";
+        public static final String GET_ALL_TENDER_BASED_ON_USER = "/getTenderList";
+
     }
 
     public class File {
@@ -59,5 +64,10 @@ public class Constant {
     public class Status {
         public static final String ACTIVE = "Active";
         public static final String IN_ACTIVE = "In Active";
+    }
+
+    public class TenderHistoryConstant {
+        public static final String ADD_NEW_TENDER = "Tender Created By ";
+        public static final String ADD_NEW_MEMBER = " Was added By ";
     }
 }

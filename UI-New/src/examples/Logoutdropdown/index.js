@@ -18,12 +18,12 @@ const LogoutDropdown = ({ user, setUser }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
-    navigate("/authentication/sign-in/cover");
+    navigate("/authentication/sign-in/illustration");
   };
 
   const handleLogout = () => {
     localStorage.removeItem("userProfile");
-    localStorage.removeItem("Token");
+    localStorage.removeItem("token");
     setUser(null);
     handleClose();
   };
