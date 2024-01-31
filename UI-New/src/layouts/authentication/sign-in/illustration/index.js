@@ -41,6 +41,12 @@ function Illustration() {
   const [password, setpassword] = useState("");
   const navigate = useNavigate();
   const { addToast } = useToasts();
+  useEffect(()=>{
+    let login = localStorage.getItem('token',true)
+    if(login){
+      navigate('/dashboard')
+    }
+  })
 
   const handleLogin = async () => {
     try {

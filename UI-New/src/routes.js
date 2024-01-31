@@ -157,6 +157,20 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Users",
+    key: "users",
+    icon: <CustomerSupport size="12px" />,
+    collapse: [
+      {
+        name: "New User",
+        key: "new-user",
+        route: "/pages/users/new-user",
+        component: <NewUser />,
+      },
+    ],
+  },
+  {
+    type: "collapse",
     name: "Tender",
     key: "Tender",
     icon: <SettingsIcon size="12px" />,
