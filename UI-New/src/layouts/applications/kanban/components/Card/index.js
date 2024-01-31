@@ -35,7 +35,7 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
     return (
       <SoftAvatar
         key={imageAlt}
-        src={member}
+        src={member.profileURL}
         alt={imageAlt}
         size="xs"
         sx={{
@@ -54,10 +54,10 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
   });
 
   return (
-    <>
+    <div className="h-32">
       {image && <SoftBox component="img" src={image} width="100%" borderRadius="sm" mb={1} />}
       <SoftBadge size="xs" color={badge.color} badgeContent={badge.label} container />
-      <SoftBox mt={1} mb={2}>
+      <SoftBox mt={1} mb={2} height="60px">
         <SoftTypography variant="body2" color="text">
           {content}
         </SoftTypography>
@@ -82,7 +82,7 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
         </SoftBox>
         <SoftBox display="flex">{renderMembers}</SoftBox>
       </SoftBox>
-    </>
+    </div>
   );
 }
 
