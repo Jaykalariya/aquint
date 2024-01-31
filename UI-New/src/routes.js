@@ -107,6 +107,7 @@ import Division from "layouts/pages/client/Division";
 import Department from "layouts/pages/client/Department";
 import Illustration from "layouts/authentication/sign-in/illustration";
 import Roles from "layouts/pages/roles";
+import Protected from "layouts/authentication/sign-in/Protected";
 
 const routes = [
   {
@@ -115,7 +116,7 @@ const routes = [
     key: "dashboards",
     icon: <Shop size="12px" />,
     collapse: [
-      { name: "Dashboard", key: "Dashboard", route: "/dashboard", component: <CRM /> },
+      { name: "Dashboard", key: "Dashboard", route: "/dashboard", component: <Protected Component={CRM} /> },
       // {
       //   name: "Default",
       //   key: "default",
@@ -152,6 +153,20 @@ const routes = [
       //     },
       //   ],
       // },
+    ],
+  },
+  {
+    type: "collapse",
+    name: "Users",
+    key: "users",
+    icon: <CustomerSupport size="12px" />,
+    collapse: [
+      {
+        name: "New User",
+        key: "new-user",
+        route: "/pages/users/new-user",
+        component: <NewUser />,
+      },
     ],
   },
   {

@@ -1,46 +1,24 @@
-/**
-=========================================================
-* Soft UI Dashboard PRO React - v4.0.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-pro-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useEffect, useState } from "react";
-
 // react-router-dom components
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
-
 // prop-types is a library for typechecking of props.
 import PropTypes, { element } from "prop-types";
-
 // @mui material components
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Icon from "@mui/material/Icon";
-
 // Soft UI Dashboard PRO React components
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-
 // Soft UI Dashboard PRO React example components
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 import SidenavList from "examples/Sidenav/SidenavList";
 import SidenavItem from "examples/Sidenav/SidenavItem";
 import SidenavCard from "examples/Sidenav/SidenavCard";
-
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
-
 // Soft UI Dashboard PRO React context
 import { useSoftUIController, setMiniSidenav } from "context";
 import logo from "../../Image/Aquint-logo-PNG-1-e1661857588498.png";
@@ -55,27 +33,21 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const collapseName = pathname.split("/").slice(1)[0];
   const itemName = pathname.split("/").slice(1)[1];
   const navigate = useNavigate();
-
   const closeSidenav = () => setMiniSidenav(dispatch, true);
-
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
     function handleMiniSidenav() {
       setMiniSidenav(dispatch, window.innerWidth < 1200);
     }
-
-    /** 
+    /**
      The event listener that's calling the handleMiniSidenav function when resizing the window.
     */
     window.addEventListener("resize", handleMiniSidenav);
-
     // Call the handleMiniSidenav function to set the state with the initial value.
     handleMiniSidenav();
-
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleMiniSidenav);
   }, [dispatch, location]);
-
   // Render all the nested collapse items from the routes.js
   const renderNestedCollapse = (collapse) => {
     const template = collapse.map(({ name, route, key, href }) =>
@@ -95,15 +67,12 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         </NavLink>
       )
     );
-
     return template;
   };
-
   // Render the all the collpases from the routes.js
   const renderCollapse = (collapses) =>
     collapses.map(({ name, collapse, route, href, key }) => {
       let returnValue;
-
       if (collapse) {
         returnValue = (
           <SidenavItem
@@ -139,12 +108,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       }
       return <SidenavList key={key}>{returnValue}</SidenavList>;
     });
-
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
   const renderRoutes = routes.map(
     ({ type, name, icon, title, collapse, noCollapse, key, href, route }) => {
       let returnValue;
-
       if (type === "collapse") {
         if (href) {
           returnValue = (
@@ -189,7 +156,22 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
               {collapse ? renderCollapse(collapse) : null}
             </SidenavCollapse>
           );
-        } else if (noCollapse && route) {
+        }
+        else if (name === "Users") {
+          returnValue = (
+            <SidenavCollapse
+              key={key}
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+              open={openCollapse === key}
+              onClick={() => navigate(`${collapse[0].route}`)}
+            >
+              {collapse ? renderCollapse(collapse) : null}
+            </SidenavCollapse>
+          );
+        }
+         else if (noCollapse && route) {
           returnValue = (
             <SidenavCollapse
               name={name}
@@ -235,11 +217,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       } else if (type === "divider") {
         returnValue = <Divider key={key} />;
       }
-
       return returnValue;
     }
   );
-
   return (
     <SidenavRoot {...rest} variant="permanent" ownerState={{ transparentSidenav, miniSidenav }}>
       <SoftBox pt={3} pb={1} px={4} textAlign="center">
@@ -277,20 +257,17 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       </SoftBox>
       <Divider />
       <List>{renderRoutes}</List>
-
       {/* <SoftBox pt={2} my={2} mx={2}>
         <SidenavCard />
       </SoftBox> */}
     </SidenavRoot>
   );
 }
-
 // Setting default values for the props of Sidenav
 Sidenav.defaultProps = {
   color: "info",
   brand: "",
 };
-
 // Typechecking props for the Sidenav
 Sidenav.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
@@ -298,5 +275,4 @@ Sidenav.propTypes = {
   brandName: PropTypes.string.isRequired,
   routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
-
 export default Sidenav;
