@@ -39,14 +39,14 @@ public class UserDetail extends EntityAuditInfo implements Serializable {
 
     @NotBlank
     @Size(max = 50)
-    private String firstName;
+    private String firstname;
 
     @Size(max = 50)
-    private String middleName;
+    private String middlename;
 
     @NotBlank
     @Size(max = 50)
-    private String lastName;
+    private String lastname;
 
     @NotBlank
     @Size(max = 50)
@@ -78,11 +78,11 @@ public class UserDetail extends EntityAuditInfo implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
-    public UserDetail(Long userId,String email, String firstName, String middleName, String lastName) {
+    public UserDetail(Long userId,String email, String firstname, String middlename, String lastname) {
         this.userId = userId;
         this.email = email;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
+        this.firstname = firstname;
+        this.middlename = middlename;
+        this.lastname = lastname;
     }
 }

@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 /**
  * <h1> Add heading here </h1>
@@ -109,9 +109,9 @@ public class UserServiceImpl implements UserService {
                 .birthDate(userDetail.getBirthDate())
                 .bloodGroup(userDetail.getBloodGroup())
                 .anniversaryDate(userDetail.getAnniversaryDate())
-                .firstName(userDetail.getFirstName())
-                .middleName(userDetail.getMiddleName())
-                .lastName(userDetail.getLastName())
+                .firstname(userDetail.getFirstname())
+                .middlename(userDetail.getMiddlename())
+                .lastname(userDetail.getLastname())
                 .gender(userDetail.getGender())
                 .maritalStatus(userDetail.getMaritalStatus())
                 .mobileNumber(userDetail.getMobileNumber())
