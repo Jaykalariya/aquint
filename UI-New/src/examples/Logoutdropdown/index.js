@@ -8,12 +8,9 @@ import SoftTypography from "components/SoftTypography";
 import { navbarIconButton } from "examples/Navbars/DashboardNavbar/styles";
 import { useNavigate } from "react-router-dom";
 
-
-
-const LogoutDropdown = ({ user ,setUser}) => {
+const LogoutDropdown = ({ user, setUser }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
- 
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,7 +25,10 @@ const LogoutDropdown = ({ user ,setUser}) => {
     localStorage.removeItem("userProfile");
     localStorage.removeItem("Token");
     setUser(null);
-    handleClose(); 
+    handleClose();
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -49,7 +49,8 @@ const LogoutDropdown = ({ user ,setUser}) => {
           </SoftTypography>
         </IconButton>
       </Button>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+        <MenuItem onClick={() => navigate("/Home/profile")}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

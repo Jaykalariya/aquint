@@ -39,15 +39,24 @@ public class FileUploadService {
     @Value("${amazonProperties.endpointUrl}")
     private String END_POINT_URL;
 
+    @Value(("${file.path}"))
+    private String filePath;
+
     private AmazonS3 s3client;
 
     public String uploadFile(MultipartFile multipartFile, String path) throws IOException {
-        initializeAmazon();
-        File file = convertMultiPartToFile(multipartFile);
-        String fileName = path + "/" + generateFileName(multipartFile);
-        uploadFileTos3bucket(fileName, file);
-        String fileUrl = END_POINT_URL + "/" + BUCKET_NAME + "/" + fileName;
-        return fileUrl;
+        try {
+            initializeAmazon();
+            File file = convertMultiPartToFile(multipartFile);
+            String fileName = path + "/" + generateFileName(multipartFile);
+            uploadFileTos3bucket(fileName, file);
+            String fileUrl = END_POINT_URL + "/" + BUCKET_NAME + "/" + fileName;
+            return fileUrl;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException();
+        }
+
     }
 
     private void initializeAmazon() {
@@ -56,7 +65,7 @@ public class FileUploadService {
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
+        File convFile = new File(filePath + "/" + file.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();

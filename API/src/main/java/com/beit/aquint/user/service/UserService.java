@@ -7,6 +7,8 @@ import com.beit.aquint.user.dto.reponse.SignupResponse;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.user.dto.UserFullDetailsDto;
+import com.beit.aquint.auth.models.User;
+import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,4 +45,9 @@ public interface UserService {
     public List<UserFullDetail> getAllUserFullDetail();
 
     public Page<UserFullDetail> getUserPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;;
+    public List<UserBasicInfoDTO> getAllUserDetails();
+
+    public UserDetail getCurrentUserDetails();
+
+    public User getCurrentUserPrivateInfo();
 }

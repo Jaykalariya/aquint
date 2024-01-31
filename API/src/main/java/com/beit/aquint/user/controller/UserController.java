@@ -125,6 +125,18 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.GET_ALL_USER_BASIC_DETAILS)
+    public ResponseEntity<?> getAllUserDetails() {
+        try {
+            return ResponseEntity.ok().body(userService.getAllUserDetails());
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "Data Not Get Properly",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
     @PostMapping("/upload/profilePhoto")
     public ResponseEntity<?> uploadProfilePhoto(@RequestPart("file") MultipartFile file) {
         try {

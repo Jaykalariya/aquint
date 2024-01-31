@@ -14,10 +14,10 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
 import brand from "assets/images/logo-ct.png";
-import { SpinnerCircular } from "spinners-react";
 import axiosInstance from "config/https";
-import { ToastContainer } from "react-toastify";
 import routes from "routes";
+import { RingLoader } from "react-spinners";
+import LoadingOverlay from "react-loading-overlay";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -129,23 +129,9 @@ export default function App() {
     </SoftBox>
   );
 
-  const spinner = loading && (
-    <div className="flex justify-center content-center fixed inset-0">
-      <SpinnerCircular enabled={true} />
-    </div>
-  );
-
   const content = (
     <>
-      {loading && (
-        <div className="flex justify-center content-center fixed inset-0">
-          <SpinnerCircular enabled={true} />
-        </div>
-      )}
-
-      {/* {!localStorage.getItem("token") ? (
-        <Navigate to="/authentication/sign-in/cover" />
-      ) : ( */}
+      <LoadingOverlay active={loading} spinner={<RingLoader color="#36d7b7" />}>
         <>
           {layout === "dashboard" && (
             <>
@@ -162,13 +148,12 @@ export default function App() {
             </>
           )}
           {layout === "vr" && <Configurator />}
-          <ToastContainer position="top-center" />
           <Routes>
             {getRoutes(routes)}
-            <Route path="*" element={<Navigate to="/authentication/sign-in/cover" />} />
+            <Route path="*" element={<Navigate to="/authentication/sign-in/illustration" />} />
           </Routes>
         </>
-      {/* )} */}
+      </LoadingOverlay>
     </>
   );
 
@@ -176,14 +161,12 @@ export default function App() {
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
-        {spinner}
         {content}
       </ThemeProvider>
     </CacheProvider>
   ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {spinner}
       {content}
     </ThemeProvider>
   );

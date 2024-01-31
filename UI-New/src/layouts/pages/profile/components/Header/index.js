@@ -41,10 +41,20 @@ import breakpoints from "assets/theme/base/breakpoints";
 // Images
 import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
+import { Box } from "@mui/material";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("userProfile");
+    if (storedData) {
+      setUser(JSON.parse(storedData));
+      console.log(JSON.parse(storedData));
+    }
+  }, []);
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -102,18 +112,29 @@ function Header() {
       >
         <Grid container spacing={3} alignItems="center">
           <Grid item>
-            <SoftAvatar
-              src={burceMars}
-              alt="profile-image"
-              variant="rounded"
-              size="xl"
-              shadow="sm"
-            />
+            <div>
+              {user.imageUrl ? (
+                <SoftAvatar
+                  src={user.imageUrl}
+                  alt="profile-image"
+                  variant="rounded"
+                  size="xl"
+                  shadow="sm"
+                />
+              ) : (
+                <div className="flex items-center justify-center bg-gray-400 text-white text-xl shadow-md h-14 w-14 rounded-full">
+                  {user &&
+                    user.firstname &&
+                    user.lastname &&
+                    `${user.firstname.charAt(0)}${user.lastname.charAt(0)}`}
+                </div>
+              )}
+            </div>
           </Grid>
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+                {`${user.firstname} ${user.lastname}`}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
                 CEO / Co-Founder
@@ -122,16 +143,16 @@ function Header() {
           </Grid>
           <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
             <AppBar position="static">
-              <Tabs
-                orientation={tabsOrientation}
-                value={tabValue}
-                onChange={handleSetTabValue}
-                sx={{ background: "transparent" }}
-              >
-                <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
-                <Tab label="Settings" icon={<Settings />} />
-              </Tabs>
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Tabs
+                  orientation={tabsOrientation}
+                  value={tabValue}
+                  onChange={handleSetTabValue}
+                  sx={{ background: "transparent", width: "50%" }}
+                >
+                  <Tab label="Update" icon={<Settings />} />
+                </Tabs>
+              </Box>
             </AppBar>
           </Grid>
         </Grid>

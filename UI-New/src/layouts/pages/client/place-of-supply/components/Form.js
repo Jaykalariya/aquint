@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import Service from "../Service";
-import { toast } from "react-toastify";
 import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
+import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
 const Forms = ({ setShow, fetchData }) => {
@@ -16,6 +16,7 @@ const Forms = ({ setShow, fetchData }) => {
   const [stateNameError, setstateNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
   const [stateCodeError, setstateCodeError] = useState(false);
+  const { addToast } = useToasts();
 
   const handleStateNameChange = (event) => {
     setstateName(event.target.value);
@@ -23,7 +24,7 @@ const Forms = ({ setShow, fetchData }) => {
   };
 
   const handleStatusChange = (selectedOption) => {
-    setStatus(selectedOption.value);
+    setStatus(selectedOption);
     setStatusError(false);
   };
   const handlestateCodeChange = (event) => {
@@ -32,12 +33,7 @@ const Forms = ({ setShow, fetchData }) => {
   };
 
   const handleCancel = () => {
-    setstateName(null);
-    setStatus(null);
-    setstateCode(null);
-    setstateNameError(false);
-    setstateCodeError(false);
-    setStatusError(false);
+    setShow(false);
   };
 
   const handleSave = async (event) => {
@@ -59,17 +55,19 @@ const Forms = ({ setShow, fetchData }) => {
     }
 
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
-    const parsedStatus = status === "true";
+    const parsedStatus = status.value === "true";
     const result = await Service(stateName, stateCode, parsedStatus);
     if (result === true) {
-      toast.success("Place Of Supply add successful!");
+      addToast("Place Of Supply add successful!", {
+        appearance: "success",
+      });
       setShow(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 

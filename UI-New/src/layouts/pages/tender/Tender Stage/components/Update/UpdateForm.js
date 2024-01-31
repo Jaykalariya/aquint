@@ -6,7 +6,6 @@ import SoftInput from "components/SoftInput";
 import SoftSelect from "components/SoftSelect";
 import { useEffect, useState } from "react";
 import Service from "./Service";
-import { toast } from "react-toastify";
 
 function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
   const [tenderStageName, settenderStageName] = useState(null);
@@ -14,7 +13,6 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
   const [tenderStageNameError, settenderStageNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
 
-  console.log(selectedItemData,itemId);
 
   useEffect(() => {
     if (selectedItemData && selectedItemData["Tender StageName"]) {
@@ -56,17 +54,19 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
     }
 
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
     const result = await Service(tenderStageName, parsedStatus, itemId);
     if (result === true) {
-      toast.success("Update Tender Stage successful!");
+      addToast("Update Tender Stage successful!", {
+        appearance: "success",
+      });
       sethide(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 

@@ -46,6 +46,7 @@ public class Constant {
         public static final String UPDATE_USER = "/updateUser";
         public static final String ALL_USER_DETAILS = "/allUserDetails";
         public static final String USER_GET_ALL_WITH_PAGINATION = "/page";
+        public static final String GET_ALL_USER_BASIC_DETAILS = "/getAllUserDetails";
 
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
@@ -54,6 +55,10 @@ public class Constant {
         public static final String TENDER_TYPE_ADD = "/addTenderType";
         public static final String TENDER_TYPE_GET_ALL = "/getAllTenderType";
         public static final String TENDER_TYPE_GET_PAGE = "/getTenderTypeByPage";
+
+        public static final String ADD_NEW_TENDER = "/addNewTender";
+        public static final String GET_ALL_TENDER_BASED_ON_USER = "/getTenderList";
+
     }
 
     public class File {
@@ -106,5 +111,8 @@ public class Constant {
             GROUP BY u.id, u.email, u.username, ud.first_name, ud.middle_name, ud.last_name
             """;
 
+    public class TenderHistoryConstant {
+        public static final String ADD_NEW_TENDER = "Tender Created By ";
+        public static final String ADD_NEW_MEMBER = " Was added By ";
     }
 }

@@ -75,6 +75,7 @@ public class UserDetail extends EntityAuditInfo implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String address;
 
+    @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
     public UserDetail(Long userId,String email, String firstName, String middleName, String lastName) {

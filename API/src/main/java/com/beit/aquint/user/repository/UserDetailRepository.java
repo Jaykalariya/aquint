@@ -3,6 +3,7 @@ package com.beit.aquint.user.repository;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.user.common.UserFullDetail;
 import com.beit.aquint.user.dto.UserFullDetailsDto;
+import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,4 +41,12 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
     @Query(value = Constant.Query.USER_PAGING_WITHOUT_SEARCH,
             nativeQuery = true)
     Page<UserFullDetail> findUserPageWithoutSearch(Pageable pageable);
+    public UserDetail findByEmail(String email);
+
+    @Query(value = "select u.id as id, u.email as \"email\" , u.username as \"username\",\n" +
+            "ud.firstname as \"firstname\", ud.lastname as \"lastname\",ud.image_url as \"profilePhoto\",\n" +
+            "ud.firstname || coalesce(' ' || ud.middlename, '') || ' ' || ud.lastname as \"fullName\" \n" +
+            "from users u \n" +
+            "left join user_detail ud on u.id = ud.user_id;", nativeQuery = true)
+    public List<UserBasicInfoDTO> findActiveUser();
 }

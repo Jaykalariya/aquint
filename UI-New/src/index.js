@@ -17,17 +17,20 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "App";
-import './index.css';
+import "./index.css";
 
 // Soft UI Context Provider
 import { SoftUIControllerProvider } from "context";
+import { ToastProvider } from "react-toast-notifications";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
     <SoftUIControllerProvider>
-      <App />
+      <ToastProvider autoDismissTimeout={3000} autoDismiss={true}>
+        <App />
+      </ToastProvider>
     </SoftUIControllerProvider>
   </BrowserRouter>
 );

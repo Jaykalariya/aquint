@@ -1,12 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import Service from "../Service";
-import { toast } from "react-toastify";
 import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
+import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
 const Forms = ({ setShow, fetchData }) => {
@@ -14,6 +14,7 @@ const Forms = ({ setShow, fetchData }) => {
   const [status, setStatus] = useState(null);
   const [tenderTypeError, setTenderTypeError] = useState(false);
   const [statusError, setStatusError] = useState(false);
+  const { addToast } = useToasts();
 
   const handleTenderTypeChange = (event) => {
     setTendername(event.target.value);
@@ -26,10 +27,7 @@ const Forms = ({ setShow, fetchData }) => {
   };
 
   const handleCancel = () => {
-    setTendername(null);
-    setStatus(null);
-    setTenderTypeError(false);
-    setStatusError(false);
+    setShow(false);
   };
 
   const handleSave = async (event) => {
@@ -47,17 +45,19 @@ const Forms = ({ setShow, fetchData }) => {
     }
 
     if (hasError) {
-      return toast.warning("Please fill in all the details");
+      return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
     const result = await Service(tenderTypeName, parsedStatus);
     if (result === true) {
-      toast.success("Tender add successful!");
+      addToast("Tender add successful!", {
+        appearance: "success",
+      });
       setShow(false);
       fetchData();
     } else {
-      toast.error("failed. Please try again.");
+      addToast("failed. Please try again.", { appearance: "error" });
     }
   };
 
@@ -70,7 +70,9 @@ const Forms = ({ setShow, fetchData }) => {
             onChange={handleTenderTypeChange}
             style={{ borderColor: tenderTypeError ? "red" : "" }}
           />
-          {tenderTypeError && <span style={{ color: "red" ,fontSize: "12px" }}>Please enter a Tender Type</span>}
+          {tenderTypeError && (
+            <span style={{ color: "red", fontSize: "12px" }}>Please enter a Tender Type</span>
+          )}
           <div>
             <label className="text-xs font-bold p-1">Status</label>
             <SoftSelect
@@ -82,7 +84,9 @@ const Forms = ({ setShow, fetchData }) => {
                 { value: "false", label: "Inactive" },
               ]}
             />
-            {statusError && <span style={{ color: "red" , fontSize: "12px" }}>Please select a Status</span>}
+            {statusError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please select a Status</span>
+            )}
           </div>
           <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">
             <SoftButton onClick={handleCancel} variant="gradient" color="light">
