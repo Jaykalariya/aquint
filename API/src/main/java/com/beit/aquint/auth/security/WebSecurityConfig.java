@@ -79,6 +79,8 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/_v1/auth/**").permitAll()
+                    .requestMatchers("/existedCredential/**").permitAll()
+                    .requestMatchers("/_v1/role/**").permitAll()
                 .requestMatchers("/_v1/user/**").authenticated()
                 .requestMatchers("/_v1/productType/**").authenticated()
                 .requestMatchers("/_v1/department/**").authenticated()

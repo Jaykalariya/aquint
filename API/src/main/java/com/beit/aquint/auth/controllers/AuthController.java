@@ -6,10 +6,15 @@ import com.beit.aquint.auth.payload.request.LoginRequest;
 import com.beit.aquint.auth.payload.request.SignupRequest;
 import com.beit.aquint.auth.payload.response.JwtResponse;
 import com.beit.aquint.auth.payload.response.MessageResponse;
+import com.beit.aquint.user.dto.reponse.SignupResponse;
 import com.beit.aquint.auth.repository.RoleRepository;
 import com.beit.aquint.auth.repository.UserRepository;
+import com.beit.aquint.auth.security.PasswordGenerator;
 import com.beit.aquint.auth.security.jwt.JwtUtils;
 import com.beit.aquint.auth.security.services.UserDetailsImpl;
+import com.beit.aquint.user.entity.UserDetail;
+import com.beit.aquint.user.repository.UserDetailRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,6 +41,8 @@ public class AuthController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserDetailRepository userDetailsRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -44,6 +52,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    PasswordGenerator passwordGenerator;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -62,6 +73,7 @@ public class AuthController {
                 .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
     }
 
+    @Transactional
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -72,22 +84,33 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
+        // Generate password
+        String generatedPassword = "12345678";
+
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(generatedPassword));
 
         Set<Integer> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-
 
         strRoles.forEach(role -> {
             Role adminRole = roleRepository.findById(role.longValue()).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(adminRole);
         });
 
+        //save
         user.setRoles(roles);
         userRepository.save(user);
+        Optional<User> userDetails = userRepository.findByUsername(user.getUsername());
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        UserDetail userDetail = new UserDetail(userDetails.get().getId() ,signUpRequest.getEmail(), signUpRequest.getFirstName(), signUpRequest.getMiddleName(), signUpRequest.getLastName());
+        userDetailsRepository.save(userDetail);
+
+        //signupResponse
+
+        return ResponseEntity
+                .ok(new SignupResponse("User registered successfully!", userDetails.get().getUsername(), userDetails.get().getEmail(), generatedPassword));
     }
 }
+
+

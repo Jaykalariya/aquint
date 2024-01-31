@@ -4,8 +4,9 @@ import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -19,34 +20,40 @@ import java.sql.Date;
  * @author - jaykalariya
  * @since - 09/10/23  9:36 pm
  */
+
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "user_detail")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "user_detail")
 public class UserDetail extends EntityAuditInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     private Long userId;
 
-    @Size(max = 15)
-    private String firstname;
+    @NotBlank
+    @Size(max = 50)
+    private String firstName;
 
-    @Size(max = 15)
-    private String middlename;
+    @Size(max = 50)
+    private String middleName;
 
-    @Size(max = 15)
-    private String lastname;
+    @NotBlank
+    @Size(max = 50)
+    private String lastName;
 
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
 
-    @NotBlank
     @Size(max = 10)
-    @Email
     private String mobileNumber;
 
     @Temporal(TemporalType.DATE)
@@ -69,4 +76,12 @@ public class UserDetail extends EntityAuditInfo implements Serializable {
     private String address;
 
     private String imageUrl;
+
+    public UserDetail(Long userId,String email, String firstName, String middleName, String lastName) {
+        this.userId = userId;
+        this.email = email;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+    }
 }

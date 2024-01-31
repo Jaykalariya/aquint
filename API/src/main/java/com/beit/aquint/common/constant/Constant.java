@@ -39,7 +39,13 @@ public class Constant {
         public static final String PLACE_OF_SUPPLY_GET_ALL = "/getAllPlaceOfSupply";
         public static final String PLACE_OF_SUPPLY_GET_PAGE = "/getPlaceOfSupplyByPage";
 
+        public static  final  String EMAIL ="/email";
+        public static  final  String USERNAME ="/username";
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
+        public static final String ADD_USER = "/addUser";
+        public static final String UPDATE_USER = "/updateUser";
+        public static final String ALL_USER_DETAILS = "/allUserDetails";
+        public static final String USER_GET_ALL_WITH_PAGINATION = "/page";
 
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
@@ -59,5 +65,46 @@ public class Constant {
     public class Status {
         public static final String ACTIVE = "Active";
         public static final String IN_ACTIVE = "In Active";
+    }
+
+    public class Query {
+        public static final String ALL_USER_FULL_DETAIL = """
+            SELECT u.id, u.email, u.username, ud.first_name as firstName, ud.middle_name as middleName, ud.last_name as lastName, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+            FROM users u
+            INNER JOIN user_detail ud ON u.id = ud.user_id
+            LEFT JOIN user_roles ur ON ur.user_id = u.id
+            LEFT JOIN roles r ON r.id = ur.role_id
+            GROUP BY u.id, u.email, u.username, ud.first_name, ud.middle_name, ud.last_name
+            """;
+
+        public static final String USER_PAGING_WITH_SEARCH = """
+            SELECT u.id, u.email, u.username, ud.first_name as firstName, ud.middle_name as middleName, ud.last_name as lastName, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+            FROM users u
+            INNER JOIN user_detail ud ON u.id = ud.user_id
+            LEFT JOIN user_roles ur ON ur.user_id = u.id
+            LEFT JOIN roles r ON r.id = ur.role_id
+            WHERE Lower(u.username) LIKE Lower(CONCAT('%', :search, '%'))
+            GROUP BY u.id, u.email, u.username, ud.first_name, ud.middle_name, ud.last_name
+            """;
+
+        public static final String USER_PAGING_WITHOUT_SEARCH = """
+            SELECT u.id, u.email, u.username, ud.first_name as firstName, ud.middle_name as middleName, ud.last_name as lastName, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+            FROM users u
+            INNER JOIN user_detail ud ON u.id = ud.user_id
+            LEFT JOIN user_roles ur ON ur.user_id = u.id
+            LEFT JOIN roles r ON r.id = ur.role_id
+            GROUP BY u.id, u.email, u.username, ud.first_name, ud.middle_name, ud.last_name
+            """;
+
+        public static final String USER_FULL_DETAIL = """
+            SELECT u.id, u.email, u.username, ud.first_name as firstName, ud.middle_name as middleName, ud.last_name as lastName, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+            FROM users u
+            INNER JOIN user_detail ud ON u.id = ud.user_id
+            LEFT JOIN user_roles ur ON ur.user_id = u.id
+            LEFT JOIN roles r ON r.id = ur.role_id
+            WHERE u.id = :userId
+            GROUP BY u.id, u.email, u.username, ud.first_name, ud.middle_name, ud.last_name
+            """;
+
     }
 }
