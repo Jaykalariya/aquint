@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         Optional<User> userDetails = userRepository.findByUsername(user.getUsername());
 
-        UserDetail userDetail = new UserDetail(userDetails.get().getId() ,signupRequest.getEmail(), signupRequest.getFirstName(), signupRequest.getMiddleName(), signupRequest.getLastName());
+        UserDetail userDetail = new UserDetail(userDetails.get().getId() ,signupRequest.getEmail(), signupRequest.getFirstname(), signupRequest.getMiddlename(), signupRequest.getLastname());
         userDetailRepository.save(userDetail);
 
         //signupResponse

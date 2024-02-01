@@ -3,9 +3,11 @@ package com.beit.aquint.auth.payload.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.util.Set;
 
+@Data
 public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)
@@ -18,64 +20,14 @@ public class SignupRequest {
 
     @NotBlank
     @Size(max = 50)
-    private String firstName;
+    private String firstname;
 
     @Size(max = 50)
-    private String middleName;
+    private String middlename;
 
     @NotBlank
     @Size(max = 50)
-    private String lastName;
+    private String lastname;
 
     private Set<Integer> role;
-
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-
-    public Set<Integer> getRole() {
-        return this.role;
-    }
-
-    public void setRole(Set<Integer> role) {
-        this.role = role;
-    }
 }

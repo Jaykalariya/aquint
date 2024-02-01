@@ -103,7 +103,7 @@ public class AuthController {
         userRepository.save(user);
         Optional<User> userDetails = userRepository.findByUsername(user.getUsername());
 
-        UserDetail userDetail = new UserDetail(userDetails.get().getId() ,signUpRequest.getEmail(), signUpRequest.getFirstName(), signUpRequest.getMiddleName(), signUpRequest.getLastName());
+        UserDetail userDetail = new UserDetail(userDetails.get().getId() ,signUpRequest.getEmail(), signUpRequest.getFirstname(), signUpRequest.getMiddlename(), signUpRequest.getLastname());
         userDetailsRepository.save(userDetail);
 
         //signupResponse
