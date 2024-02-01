@@ -66,7 +66,7 @@ function ProfileInfoCard({ title, info }) {
       >
         {label}: &nbsp;
       </SoftTypography>
-      <SoftTypography variant="button" fontWeight="regular" color="text">
+      <SoftTypography variant="button" fontWeight="regular" color="text" width={`210px`}>
         &nbsp;{values[key]}
       </SoftTypography>
     </SoftBox>

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /**
 =========================================================
 * Soft UI Dashboard PRO React - v4.0.2
@@ -25,10 +26,13 @@ import "flatpickr/dist/flatpickr.css";
 // Soft UI Dashboard PRO React components
 import SoftInput from "components/SoftInput";
 
-function SoftDatePicker({ input, ...rest }) {
+function SoftDatePicker({ input, onChange, ...rest }) {
   return (
     <Flatpickr
       {...rest}
+      onChange={(selectedDates) => {
+        onChange(selectedDates[0]);
+      }}
       render={({ defaultValue }, ref) => (
         <SoftInput {...input} defaultValue={defaultValue} inputRef={ref} />
       )}

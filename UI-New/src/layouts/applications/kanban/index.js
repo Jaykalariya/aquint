@@ -50,186 +50,175 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import team5 from "assets/images/team-5.jpg";
 import meeting from "assets/images/meeting.jpg";
+import Addtenderform from "./components/Addtenderform";
+import BirthdateFormatter from "examples/BirthdateFormatter";
 
 function Kanban() {
   const [newCardForm, setNewCardForm] = useState(false);
   const [formValue, setFormValue] = useState("");
   const token = localStorage.getItem("token");
   const [boardse, setboards] = useState({ columns: [] });
+  const [hide, sethide] = useState(true);
 
   const openNewCardForm = (event, id) => setNewCardForm(id);
   const closeNewCardForm = () => setNewCardForm(false);
   const handeSetFormValue = ({ currentTarget }) => setFormValue(currentTarget.value);
 
-  const fetchData = async () => {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
     try {
+      const tenderList = await axiosInstance.get("/_v1/tender/getTenderList", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const result = await axiosInstance.get("/_v1/tender/stage/getAllTenderStage", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const transformedData = transformData(result.data);
+      const transformedData = transformData(result.data, tenderList.data);
       setboards(transformedData);
     } catch (error) {
-      //  throw error
       console.log(error);
     }
-  };
+  }
 
-  const transformData = (data) => {
-    const rows = data.map((item) => ({
+  const transformData = (data, tenderdata) => {
+    console.log(tenderdata);
+    const columns = data.map((item) => ({
       id: item.id,
       title: item.tenderStageName,
-      cards: [
-        // {
-        //   id: uuidv4(),
-        //   template: "Change me to change title",
-        // },
-        // {
-        //   id: uuidv4(),
-        //   template: "Drag me to 'In progress' section",
-        // },
-        {
-          id: uuidv4(),
+      cards: tenderdata
+        .filter((tender) => tender.tenderStage === item.id)
+        .map((tender) => ({
+          id: tender.id,
           template: (
             <Card
-              badge={{ color: "error", label: "errors" }}
-              content="Fix firefox errors"
-              attachedFiles={9}
-              members={[team2, team3]}
+              badge={{ color: "info", label: tender.projectDisplayName }}
+              content={tender.tenderType}
+              attachedFiles={BirthdateFormatter(tender.createdOn)}
+              members={tender.assignedUser}
+              // assignedUser={tender.assignedUser}
             />
           ),
-        },
-        {
-          id: uuidv4(),
-          template: (
-            <Card
-              badge={{ color: "info", label: "updates" }}
-              content="Argon Dashboard PRO - React"
-              attachedFiles={3}
-              members={[team5, team4]}
-            />
-          ),
-        },
-        {
-          id: uuidv4(),
-          template: (
-            <Card
-              image={meeting}
-              badge={{ color: "info", label: "updates" }}
-              content="ReactJS v17 Updates"
-              attachedFiles={3}
-              members={[team1, team2, team3]}
-            />
-          ),
-        },
-      ],
+        })),
     }));
-
-    return { columns: rows };
+    return { columns };
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SoftBox py={1}>
+      <SoftBox py={1} height="100vh">
         <SoftBox display="flex" justifyContent="flex-end">
-          <Header />
+          <Header sethide={sethide} hide={hide} />
         </SoftBox>
-        <SoftBox
-          position="relative"
-          height="100vh"
-          my={4}
-          sx={({ palette: { light }, functions: { pxToRem }, borders: { borderRadius } }) => ({
-            "& .react-kanban-column": {
-              backgroundColor: light.main,
-              width: pxToRem(300),
-              margin: `0 ${pxToRem(10)}`,
-              padding: pxToRem(20),
-              borderRadius: borderRadius.lg,
-            },
-          })}
-        >
-          {boardse.columns.length > 0 && (
-            <Board
-              initialBoard={boardse}
-              allowAddCard
-              allowAddColumn
-              renderColumnHeader={({ id, title }, { addCard }) => (
-                <>
-                  <SoftBox display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-                    <SoftTypography variant="h6">{title}</SoftTypography>
-                    <SoftButton size="small" onClick={(event) => openNewCardForm(event, id)}>
-                      <Icon
-                        sx={{ fontWeight: "bold", color: ({ palette: { dark } }) => dark.main }}
+        <div style={{ height: "100%" ,marginTop: "20px"}}>
+          {hide ? (
+            <SoftBox
+              position="relative"
+              my={4}
+              sx={({ palette: { light }, functions: { pxToRem }, borders: { borderRadius } }) => ({
+                "& .react-kanban-column": {
+                  backgroundColor: light.main,
+                  width: pxToRem(300),
+                  margin: `0 ${pxToRem(10)}`,
+                  padding: pxToRem(20),
+                  borderRadius: borderRadius.lg,
+                },
+              })}
+            >
+              {boardse.columns.length > 0 && (
+                <Board
+                  initialBoard={boardse}
+                  allowAddCard
+                  allowAddColumn
+                  renderColumnHeader={({ id, title }, { addCard }) => (
+                    <>
+                      <SoftBox
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        mb={3}
                       >
-                        add
-                      </Icon>
-                    </SoftButton>
-                  </SoftBox>
-                  {newCardForm === id ? (
-                    <SoftBox my={2.5}>
-                      <SoftInput
-                        value={formValue}
-                        inputProps={{ rows: 2 }}
-                        onChange={handeSetFormValue}
-                        multiline
-                      />
-                      <SoftBox display="flex" mt={2}>
-                        <SoftButton
-                          variant="gradient"
-                          color="success"
-                          size="small"
-                          onClick={() => {
-                            addCard({ id: uuidv4(), template: formValue });
-                            setFormValue("");
-                          }}
-                        >
-                          add
-                        </SoftButton>
-                        <SoftBox ml={1}>
-                          <SoftButton
-                            variant="gradient"
-                            color="light"
-                            size="small"
-                            onClick={closeNewCardForm}
+                        <SoftTypography variant="h6">{title}</SoftTypography>
+                        <SoftButton size="small" onClick={(event) => openNewCardForm(event, id)}>
+                          <Icon
+                            sx={{ fontWeight: "bold", color: ({ palette: { dark } }) => dark.main }}
                           >
-                            cancel
-                          </SoftButton>
-                        </SoftBox>
+                            add
+                          </Icon>
+                        </SoftButton>
                       </SoftBox>
+                      {newCardForm === id ? (
+                        <SoftBox my={2.5}>
+                          <SoftInput
+                            value={formValue}
+                            inputProps={{ rows: 2 }}
+                            onChange={handeSetFormValue}
+                            multiline
+                          />
+                          <SoftBox display="flex" mt={2}>
+                            <SoftButton
+                              variant="gradient"
+                              color="success"
+                              size="small"
+                              onClick={() => {
+                                addCard({ id: uuidv4(), template: formValue });
+                                setFormValue("");
+                              }}
+                            >
+                              add
+                            </SoftButton>
+                            <SoftBox ml={1}>
+                              <SoftButton
+                                variant="gradient"
+                                color="light"
+                                size="small"
+                                onClick={closeNewCardForm}
+                              >
+                                cancel
+                              </SoftButton>
+                            </SoftBox>
+                          </SoftBox>
+                        </SoftBox>
+                      ) : null}
+                    </>
+                  )}
+                  renderCard={({ id, template }, { dragging }) => (
+                    <SoftBox
+                      key={id}
+                      dragging={dragging.toString() || undefined}
+                      display="block"
+                      width="calc(300px - 40px)"
+                      // height = "calc(200px - 40px)"
+                      bgColor="white"
+                      color="text"
+                      borderRadius="md"
+                      mt={2.5}
+                      py={1.875}
+                      px={1.875}
+                      lineHeight={1.5}
+                      sx={{
+                        fontSize: ({ typography: { size } }) => size.md,
+                      }}
+                    >
+                      {typeof template === "string" ? parse(template) : template}
                     </SoftBox>
-                  ) : null}
-                </>
+                  )}
+                  onCardNew={() => null}
+                />
               )}
-              renderCard={({ id, template }, { dragging }) => (
-                <SoftBox
-                  key={id}
-                  dragging={dragging.toString() || undefined}
-                  display="block"
-                  width="calc(300px - 40px)"
-                  bgColor="white"
-                  color="text"
-                  borderRadius="md"
-                  mt={2.5}
-                  py={1.875}
-                  px={1.875}
-                  lineHeight={1.5}
-                  sx={{
-                    fontSize: ({ typography: { size } }) => size.md,
-                  }}
-                >
-                  {typeof template === "string" ? parse(template) : template}
-                </SoftBox>
-              )}
-              onCardNew={() => null}
-            />
+            </SoftBox>
+          ) : (
+            <Addtenderform sethide={sethide} fetchData={fetchData} />
           )}
-        </SoftBox>
+        </div>
       </SoftBox>
       {/* <Footer /> */}
     </DashboardLayout>

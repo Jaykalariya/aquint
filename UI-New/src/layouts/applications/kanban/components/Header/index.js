@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /**
 =========================================================
 * Soft UI Dashboard PRO React - v4.0.2
@@ -30,8 +31,20 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import team5 from "assets/images/team-5.jpg";
 
-function Header() {
-  return <SoftButton color="info"> +Add</SoftButton>;
+function Header({ sethide, hide }) {
+  return (
+    <>
+      {hide ? (
+        <SoftButton color="info" onClick={() => sethide(false)}>
+          +Add
+        </SoftButton>
+      ) : (
+        <SoftButton color="info" onClick={() => sethide(true)}>
+          Back
+        </SoftButton>
+      )}
+    </>
+  );
 }
 
 export default Header;
