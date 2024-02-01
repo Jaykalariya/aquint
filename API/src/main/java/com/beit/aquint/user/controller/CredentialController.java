@@ -15,12 +15,12 @@ public class CredentialController {
     @Autowired
     UserService userService;
 
-    @PostMapping(Constant.Mappping.EMAIL +"{email}")
+    @PostMapping(Constant.Mappping.EMAIL + "/{email}")
     public ResponseEntity<Boolean> emailExist(@PathVariable(value = "email") String email) {
         return ResponseEntity.ok( userService.existsByEmail(email));
     }
 
-    @PostMapping(Constant.Mappping.USERNAME + "{username}")
+    @PostMapping(Constant.Mappping.USERNAME + "/{username}")
     public ResponseEntity<Boolean> usernameExist(@PathVariable(value = "username") String username) {
         return ResponseEntity.ok( userService.existsByUsername(username));
     }
