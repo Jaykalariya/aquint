@@ -74,41 +74,41 @@ public class Constant {
 
     public class Query {
         public static final String ALL_USER_FULL_DETAIL = """
-                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, ud.image_url as imageUrl, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
                 FROM users u
                 INNER JOIN user_detail ud ON u.id = ud.user_id
                 LEFT JOIN user_roles ur ON ur.user_id = u.id
                 LEFT JOIN roles r ON r.id = ur.role_id
-                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname
+                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname, ud.image_url
                 """;
 
         public static final String USER_PAGING_WITH_SEARCH = """
-                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, ud.image_url as imageUrl, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
                 FROM users u
                 INNER JOIN user_detail ud ON u.id = ud.user_id
                 LEFT JOIN user_roles ur ON ur.user_id = u.id
                 LEFT JOIN roles r ON r.id = ur.role_id
                 WHERE Lower(u.username) LIKE Lower(CONCAT('%', :search, '%'))
-                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname
+                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname, ud.image_url
                 """;
 
         public static final String USER_PAGING_WITHOUT_SEARCH = """
-                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, ud.image_url as imageUrl, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
                 FROM users u
                 INNER JOIN user_detail ud ON u.id = ud.user_id
                 LEFT JOIN user_roles ur ON ur.user_id = u.id
                 LEFT JOIN roles r ON r.id = ur.role_id
-                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname
+                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname, ud.image_url
                 """;
 
         public static final String USER_FULL_DETAIL = """
-                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
+                SELECT u.id, u.email, u.username, ud.firstname as firstname, ud.middlename as middlename, ud.lastname as lastname, ud.image_url as imageUrl, STRING_AGG(r.name, ', ' ORDER BY r.name) AS roles
                 FROM users u
                 INNER JOIN user_detail ud ON u.id = ud.user_id
                 LEFT JOIN user_roles ur ON ur.user_id = u.id
                 LEFT JOIN roles r ON r.id = ur.role_id
                 WHERE u.id = :userId
-                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname
+                GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname, ud.image_url
                 """;
     }
     public class TenderHistoryConstant {

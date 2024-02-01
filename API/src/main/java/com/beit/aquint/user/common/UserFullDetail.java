@@ -8,5 +8,6 @@ public interface UserFullDetail {
     String getFirstname();
     String getMiddlename();
     String getRoles();
+    String getImageUrl();
 
 }
