@@ -152,7 +152,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MessageResponse changeUserStatus(UserFullDetailsDto userFullDetailsDto) {
-        User user = userRepository.findById(userFullDetailsDto.getId()).orElseThrow();
+        User user = userRepository.findById(userFullDetailsDto.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No data found for userId: " +userFullDetailsDto.getId()));
         user.setStatus(userFullDetailsDto.getStatus());
         userRepository.save(user);
         return new MessageResponse(String.format("%s status change to %s",user.getUsername(), userFullDetailsDto.getStatus()));
