@@ -5,6 +5,7 @@ import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.responses.ErrorResponse;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.user.dto.UserFullDetailsDto;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.service.UserService;
 import jakarta.validation.Valid;
@@ -96,6 +97,16 @@ public class UserController {
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Getting Users Has Some Issue"));
+        }
+    }
+
+    @PostMapping(value = Constant.Mappping.CHANGE_USER_STATUS)
+    public ResponseEntity<?> changeUserStatus(@RequestBody UserFullDetailsDto userFullDetailsDto) {
+        try {
+            return ResponseEntity.ok().body(userService.changeUserStatus(userFullDetailsDto));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Some issue occurred"));
         }
     }
 

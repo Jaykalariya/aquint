@@ -17,6 +17,7 @@ import com.beit.aquint.user.repository.UserDetailRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,7 +43,7 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    UserDetailRepository userDetailsRepository;
+    UserDetailRepository userDetailRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -104,8 +105,13 @@ public class AuthController {
         Optional<User> userDetails = userRepository.findByUsername(user.getUsername());
 
         UserDetail userDetail = new UserDetail(userDetails.get().getId() ,signUpRequest.getEmail(), signUpRequest.getFirstname(), signUpRequest.getMiddlename(), signUpRequest.getLastname());
-        userDetailsRepository.save(userDetail);
 
+        try {
+            userDetailRepository.save(userDetail);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Error: Unable to save user details."));
+        }
         //signupResponse
 
         return ResponseEntity

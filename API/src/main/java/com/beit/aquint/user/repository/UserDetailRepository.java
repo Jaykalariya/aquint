@@ -1,8 +1,7 @@
 package com.beit.aquint.user.repository;
 
 import com.beit.aquint.common.constant.Constant;
-import com.beit.aquint.user.common.UserFullDetail;
-import com.beit.aquint.user.dto.UserFullDetailsDto;
+import com.beit.aquint.user.dto.UserFullDetail;
 import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
 import org.springframework.data.domain.Page;

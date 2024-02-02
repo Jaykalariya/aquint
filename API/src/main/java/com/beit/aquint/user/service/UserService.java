@@ -1,12 +1,13 @@
 package com.beit.aquint.user.service;
 
 import com.beit.aquint.auth.payload.request.SignupRequest;
+import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
-import com.beit.aquint.user.common.UserFullDetail;
-import com.beit.aquint.user.dto.reponse.SignupResponse;
 import com.beit.aquint.common.config.responses.ResponseMessage;
-import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.user.dto.UserFullDetail;
 import com.beit.aquint.user.dto.UserFullDetailsDto;
+import com.beit.aquint.user.dto.reponse.SignupResponse;
+import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.auth.models.User;
 import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
@@ -50,4 +51,6 @@ public interface UserService {
     public UserDetail getCurrentUserDetails();
 
     public User getCurrentUserPrivateInfo();
+
+    public MessageResponse changeUserStatus(UserFullDetailsDto userFullDetailsDto);
 }

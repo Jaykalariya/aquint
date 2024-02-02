@@ -1,4 +1,4 @@
-package com.beit.aquint.user.common;
+package com.beit.aquint.user.dto;
 
 public interface UserFullDetail {
     Long getId();
@@ -9,5 +9,6 @@ public interface UserFullDetail {
     String getMiddlename();
     String getRoles();
     String getImageUrl();
+    String getStatus();
 
 }

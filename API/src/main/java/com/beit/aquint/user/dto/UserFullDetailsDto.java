@@ -1,6 +1,7 @@
 package com.beit.aquint.user.dto;
 
 
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import lombok.*;
 
 @Data
@@ -15,4 +16,5 @@ public class UserFullDetailsDto {
     private String lastname;
     private String roles;
     private String imageUrl;
+    private String status;
 }

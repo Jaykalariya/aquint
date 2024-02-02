@@ -3,25 +3,24 @@ package com.beit.aquint.user.service.impl;
 import com.beit.aquint.auth.models.Role;
 import com.beit.aquint.auth.models.User;
 import com.beit.aquint.auth.payload.request.SignupRequest;
+import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
+import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.service.PageUtilService;
-import com.beit.aquint.customer.department.entity.Department;
-import com.beit.aquint.user.common.UserFullDetail;
+import com.beit.aquint.user.dto.UserFullDetail;
+import com.beit.aquint.user.dto.UserFullDetailsDto;
 import com.beit.aquint.user.dto.reponse.SignupResponse;
 import com.beit.aquint.auth.repository.RoleRepository;
-import com.beit.aquint.auth.repository.UserRepository;
-import com.beit.aquint.common.config.responses.ResponseMessage;
-import com.beit.aquint.auth.models.User;
 import com.beit.aquint.auth.repository.UserRepository;
 import com.beit.aquint.auth.security.services.UserDetailsImpl;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.file.FileUploadService;
-import com.beit.aquint.user.dto.UserFullDetailsDto;
 import com.beit.aquint.user.dto.UserBasicInfoDTO;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.repository.UserDetailRepository;
 import com.beit.aquint.user.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,6 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public SignupResponse addUser(SignupRequest signupRequest){
 
         String generatedPassword = "12345678";
@@ -94,7 +94,6 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         userRepository.save(user);
         Optional<User> userDetails = userRepository.findByUsername(user.getUsername());
-
         UserDetail userDetail = new UserDetail(userDetails.get().getId() ,signupRequest.getEmail(), signupRequest.getFirstname(), signupRequest.getMiddlename(), signupRequest.getLastname());
         userDetailRepository.save(userDetail);
 
@@ -150,6 +149,15 @@ public class UserServiceImpl implements UserService {
             throw new AquintCommonException("Users throws exception");
         }
     }
+
+    @Override
+    public MessageResponse changeUserStatus(UserFullDetailsDto userFullDetailsDto) {
+        User user = userRepository.findById(userFullDetailsDto.getId()).orElseThrow();
+        user.setStatus(userFullDetailsDto.getStatus());
+        userRepository.save(user);
+        return new MessageResponse(String.format("%s status change to %s",user.getUsername(), userFullDetailsDto.getStatus()));
+    }
+
 
     @Override
     public UserDetail addUserProfileBasicDetails(UserDetail userDetail) {
