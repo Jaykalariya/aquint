@@ -1,5 +1,6 @@
-import { useState , useEffect} from "react";
-// formik components
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Formik, Form } from "formik";
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -25,9 +26,12 @@ import form from "layouts/pages/users/new-user/schemas/form";
 import initialValues from "layouts/pages/users/new-user/schemas/initialValues";
 import { Icon } from "@mui/material";
 import DataTable from "examples/Tables/DataTable";
-import UpdateForm from "layouts/pages/roles/components/Update/UpdateForm";
+
 import Nodata from "components/Nodata";
 import Forms from "./components/Form";
+import axiosInstance from "config/https";
+import UpdateForm from "./components/Update/UpdateForm";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 function NewUser() {
   const [show, setshow] = useState(false);
   const token = localStorage.getItem("token");
@@ -35,11 +39,12 @@ function NewUser() {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [hide, sethide] = useState(false);
   const [selectedTenderData, setSelectedTenderData] = useState(null);
+  const navigate = useNavigate();
   const tableData = {
     columns: [
       {
-        Header: "#",
-        accessor: "#",
+        Header: "Name",
+        accessor: "Name",
       },
       {
         Header: "UserName",
@@ -49,18 +54,15 @@ function NewUser() {
         Header: "Email",
         accessor: "Email",
       },
-      {
-        Header: "Name",
-        accessor: "Name",
-      },
+      
       {
         Header: "Role",
         accessor: "Role",
       },
-      //   {
-      //     Header: "Status",
-      //     accessor: "Status",
-      //   },
+        {
+          Header: "Status",
+          accessor: "Status",
+        },
       {
         Header: "Action",
         accessor: "Action",
@@ -73,7 +75,7 @@ function NewUser() {
   }, []);
   const fetchData = async () => {
     try {
-      const result = await axiosInstance.get("/_v1/role/getAll", {
+      const result = await axiosInstance.get("_v1/user/allUserDetails", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -90,13 +92,42 @@ function NewUser() {
     const rows = data.map((item, index) => ({
       id: item.id,
       "#": index + 1,
-      "User Name":item.userName,
+      "UserName":item.username,
       "Email":item.email,
-      "Name": item.firstName+" "+item.middleName+" "+item.lastname,
-      "Role":item.role,
-      firstName:item.firstName,
-      middleName:item.middleName,
-      lastname:item.lastname,
+      "Name":(
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {item.imageUrl ? (
+            <img
+              src={item.imageUrl}  
+              alt={item.firstname.charAt(0)} 
+              style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
+            />
+          ) : (
+            <div
+              style={{
+                width: "30px",
+                height: "30px",
+                borderRadius: "20%",
+                marginRight: "10px",
+                background: "white", 
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color:"black",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
+              }}
+            >
+              {item.firstname.charAt(0)}{item.lastname.charAt(0)}
+            </div>
+          )}
+          {item.firstname} {item.middlename} {item.lastname}
+        </div>
+      ),
+      "Role":item.roles,
+      "FirstName":item.firstname,
+      "MiddleName":item.middlename,
+      "LastName":item.lastname,
+      "Image":item.imageUrl,
       //   Status: (
       //     <Chip
       //       label={item.status ? "Active" : "Inactive"}
@@ -108,17 +139,30 @@ function NewUser() {
       //       size="small"
       //     />
       //   ),
-      Action: (
+      Action: (<div>
         <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
           edit
         </Icon>
+        <Icon className ="ml-1"onClick={() => handleProfile(item.id)} style={{ cursor: "pointer" }}>
+        <HelpOutlineIcon />
+      </Icon>
+      </div>
+        
       ),
+      userProf:(
+        <Icon onClick={() => handleProfile(item.id)} style={{ cursor: "pointer" }}>
+        edit
+      </Icon>
+      )
     }));
     return rows;
   };
   const handleEdit = (itemId) => {
     setSelectedItemId(itemId);
     sethide(true);
+  };
+  const handleProfile = (itemId) => {
+    navigate(`/Home/userprofile/${itemId}`);
   };
   useEffect(() => {
     const selectedTender = transformedRows.find((item) => item.id === selectedItemId);
@@ -176,4 +220,5 @@ function NewUser() {
     </DashboardLayout>
   );
 }
+
 export default NewUser;
