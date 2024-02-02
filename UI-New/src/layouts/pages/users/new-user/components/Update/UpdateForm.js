@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Card from "@mui/material/Card";
 import SoftBox from "components/SoftBox";
@@ -8,7 +8,9 @@ import SoftInput from "components/SoftInput";
 import { useToasts } from "react-toast-notifications";
 import { Grid, MenuItem, Select } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
-import Service from "./Update/Service";
+import Service from "./Service";
+import PropTypes from 'prop-types';
+
 // eslint-disable-next-line react/prop-types
 function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
   const [name, setname] = useState(null);
@@ -31,11 +33,11 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
   console.log(selectedItemData);
   useEffect(() => {
     if (selectedItemData) {
-      setfirstName(selectedItemData["firstName"]);
-      setmiddleName(selectedItemData["middleName"]);
-      setlastName(selectedItemData["lastName"]);
+      setfirstName(selectedItemData["FirstName"]);
+      setmiddleName(selectedItemData["MiddleName"]);
+      setlastName(selectedItemData["LastName"]);
       setemail(selectedItemData["Email"])
-      setuserName(selectedItemData["User Name"])
+      setuserName(selectedItemData["UserName"])
       setrole(selectedItemData(["Role"]))
     }
   }, [selectedItemData]);
@@ -53,9 +55,12 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
   const handleUserNameChange = async (event) => {
     const newUsername = event.target.value;
     setuserName(newUsername);
+    console.log("check username handle");
     setuserNameError(false);
     try {
-      const response = await fetch(`/existedCredential/userName/${newUsername}`);
+      const response = await axiosInstance.post(
+      `/existedCredential/username/${newUsername}`,
+    );
       const result = await response.json();
       if (!result.available) {
         setuserNameErrorMessage(true);
@@ -149,7 +154,7 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
       return addToast("Please fill in all the details", { appearance: "error" });
     }
     // const parsedStatus = status.value === "true";
-    const result = await Service(firstName, middleName, lastName, userName, email, role);
+    const result = await Service(itemId,firstName, middleName, lastName, userName, email, role);
     if (result === true) {
       addToast("User added successful!", {
         appearance: "success",
@@ -270,5 +275,18 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
       </SoftBox>
     </Card>
   );
+};
+UpdateForm.propTypes = {
+  selectedItemData: PropTypes.shape({
+    FirstName: PropTypes.string.isRequired,
+    MiddleName: PropTypes.string,
+    LastName: PropTypes.string.isRequired,
+    Email: PropTypes.string.isRequired,
+    UserName: PropTypes.string.isRequired,
+    // ... other properties
+  }),
+  itemId: PropTypes.number.isRequired,
+  sethide: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
 };
 export default UpdateForm;
