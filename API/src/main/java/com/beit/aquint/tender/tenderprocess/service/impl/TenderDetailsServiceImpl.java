@@ -1,6 +1,8 @@
 package com.beit.aquint.tender.tenderprocess.service.impl;
 
+import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.constant.Constant;
+import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
 import com.beit.aquint.tender.tenderprocess.entity.TenderAssignedUsers;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
@@ -10,6 +12,8 @@ import com.beit.aquint.tender.tenderprocess.repository.TenderAssignedUsersReposi
 import com.beit.aquint.tender.tenderprocess.repository.TenderDetailsRepository;
 import com.beit.aquint.tender.tenderprocess.repository.TenderHistoryRepository;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
+import com.beit.aquint.tender.tenderstage.entity.TenderStage;
+import com.beit.aquint.tender.tenderstage.repository.TenderStageRepository;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,12 +21,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <h1> Add heading here </h1>
@@ -45,6 +48,9 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
     @Autowired
     TenderHistoryRepository tenderHistoryRepository;
+
+    @Autowired
+    TenderStageRepository tenderStageRepository;
 
     @Autowired
     UserService userService;
@@ -105,5 +111,27 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
             }
         }
         return responseList;
+    }
+
+
+    @Override
+    @Transactional
+    public MessageResponse changeStage(ChangeStageDto changeStageDto) {
+        TenderDetails tender = tenderDetailsRepository.findById(changeStageDto.getTenderId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No data found for tenderId: " + changeStageDto.getTenderId()));
+        TenderStage stage = tenderStageRepository.findById(changeStageDto.getStageId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No data found for StageId: " + changeStageDto.getStageId()));
+        UserDetail currentUser = userService.getCurrentUserDetails();
+
+        tender.setTenderStage(changeStageDto.getStageId());
+        tenderDetailsRepository.save(tender);
+
+        TenderHistory tenderMemberHistory = new TenderHistory();
+        tenderMemberHistory.setTenderId(changeStageDto.getTenderId());
+        tenderMemberHistory.setName(String.format("%s %s By %s", Constant.TenderHistoryConstant.STAGED_CHANGED, stage.getTenderStageName(), currentUser.getFirstname()+ " " +currentUser.getLastname()));
+        tenderMemberHistory.setUserId(null);
+        tenderHistoryRepository.save(tenderMemberHistory);
+
+        return new MessageResponse("Tender Staged changed and History added Successfully");
     }
 }

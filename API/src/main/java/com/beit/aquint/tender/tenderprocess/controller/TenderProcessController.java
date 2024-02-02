@@ -2,6 +2,7 @@ package com.beit.aquint.tender.tenderprocess.controller;
 
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.constant.Constant;
+import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
 import jakarta.validation.Valid;
@@ -48,6 +49,18 @@ public class TenderProcessController {
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Error in Getting all Tender Based On User"));
+        }
+    }
+
+
+    @PostMapping(value = Constant.Mappping.CHANGE_STAGE)
+    public ResponseEntity<?> changeStage(@Valid @RequestBody ChangeStageDto changeStageDto) {
+        try {
+            log.debug("Changing tender stage");
+            return ResponseEntity.ok().body(tenderStageService.changeStage(changeStageDto));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Stage not changed Properly"));
         }
     }
 }

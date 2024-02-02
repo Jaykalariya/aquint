@@ -1,5 +1,7 @@
 package com.beit.aquint.tender.tenderprocess.service;
 
+import com.beit.aquint.auth.payload.response.MessageResponse;
+import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
 
@@ -20,4 +22,6 @@ public interface TenderDetailsService {
     public TenderDetails addTenderDetails(TenderAddRequestDto tenderAddRequestDto);
 
     public List<Map<String, Object>> getUserBasedTenderList();
+
+    public MessageResponse changeStage(ChangeStageDto changeStageDto);
 }

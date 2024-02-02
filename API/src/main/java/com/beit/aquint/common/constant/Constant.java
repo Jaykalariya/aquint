@@ -51,6 +51,7 @@ public class Constant {
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
         public static final String TENDER_STAGE_GET_PAGE = "/getTenderStageByPage";
+        public static final String CHANGE_STAGE = "/changeStage";
 
         public static final String TENDER_TYPE_ADD = "/addTenderType";
         public static final String TENDER_TYPE_GET_ALL = "/getAllTenderType";
@@ -114,5 +115,6 @@ public class Constant {
     public class TenderHistoryConstant {
         public static final String ADD_NEW_TENDER = "Tender Created By ";
         public static final String ADD_NEW_MEMBER = " Was added By ";
+        public static final String STAGED_CHANGED = "Staged Changed to ";
     }
 }
