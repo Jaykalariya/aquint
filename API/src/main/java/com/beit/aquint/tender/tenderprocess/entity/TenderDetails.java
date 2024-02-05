@@ -45,7 +45,13 @@ public class TenderDetails extends EntityAuditInfo implements Serializable {
 
     private Date submissionDate;
 
-    private String tenderEmds;
+    private String emdExemption;
+
+    private Double emdAmount;
+
+    private String tenderFeeExemption;
+
+    private Double tenderFee;
 
     private Double emd;
 

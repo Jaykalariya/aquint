@@ -2,6 +2,7 @@ package com.beit.aquint.tender.tendertype.entity;
 
 import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -24,8 +25,10 @@ public class TenderType extends EntityAuditInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "tender_stage_name")
+    @NotNull
+    @Column(name = "tender_type_name")
     private String tenderTypeName;
 
+    @NotNull
     private Boolean status;
 }

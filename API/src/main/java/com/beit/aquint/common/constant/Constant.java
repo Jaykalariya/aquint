@@ -54,12 +54,14 @@ public class Constant {
         public static final String TENDER_STAGE_GET_PAGE = "/getTenderStageByPage";
         public static final String CHANGE_STAGE = "/changeStage";
 
+        public static final String ALL_TENDER_DETAILS = "/allTenderDetails";
         public static final String TENDER_TYPE_ADD = "/addTenderType";
         public static final String TENDER_TYPE_GET_ALL = "/getAllTenderType";
         public static final String TENDER_TYPE_GET_PAGE = "/getTenderTypeByPage";
 
         public static final String ADD_NEW_TENDER = "/addNewTender";
         public static final String GET_ALL_TENDER_BASED_ON_USER = "/getTenderList";
+        public static final String TENDER_GET_ALL_WITH_PAGINATION = "/page";
 
     }
 
@@ -112,7 +114,150 @@ public class Constant {
                 WHERE u.id = :userId
                 GROUP BY u.id, u.email, u.username, ud.firstname, ud.middlename, ud.lastname, ud.image_url
                 """;
+
+        public static final String TENDER_FULL_DETAILS =  """
+    SELECT
+        td.id AS id,
+        td.project_name AS projectName,
+        td.project_display_name AS "projectDisplayName",
+        ts.tender_stage_name AS "tenderStage",
+        tt.tender_type_name AS "tenderType",
+        td.project_value AS "projectValue",
+        TO_CHAR(td.submission_date, 'YYYY-MM-DD') AS "submissionDate",
+        td.emd_exemption AS "emdExemption",
+        td.tender_fee_exemption AS "tenderFeeExemption",
+        td.emd_amount AS "emdAmount",
+        td.tender_fee AS "tenderFee",
+        td.emd AS "emd",
+        td.location AS "location",
+        CAST((
+            SELECT
+                jsonb_agg(json_build_object(
+                    'fullName', ud.firstname || ' ' || COALESCE(ud.middlename, '') || ' ' || ud.lastname,
+                    'profileURL', ud.image_url
+                ))
+            FROM
+                tender_assigned_users tau2
+            LEFT JOIN
+                user_detail ud ON tau2.user_id = ud.user_id
+            WHERE
+                tau2.tender_id = td.id
+        ) AS jsonb) AS "assignedUser"
+    FROM
+        tender_details td
+    LEFT JOIN
+        tender_assigned_users tau2 ON tau2.tender_id = td.id
+    LEFT JOIN
+        tender_stage ts ON td.tender_stage = ts.id
+    LEFT JOIN
+        tender_type tt ON td.tender_type = tt.id
+    WHERE
+        td.id IN (
+            SELECT
+                tau.tender_id
+            FROM
+                tender_assigned_users tau
+        )
+    GROUP BY
+        td.id, tt.tender_type_name, ts.tender_stage_name
+""";
+
+        public static final String TENDER_PAGING_WITH_SEARCH = """
+    SELECT
+        td.id AS id,
+        td.project_name AS projectName,
+        td.project_display_name AS "projectDisplayName",
+        ts.tender_stage_name AS "tenderStage",
+        tt.tender_type_name AS "tenderType",
+        td.project_value AS "projectValue",
+        TO_CHAR(td.submission_date, 'YYYY-MM-DD') AS "submissionDate",
+        td.emd_exemption AS "emdExemption",
+        td.tender_fee_exemption AS "tenderFeeExemption",
+        td.emd_amount AS "emdAmount",
+        td.tender_fee AS "tenderFee",
+        td.emd AS "emd",
+        td.location AS "location",
+        CAST((
+            SELECT
+                jsonb_agg(json_build_object(
+                    'fullName', ud.firstname || ' ' || COALESCE(ud.middlename, '') || ' ' || ud.lastname,
+                    'profileURL', ud.image_url
+                ))
+            FROM
+                tender_assigned_users tau2
+            LEFT JOIN
+                user_detail ud ON tau2.user_id = ud.user_id
+            WHERE
+                tau2.tender_id = td.id
+        ) AS jsonb) AS "assignedUser"
+    FROM
+        tender_details td
+    LEFT JOIN
+        tender_assigned_users tau2 ON tau2.tender_id = td.id
+    LEFT JOIN
+        tender_stage ts ON td.tender_stage = ts.id
+    LEFT JOIN
+        tender_type tt ON td.tender_type = tt.id
+    WHERE
+        td.id IN (
+            SELECT
+                tau.tender_id
+            FROM
+                tender_assigned_users tau
+        )
+        AND
+    Lower(td.project_name) LIKE Lower(CONCAT('%', :search, '%'))
+    GROUP BY
+        td.id, tt.tender_type_name, ts.tender_stage_name
+""";
+
+
+
+        public static final String TENDER_PAGING_WITHOUT_SEARCH = """
+   SELECT
+        td.id AS id,
+        td.project_name AS projectName,
+        td.project_display_name AS "projectDisplayName",
+        ts.tender_stage_name AS "tenderStage",
+        tt.tender_type_name AS "tenderType",
+        td.project_value AS "projectValue",
+        td.submission_date AS "submissionDate",
+        td.emd_exemption AS "emdExemption",
+        td.tender_fee_exemption AS "tenderFeeExemption",
+        td.emd_amount AS "emdAmount",
+        td.tender_fee AS "tenderFee",
+        td.emd AS "emd",
+        td.location AS "location",
+        jsonb_agg(json_build_object(
+             'fullName', COALESCE(ud.firstname,'') || ' ' || COALESCE(ud.middlename,'') || ' ' || COALESCE(ud.lastname,''),
+             'profileUrl', ud.image_url
+        )) AS "assignedUser"
+   FROM
+        tender_details td
+   LEFT JOIN
+        tender_assigned_users tau2 ON tau2.tender_id = td.id
+   LEFT JOIN
+        tender_stage ts ON td.tender_stage = ts.id
+   LEFT JOIN
+        tender_type tt ON td.tender_type = tt.id
+   LEFT JOIN
+        user_detail ud ON tau2.user_id = ud.user_id
+   WHERE
+        td.id IN (
+             SELECT tau.tender_id
+             FROM tender_assigned_users tau
+             WHERE td.id = tau.tender_id
+             )
+   GROUP BY
+        td.id, tt.tender_type_name, ts.tender_stage_name
+""";
+
+        public static final String COUNT_QUERY = """
+                SELECT Count(td.id)
+                From tender_details td
+                """;
     }
+
     public class TenderHistoryConstant {
         public static final String ADD_NEW_TENDER = "Tender Created By ";
         public static final String ADD_NEW_MEMBER = " Was added By ";

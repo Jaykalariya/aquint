@@ -1,13 +1,16 @@
 package com.beit.aquint.tender.tenderprocess.controller;
 
 import com.beit.aquint.auth.payload.response.MessageResponse;
+import com.beit.aquint.common.config.responses.ErrorResponse;
 import com.beit.aquint.common.constant.Constant;
+import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +31,9 @@ public class TenderProcessController {
 
     @Autowired
     TenderDetailsService tenderStageService;
+
+    @Autowired
+    TenderDetailsService tenderDetailsService;
 
 
     @PostMapping(value = Constant.Mappping.ADD_NEW_TENDER)
@@ -61,6 +67,29 @@ public class TenderProcessController {
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Stage not changed Properly"));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.ALL_TENDER_DETAILS)
+    public ResponseEntity<?> getAllTenderFullDetails() {
+        try {
+            return ResponseEntity.ok().body(tenderDetailsService.getAllTenderFullDetail());
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "No Data",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    @PostMapping(value = Constant.Mappping.TENDER_GET_ALL_WITH_PAGINATION)
+    public ResponseEntity<?> getTenderPage(@RequestBody PaginationRequestDto paginationRequestDto) {
+        try {
+            log.debug("Getting all Tenders");
+            return ResponseEntity.ok().body(tenderDetailsService.getTenderPage(paginationRequestDto));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Getting Tenders Has Some Issue"));
         }
     }
 }

@@ -45,7 +45,7 @@ public interface UserService {
 
     public List<UserFullDetail> getAllUserFullDetail();
 
-    public Page<UserFullDetail> getUserPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;;
+    public Page<UserFullDetail> getUserPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
     public List<UserBasicInfoDTO> getAllUserDetails();
 
     public UserDetail getCurrentUserDetails();

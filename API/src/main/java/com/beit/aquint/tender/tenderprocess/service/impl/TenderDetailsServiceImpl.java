@@ -1,9 +1,13 @@
 package com.beit.aquint.tender.tenderprocess.service.impl;
 
 import com.beit.aquint.auth.payload.response.MessageResponse;
+import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.constant.Constant;
+import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.common.service.PageUtilService;
 import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
+import com.beit.aquint.tender.tenderprocess.dto.TenderFullDetailsDto;
 import com.beit.aquint.tender.tenderprocess.entity.TenderAssignedUsers;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
 import com.beit.aquint.tender.tenderprocess.entity.TenderHistory;
@@ -14,13 +18,17 @@ import com.beit.aquint.tender.tenderprocess.repository.TenderHistoryRepository;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
 import com.beit.aquint.tender.tenderstage.entity.TenderStage;
 import com.beit.aquint.tender.tenderstage.repository.TenderStageRepository;
+import com.beit.aquint.user.dto.UserFullDetail;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,6 +44,7 @@ import java.util.*;
  * @author - jaykalariya
  * @since - 28/01/24  3:45 pm
  */
+@Slf4j
 @Service
 public class TenderDetailsServiceImpl implements TenderDetailsService {
 
@@ -55,6 +64,8 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PageUtilService pageUtilService;
 
     @Override
     @Transactional
@@ -133,5 +144,25 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         tenderHistoryRepository.save(tenderMemberHistory);
 
         return new MessageResponse("Tender Staged changed and History added Successfully");
+    }
+
+    @Override
+    public List<TenderFullDetailsDto> getAllTenderFullDetail() {
+        return tenderDetailsRepository.getAllTenderFullDetail();
+    }
+
+    @Override
+    public Page<TenderFullDetailsDto> getTenderPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
+        try {
+            log.debug("Page Data Creating");
+            Pageable pageable = pageUtilService.getPageable(paginationRequestDto);
+            if (Objects.nonNull(paginationRequestDto.getSearchBy())) {
+                return tenderDetailsRepository.findTenderPageWithSearch(pageable, paginationRequestDto.getSearchBy());
+            } else {
+                return tenderDetailsRepository.findTenderPageWithoutSearch(pageable);
+            }
+        } catch (Exception ex) {
+            throw new AquintCommonException("Tenders throws exception");
+        }
     }
 }
