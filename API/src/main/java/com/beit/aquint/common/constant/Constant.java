@@ -133,7 +133,7 @@ public class Constant {
         CAST((
             SELECT
                 jsonb_agg(json_build_object(
-                    'fullName', ud.firstname || ' ' || COALESCE(ud.middlename, '') || ' ' || ud.lastname,
+                    'fullName', COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,''),
                     'profileURL', ud.image_url
                 ))
             FROM
@@ -180,7 +180,7 @@ public class Constant {
         CAST((
             SELECT
                 jsonb_agg(json_build_object(
-                    'fullName', ud.firstname || ' ' || COALESCE(ud.middlename, '') || ' ' || ud.lastname,
+                    'fullName', COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,''),
                     'profileURL', ud.image_url
                 ))
             FROM
@@ -229,19 +229,19 @@ public class Constant {
         td.emd AS "emd",
         td.location AS "location",
         jsonb_agg(json_build_object(
-             'fullName', COALESCE(ud.firstname,'') || ' ' || COALESCE(ud.middlename,'') || ' ' || COALESCE(ud.lastname,''),
+             'fullName', COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,''),
              'profileUrl', ud.image_url
         )) AS "assignedUser"
    FROM
         tender_details td
    LEFT JOIN
-        tender_assigned_users tau2 ON tau2.tender_id = td.id
+        tender_assigned_users tau ON tau.tender_id = td.id
    LEFT JOIN
         tender_stage ts ON td.tender_stage = ts.id
    LEFT JOIN
         tender_type tt ON td.tender_type = tt.id
    LEFT JOIN
-        user_detail ud ON tau2.user_id = ud.user_id
+        user_detail ud ON tau.user_id = ud.user_id
    WHERE
         td.id IN (
              SELECT tau.tender_id

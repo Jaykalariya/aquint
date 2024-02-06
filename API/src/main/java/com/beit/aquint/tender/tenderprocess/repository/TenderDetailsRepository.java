@@ -47,7 +47,7 @@ public interface TenderDetailsRepository extends JpaRepository<TenderDetails, Lo
             "left join tender_type tt on td.tender_type  = tt.id \n" +
             "where td.id in \n" +
             "(select tau.tender_id from tender_assigned_users tau where tau.user_id = :userId)\n" +
-            "group by td.id, tt.tender_stage_name", nativeQuery = true)
+            "group by td.id, tt.tender_type_name", nativeQuery = true)
     public List<Map<String, Object>> findTenderByUser(@Param(value = "userId") Long userId);
 
     @Query(value = Constant.Query.TENDER_FULL_DETAILS,
