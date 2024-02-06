@@ -76,7 +76,7 @@ function NewUser() {
   };
   useEffect(() => {
     fetchData();
-  }, [tableData.rows.length]);
+  }, []);
   const fetchData = async () => {
     try {
       const result = await axiosInstance.post(

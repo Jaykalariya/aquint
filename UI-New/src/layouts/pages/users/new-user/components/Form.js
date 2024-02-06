@@ -205,7 +205,7 @@ const Forms = ({ setShow, fetchData }) => {
     console.log(firstname, middlename, lastname, username, email, [role]);
     // const parsedStatus = status.value === "true";
     const result = Service(firstname, middlename, lastname, username, email, [role]);
-    if (result === true) {
+    if (result) {
       addToast("User added successful!", {
         appearance: "success",
       });
@@ -213,8 +213,8 @@ const Forms = ({ setShow, fetchData }) => {
       fetchData();
     } else {
       addToast("failed. Please try again.", { appearance: "error" });
-      setShow(false);
       fetchData();
+      setShow(false);
     }
   };
   return (
