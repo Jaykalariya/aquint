@@ -30,9 +30,12 @@ const Forms = ({ setShow, fetchData }) => {
   const [lastnameError, setlastnameError] = useState(false);
   const [usernameError, setusernameError] = useState(false);
   const [usernameErrorMessage, setusernameErrorMessage] = useState(false);
+  const [emailErrorMessage, setemailErrorMessage] = useState(false);
   const [emailError, setemailError] = useState(false);
   const [statusError, setStatusError] = useState(false);
   const [roleError, setroleError] = useState(false);
+  const [isUsernameValid, setIsUsernameValid] = useState(null);
+  const [isEmailValid, setIsEmailValid] = useState(null);
   // const [statusError, setStatusError] = useState(false);
   const { addToast } = useToasts();
   const token = localStorage.getItem("token");
@@ -71,22 +74,14 @@ const Forms = ({ setShow, fetchData }) => {
   };
   const handleusernameChange = async (event) => {
     const newusername = event.target.value;
-    if (newusername == "" || newusername == null) {
+    setusername(newusername);
+    setusernameError(false);
+
+    // Add a check to avoid calling API when the username is null or empty
+    if (!newusername) {
+      setIsUsernameValid(null);
       setusernameError(true);
-    } else {
-      setusername(newusername);
-      setusernameError(false);
-      try {
-        const response = await axiosInstance.post(`/existedCredential/username/${newusername}`);
-        console.log(response.data);
-        if (response.data == true) {
-          setusernameErrorMessage(true);
-        } else {
-          setusernameErrorMessage(false);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      return;
     }
   };
   const handleStatusChange = (selectedOption) => {
@@ -118,7 +113,7 @@ const Forms = ({ setShow, fetchData }) => {
   const handleCancel = () => {
     setShow(false);
   };
-  const handleFieldBlur = (fieldName) => {
+  const handleFieldBlur = async (fieldName) => {
     switch (fieldName) {
       case "firstname":
         if (firstname === null) {
@@ -131,13 +126,41 @@ const Forms = ({ setShow, fetchData }) => {
         }
         break;
       case "username":
-        if (username === null) {
+        if (username === null || username === "") {
           setusernameError(true);
+          setIsUsernameValid(null);
+          return;
+        } else {
+          try {
+            const response = await axiosInstance.post(`/existedCredential/username/${username}`);
+            console.log(response.data);
+            setIsUsernameValid(response.data !== true);
+            if (response.data === true) {
+              setusernameErrorMessage(true);
+            } else {
+              setusernameErrorMessage(false);
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }
         break;
       case "email":
         if (email === null || !isValidEmail(email)) {
           setemailError(true);
+        } else {
+          try {
+            const response = await axiosInstance.post(`/existedCredential/email/${email}`);
+            console.log(response.data);
+            setIsEmailValid(response.data !== true);
+            if (response.data === true) {
+              setemailErrorMessage(true);
+            } else {
+              setemailErrorMessage(false);
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }
         break;
       case "role":
@@ -190,6 +213,8 @@ const Forms = ({ setShow, fetchData }) => {
       fetchData();
     } else {
       addToast("failed. Please try again.", { appearance: "error" });
+      setShow(false);
+      fetchData();
     }
   };
   return (
@@ -209,19 +234,40 @@ const Forms = ({ setShow, fetchData }) => {
           <label className="text-xs font-bold p-1">
             Username <span style={{ color: "red" }}>*</span>{" "}
           </label>
-          <SoftInput
-            onChange={handleusernameChange}
-            onBlur={() => handleFieldBlur("username")}
-            style={{
-              borderColor: usernameError || usernameErrorMessage ? "red" : "",
-              width: "80%",
-            }}
-          />
+          <div style={{ position: "relative" }}>
+            <SoftInput
+              onChange={handleusernameChange}
+              onBlur={() => handleFieldBlur("username")}
+              style={{
+                borderColor:
+                  isUsernameValid === true
+                    ? "green"
+                    : usernameError || usernameErrorMessage
+                    ? "red"
+                    : "",
+                borderWidth: isUsernameValid === true ? "2px" : "1px",
+                width: "80%",
+              }}
+            />
+            {isUsernameValid === true && (
+              <span
+                style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "green",
+                }}
+              >
+                &#10004; {/* Unicode checkmark character */}
+              </span>
+            )}
+          </div>
           {usernameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please enter valid username</span>
           )}
           {usernameErrorMessage && (
-            <span style={{ color: "red", fontSize: "12px" }}>username Unavailable</span>
+            <span style={{ color: "red", fontSize: "12px" }}>Username unavailable</span>
           )}
           <div className="flex">
             <div className="mr-4" style={{ width: "33%" }}>
@@ -255,16 +301,42 @@ const Forms = ({ setShow, fetchData }) => {
               )}
             </div>
           </div>
-          <label className="text-xs font-bold p-1">
-            Email <span style={{ color: "red" }}>*</span>
-          </label>
-          <SoftInput
-            onChange={handleEmailChange}
-            onBlur={() => handleFieldBlur("email")}
-            style={{ borderColor: emailError ? "red" : "" }}
-          />
-          {emailError && <span style={{ color: "red", fontSize: "12px" }}>Please enter email</span>}
-
+          <div>
+            <label className="text-xs font-bold p-1">
+              Email <span style={{ color: "red" }}>*</span>
+            </label>
+            <div style={{ position: "relative" }}>
+              <SoftInput
+                onChange={handleEmailChange}
+                onBlur={() => handleFieldBlur("email")}
+                style={{
+                  borderColor:
+                    isEmailValid === true ? "green" : emailError || emailErrorMessage ? "red" : "",
+                  borderWidth: isEmailValid === true ? "2px" : "1px",
+                  width: "80%",
+                }}
+              />
+              {isEmailValid === true && (
+                <span
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "green",
+                  }}
+                >
+                  &#10004; {/* Unicode checkmark character */}
+                </span>
+              )}
+            </div>
+            {emailError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter email</span>
+            )}
+            {emailErrorMessage && (
+              <span style={{ color: "red", fontSize: "12px" }}>Email unavailable</span>
+            )}
+          </div>
           <label className="text-xs font-bold ">
             Status <span style={{ color: "red" }}>*</span>
           </label>

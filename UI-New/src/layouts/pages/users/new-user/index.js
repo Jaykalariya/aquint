@@ -24,14 +24,17 @@ import Profile from "layouts/pages/users/new-user/components/Profile";
 import validations from "layouts/pages/users/new-user/schemas/validations";
 import form from "layouts/pages/users/new-user/schemas/form";
 import initialValues from "layouts/pages/users/new-user/schemas/initialValues";
-import { Icon } from "@mui/material";
+import { Chip, Icon, Tooltip } from "@mui/material";
 import DataTable from "examples/Tables/DataTable";
 
 import Nodata from "components/Nodata";
 import Forms from "./components/Form";
 import axiosInstance from "config/https";
 import UpdateForm from "./components/Update/UpdateForm";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import SoftTypography from "components/SoftTypography";
+import { toast } from "react-toastify";
+import { useToasts } from "react-toast-notifications";
 function NewUser() {
   const [show, setshow] = useState(false);
   const token = localStorage.getItem("token");
@@ -40,6 +43,7 @@ function NewUser() {
   const [hide, sethide] = useState(false);
   const [selectedTenderData, setSelectedTenderData] = useState(null);
   const navigate = useNavigate();
+  const { addToast } = useToasts();
   const tableData = {
     columns: [
       {
@@ -54,15 +58,15 @@ function NewUser() {
         Header: "Email",
         accessor: "Email",
       },
-      
+
       {
         Header: "Role",
         accessor: "Role",
       },
-        {
-          Header: "Status",
-          accessor: "Status",
-        },
+      {
+        Header: "Status",
+        accessor: "Status",
+      },
       {
         Header: "Action",
         accessor: "Action",
@@ -72,16 +76,26 @@ function NewUser() {
   };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [tableData.rows.length]);
   const fetchData = async () => {
     try {
-      const result = await axiosInstance.get("_v1/user/allUserDetails", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const result = await axiosInstance.post(
+        "/_v1/user/page",
+        {
+          page: 1,
+          size: 100,
+          sortBy: "username", // replace with the actual field you want to sort by
+          orderBy: true,
+          searchBy: "", // replace with the actual search term
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(result);
-      const transformedData = transformData(result.data);
+      const transformedData = transformData(result.data.content);
       setTransformedRows(transformedData);
     } catch (error) {
       //  throw error
@@ -92,14 +106,14 @@ function NewUser() {
     const rows = data.map((item, index) => ({
       id: item.id,
       "#": index + 1,
-      "UserName":item.username,
-      "Email":item.email,
-      "Name":(
+      UserName: item.username,
+      Email: item.email,
+      Name: (
         <div style={{ display: "flex", alignItems: "center" }}>
           {item.imageUrl ? (
             <img
-              src={item.imageUrl}  
-              alt={item.firstname.charAt(0)} 
+              src={item.imageUrl}
+              alt={item.firstname.charAt(0)}
               style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
             />
           ) : (
@@ -109,51 +123,78 @@ function NewUser() {
                 height: "30px",
                 borderRadius: "20%",
                 marginRight: "10px",
-                background: "white", 
+                background: "white",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                color:"black",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
+                color: "black",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              {item.firstname.charAt(0)}{item.lastname.charAt(0)}
+              {item.firstname.charAt(0).toUpperCase()}
+              {item.lastname.charAt(0).toUpperCase()}
             </div>
           )}
           {item.firstname} {item.middlename} {item.lastname}
         </div>
       ),
-      "Role":item.roles,
-      "FirstName":item.firstname,
-      "MiddleName":item.middlename,
-      "LastName":item.lastname,
-      "Image":item.imageUrl,
-      //   Status: (
-      //     <Chip
-      //       label={item.status ? "Active" : "Inactive"}
-      //       variant="outlined"
-      //       style={{
-      //         color: item.status ? "green" : "red",
-      //         border: `1px solid ${item.status ? "green" : "red"}`,
-      //       }}
-      //       size="small"
-      //     />
-      //   ),
-      Action: (<div>
-        <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
+      Role: item.roles,
+      FirstName: item.firstname,
+      MiddleName: item.middlename,
+      LastName: item.lastname,
+      Image: item.imageUrl,
+      Status: (
+        <Chip
+          onClick={() => handleStatusChange(item.id, item.status)}
+          label={item.status == "Active" ? "Active" : "Inactive"}
+          variant="outlined"
+          style={{
+            cursor: "pointer",
+            color: item.status == "Active" ? "green" : "red",
+            border: `1px solid ${item.status == "Active" ? "green" : "red"}`,
+          }}
+          size="small"
+        />
+      ),
+      Action: (
+        <div>
+          {/* <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
           edit
         </Icon>
         <Icon className ="ml-1"onClick={() => handleProfile(item.id)} style={{ cursor: "pointer" }}>
         <HelpOutlineIcon />
-      </Icon>
-      </div>
-        
+      </Icon> */}
+          <SoftBox display="flex" alignItems="center">
+            <SoftTypography
+              variant="body1"
+              onClick={() => handleProfile(item.id)}
+              color="secondary"
+              sx={{ cursor: "pointer", lineHeight: 0 }}
+            >
+              <Tooltip title="Show User Profile" placement="top">
+                <Icon>visibility</Icon>
+              </Tooltip>
+            </SoftTypography>
+            {/* <SoftBox mx={2}>
+              <SoftTypography
+                variant="body1"
+                onClick={() => handleEdit(item.id)}
+                color="secondary"
+                sx={{ cursor: "pointer", lineHeight: 0 }}
+              >
+                <Tooltip title="Edit" placement="top">
+                  <Icon>edit</Icon>
+                </Tooltip>
+              </SoftTypography>
+            </SoftBox> */}
+          </SoftBox>
+        </div>
       ),
-      userProf:(
+      userProf: (
         <Icon onClick={() => handleProfile(item.id)} style={{ cursor: "pointer" }}>
-        edit
-      </Icon>
-      )
+          edit
+        </Icon>
+      ),
     }));
     return rows;
   };
@@ -162,7 +203,34 @@ function NewUser() {
     sethide(true);
   };
   const handleProfile = (itemId) => {
-    navigate(`/Home/userprofile/${itemId}`);
+    navigate(`/Home/profile/${itemId}`);
+  };
+  const handleStatusChange = async (id, currentStatus) => {
+    try {
+      const newStatus = currentStatus === "Active" ? "Inactive" : "Active";
+      const response = await axiosInstance.post(
+        "_v1/user/changeUserStatus",
+        {
+          id: id,
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const toastAppearance = newStatus === "Active" ? "success" : "error";
+
+      addToast(response.data.message, {
+        appearance: toastAppearance,
+      });
+      fetchData(); // Refresh the data after status change
+    } catch (error) {
+      toast.error("Error changing status");
+      console.error("Error changing status:", error);
+    }
   };
   useEffect(() => {
     const selectedTender = transformedRows.find((item) => item.id === selectedItemId);
@@ -202,7 +270,7 @@ function NewUser() {
                     />
                   ) : (
                     <DataTable
-                      entriesPerPage={{ defaultValue : 10, entries: [5, 10, 15, 20, 25] }}
+                      entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
                       canSearch={true}
                       showTotalEntries={true}
                       table={tableData}

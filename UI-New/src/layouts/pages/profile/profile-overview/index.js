@@ -51,17 +51,35 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import { useEffect, useState } from "react";
 import BirthdateFormatter from "examples/BirthdateFormatter";
+import axiosInstance from "config/https";
+import { useParams } from "react-router-dom";
 
 function Overview() {
   const [user, setUser] = useState([]);
-
+  const { id } = useParams();
+  const token= localStorage.getItem("token");
+  const defaultId = JSON.parse(localStorage.getItem("userProfile")).id;
+  const userId = id || defaultId;
+  
   useEffect(() => {
-    const storedData = localStorage.getItem("userProfile");
-    if (storedData) {
-      setUser(JSON.parse(storedData));
-      console.log(JSON.parse(storedData));
-    }
-  }, []);
+    const fetchData = async () => {
+      try {
+        
+        const result = await axiosInstance.get(`_v1/user/allUserDetails/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        setUser(result.data);
+        console.log(result.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchData();
+  }, [userId]);
 
   return (
     <DashboardLayout>

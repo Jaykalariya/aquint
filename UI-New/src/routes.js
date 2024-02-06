@@ -783,6 +783,13 @@ const routes = [
     route: "/Home/profile",
     component: <ProfileOverview />,
   },
+  {
+    name: "Profile Overview",
+    key: "profile-overview",
+    route: "/Home/profile/:id",
+    component: <ProfileOverview />,
+  },
+
 
   {
     name: "User Profile",

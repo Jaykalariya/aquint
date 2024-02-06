@@ -42,19 +42,35 @@ import breakpoints from "assets/theme/base/breakpoints";
 import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
 import { Box } from "@mui/material";
+import { useParams } from "react-router-dom";
+import axiosInstance from "config/https";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
+  const { id } = useParams();
   const [user, setUser] = useState([]);
+  const token = localStorage.getItem("token");
+  const defaultId = JSON.parse(localStorage.getItem("userProfile")).id;
+  const userId = id || defaultId;
 
   useEffect(() => {
-    const storedData = localStorage.getItem("userProfile");
-    if (storedData) {
-      setUser(JSON.parse(storedData));
-      console.log(JSON.parse(storedData));
-    }
-  }, []);
+    const fetchData = async () => {
+      try {
+        const result = await axiosInstance.get(`_v1/user/allUserDetails/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setUser(result.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
