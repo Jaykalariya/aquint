@@ -5,11 +5,9 @@ import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
-import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
-import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
-import com.beit.aquint.tender.tenderprocess.dto.TenderFullDetailsDto;
-import com.beit.aquint.tender.tenderprocess.dto.TenderTimelineDto;
+import com.beit.aquint.tender.tenderprocess.dto.*;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
+import com.beit.aquint.tender.tenderprocess.entity.TenderNotes;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,4 +41,10 @@ public interface TenderDetailsService {
     public TenderFullDetailsDto getTenderFullDetail(Long tenderId);
 
     public List<TenderTimelineDto> getTenderTimeline(Long tenderId);
+
+    public TenderNotes addTenderNotes(TenderNotes tenderNotes) throws AquintCommonException;;
+
+    public List<TenderNotesDto> getTenderNotes(Long tenderId) throws AquintCommonException ;
+
+    public List<TenderDocumentDto> getAllDocumentByTenderId(Long tenderId);
 }

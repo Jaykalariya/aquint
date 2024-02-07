@@ -50,6 +50,8 @@ public class Constant {
         public static final String CHANGE_USER_STATUS = "/changeUserStatus";
         public static final String CHANGE_PROFILE_IMAGE = "/changeProfileImage";
 
+        public static final String ADD_TENDER_NOTE = "/addTenderNote";
+        public static final String TENDER_NOTES = "/tenderNotes";
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
         public static final String TENDER_STAGE_GET_PAGE = "/getTenderStageByPage";
@@ -66,7 +68,7 @@ public class Constant {
         public static final String TENDER_GET_ALL_WITH_PAGINATION = "/page";
 
         public static final String UPLOAD_FILE = "/upload/file";
-
+        public static final String ALL_DOCUMENTS = "/allDocuments";
 
 
     }
@@ -131,7 +133,7 @@ public class Constant {
         ts.tender_stage_name AS "tenderStage",
         tt.tender_type_name AS "tenderType",
         td.project_value AS "projectValue",
-        TO_CHAR(td.submission_date, 'YYYY-MM-DD') AS "submissionDate",
+        td.submission_date AS "submissionDate",
         td.emd_exemption AS "emdExemption",
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
@@ -178,7 +180,7 @@ public class Constant {
         ts.tender_stage_name AS "tenderStage",
         tt.tender_type_name AS "tenderType",
         td.project_value AS "projectValue",
-        TO_CHAR(td.submission_date, 'YYYY-MM-DD') AS "submissionDate",
+        td.submission_date AS "submissionDate",
         td.emd_exemption AS "emdExemption",
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
@@ -220,7 +222,7 @@ public class Constant {
         ts.tender_stage_name AS "tenderStage",
         tt.tender_type_name AS "tenderType",
         td.project_value AS "projectValue",
-        TO_CHAR(td.submission_date, 'YYYY-MM-DD') AS "submissionDate",
+        td.submission_date AS "submissionDate",
         td.emd_exemption AS "emdExemption",
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
@@ -322,6 +324,40 @@ WHERE
 ORDER BY
     th.created_on
 """;
+
+        public static final String TENDER_NOTES_BY_TENDER_ID = """
+SELECT
+    tn.created_on AS createdOn,
+    tn.note AS note,
+    COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
+    ud.image_url as profileUrl
+FROM
+    tender_notes tn
+LEFT JOIN
+    user_detail ud ON tn.created_by = ud.user_id
+WHERE
+    tn.tender_id = :tenderId
+ORDER BY
+    tn.created_on
+""";
+        public static final String  DOCUMENTS_BY_TENDER_ID = """
+SELECT
+    td.created_on AS createdOn,
+	td.document_name AS documentName,
+    td.document_url AS documentUrl,
+	td.extension AS extension,
+    COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
+    ud.image_url as profileUrl
+FROM
+    tender_documents td
+LEFT JOIN
+    user_detail ud ON td.created_by = ud.user_id
+WHERE
+    td.tender_id = :tenderId
+ORDER BY
+    td.created_on
+""";
+
     }
 
     public class TenderHistoryConstant {

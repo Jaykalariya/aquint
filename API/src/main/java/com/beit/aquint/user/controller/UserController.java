@@ -110,7 +110,7 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = Constant.Mappping.CHANGE_PROFILE_IMAGE)
+    @PutMapping(value = Constant.Mappping.CHANGE_PROFILE_IMAGE)
     public ResponseEntity<?> changeProfileImage(@RequestBody UserFullDetailsDto userFullDetailsDto) {
         try {
             return ResponseEntity.ok().body(userService.changeProfileImage(userFullDetailsDto));

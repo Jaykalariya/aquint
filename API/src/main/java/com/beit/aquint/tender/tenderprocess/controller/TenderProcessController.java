@@ -7,6 +7,7 @@ import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
+import com.beit.aquint.tender.tenderprocess.entity.TenderNotes;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -130,6 +131,42 @@ public class TenderProcessController {
                     new ErrorResponse(
                             "Data Not Saved Properly",
                             HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.ALL_DOCUMENTS + "/{tenderId}")
+    public ResponseEntity<?> getAllDocumentByTenderId(@PathVariable("tenderId") Long tenderId) {
+        try {
+            return ResponseEntity.ok().body(tenderDetailsService.getAllDocumentByTenderId(tenderId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "NO DATA WAS FETCHED",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+
+    @GetMapping(value = Constant.Mappping.TENDER_NOTES + "/{tenderId}")
+    public ResponseEntity<?> getTenderNotes(@PathVariable(value = "tenderId") Long tenderId) {
+        try {
+            return ResponseEntity.ok().body(tenderDetailsService.getTenderNotes(tenderId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "No Data",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    @PostMapping(value = Constant.Mappping.ADD_TENDER_NOTE)
+    public ResponseEntity<?> addTenderNotes(@Valid @RequestBody TenderNotes tenderNotes) {
+        try {
+            log.debug("Adding New Tender Note");
+            return ResponseEntity.ok().body(tenderDetailsService.addTenderNotes(tenderNotes));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Note Not Saved Properly"));
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.beit.aquint.tender.tenderprocess.service.impl;
 
+import com.amazonaws.services.xray.model.Http;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
@@ -7,23 +8,13 @@ import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.file.FileUploadService;
 import com.beit.aquint.common.service.PageUtilService;
-import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
-import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
-import com.beit.aquint.tender.tenderprocess.dto.TenderFullDetailsDto;
-import com.beit.aquint.tender.tenderprocess.dto.TenderTimelineDto;
-import com.beit.aquint.tender.tenderprocess.entity.TenderAssignedUsers;
-import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
-import com.beit.aquint.tender.tenderprocess.entity.TenderDocuments;
-import com.beit.aquint.tender.tenderprocess.entity.TenderHistory;
+import com.beit.aquint.tender.tenderprocess.dto.*;
+import com.beit.aquint.tender.tenderprocess.entity.*;
 import com.beit.aquint.tender.tenderprocess.mapper.TenderMapper;
-import com.beit.aquint.tender.tenderprocess.repository.TenderAssignedUsersRepository;
-import com.beit.aquint.tender.tenderprocess.repository.TenderDetailsRepository;
-import com.beit.aquint.tender.tenderprocess.repository.TenderDocumentsRepository;
-import com.beit.aquint.tender.tenderprocess.repository.TenderHistoryRepository;
+import com.beit.aquint.tender.tenderprocess.repository.*;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
 import com.beit.aquint.tender.tenderstage.entity.TenderStage;
 import com.beit.aquint.tender.tenderstage.repository.TenderStageRepository;
-import com.beit.aquint.user.dto.UserFullDetail;
 import com.beit.aquint.user.entity.UserDetail;
 import com.beit.aquint.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -79,6 +71,10 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
     @Autowired
     TenderDocumentsRepository tenderDocumentsRepository;
+
+    @Autowired
+    TenderNotesRepository tenderNotesRepository;
+
 
     @Override
     @Transactional
@@ -202,6 +198,33 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         saveTenderHistory(tenderId,String.format("%s %s ",documentName, Constant.TenderHistoryConstant.UPLOADED_BY), null);
         return new ResponseMessage("File successfully uploaded and tender history saved", tenderDocument);
     }
+
+    @Override
+    public List<TenderDocumentDto> getAllDocumentByTenderId(Long tenderId){
+            return tenderDocumentsRepository.getAllDocumentByTenderId(tenderId);
+    }
+
+    @Override
+    @Transactional
+    public TenderNotes addTenderNotes(TenderNotes tenderNotes) throws AquintCommonException {
+        try {
+            log.debug("Tender Stage Saving");
+            return tenderNotesRepository.save(tenderNotes);
+        } catch (Exception exception) {
+            throw new AquintCommonException("Tender Note Not Saved Properly");
+        }
+    }
+
+    @Override
+    public List<TenderNotesDto> getTenderNotes(Long tenderId)  throws AquintCommonException {
+        try {
+            log.debug("Getting Tender Notes");
+            return tenderNotesRepository.tenderNotesByTenderId(tenderId);
+        } catch (Exception exception) {
+            throw new AquintCommonException("Unable to Fetch");
+        }
+    }
+
 
     private boolean saveTenderHistory(Long tenderId, String name, Long userId){
         UserDetail currentUser = userService.getCurrentUserDetails();
