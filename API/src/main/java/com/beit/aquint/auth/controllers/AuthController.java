@@ -6,6 +6,7 @@ import com.beit.aquint.auth.payload.request.LoginRequest;
 import com.beit.aquint.auth.payload.request.SignupRequest;
 import com.beit.aquint.auth.payload.response.JwtResponse;
 import com.beit.aquint.auth.payload.response.MessageResponse;
+import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.user.dto.reponse.SignupResponse;
 import com.beit.aquint.auth.repository.RoleRepository;
 import com.beit.aquint.auth.repository.UserRepository;
@@ -25,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -59,11 +61,12 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+try {
+    Authentication authentication = authenticationManager
+            .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    if(checkStatus(loginRequest.getUsername())) {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -73,6 +76,16 @@ public class AuthController {
         return ResponseEntity
                 .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
     }
+    else{
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body("User status is Inactive, Please Contact Admin");
+    }
+}
+catch(Exception exception){
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("Can not process");
+}
+}
 
     @Transactional
     @PostMapping("/signup")
@@ -116,6 +129,10 @@ public class AuthController {
 
         return ResponseEntity
                 .ok(new SignupResponse("User registered successfully!", userDetails.get().getUsername(), userDetails.get().getEmail(), generatedPassword));
+    }
+
+    private boolean checkStatus(String username){
+        return userRepository.findByUsername(username).get().getStatus().equals(Constant.Status.ACTIVE);
     }
 }
 
