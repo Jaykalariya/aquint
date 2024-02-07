@@ -78,7 +78,7 @@ const Forms = ({ setShow, fetchData }) => {
           <label className="text-xs font-bold p-1">State Name</label>
           <SoftInput
             onChange={handleStateNameChange}
-            style={{ borderColor: stateNameError ? "red" : "" }}
+            error={stateNameError}
           />
           {stateNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please Enter A State Name</span>
@@ -87,7 +87,7 @@ const Forms = ({ setShow, fetchData }) => {
             <label className="text-xs font-bold p-1">State Code</label>
             <SoftInput
               onChange={handlestateCodeChange}
-              style={{ borderColor: stateCodeError ? "red" : "" }}
+              error={stateCodeError}
             />
             {stateCodeError && (
               <span style={{ color: "red", fontSize: "12px" }}>Please Enter A State Code</span>
@@ -100,6 +100,7 @@ const Forms = ({ setShow, fetchData }) => {
               onChange={handleStatusChange}
               value={status}
               placeholder="Select Satus"
+              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },

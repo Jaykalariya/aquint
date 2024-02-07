@@ -68,7 +68,7 @@ const Forms = ({ setShow, fetchData }) => {
           <label className="text-xs font-bold p-1">Tender Type</label>
           <SoftInput
             onChange={handleTenderTypeChange}
-            style={{ borderColor: tenderTypeError ? "red" : "" }}
+            error={tenderTypeError}
           />
           {tenderTypeError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please enter a Tender Type</span>
@@ -79,6 +79,7 @@ const Forms = ({ setShow, fetchData }) => {
               onChange={handleStatusChange}
               value={status}
               placeholder="Select Satus"
+              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },

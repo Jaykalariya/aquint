@@ -67,7 +67,7 @@ const Forms = ({ setShow, fetchData }) => {
           <label className="text-xs font-bold p-1">Department Name</label>
           <SoftInput
             onChange={handleStateNameChange}
-            style={{ borderColor: departmentNameError ? "red" : "" }}
+            error={departmentNameError}
           />
           {departmentNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please Enter A Department Name</span>
@@ -79,6 +79,7 @@ const Forms = ({ setShow, fetchData }) => {
               onChange={handleStatusChange}
               value={status}
               placeholder="Select Satus"
+              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },

@@ -62,7 +62,7 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
           <SoftInput
             onChange={handleRoleChange}
             value={name}
-            style={{ borderColor: nameError ? "red" : "" }}
+            error={nameError}
           />
           {nameError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a name</span>}
           <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">

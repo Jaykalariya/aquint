@@ -121,7 +121,7 @@ function Roles() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SoftBox className="mt-2">
+      <SoftBox className="mt-2 h-screen">
         <div className="mt-3">
           {show ? (
             <>

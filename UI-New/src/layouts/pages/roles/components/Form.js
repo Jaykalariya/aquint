@@ -66,7 +66,7 @@ const Forms = ({ setShow, fetchData }) => {
       <SoftBox p={2}>
         <SoftBox>
           <label className="text-xs font-bold p-1">Name</label>
-          <SoftInput onChange={handlenameChange} style={{ borderColor: nameError ? "red" : "" }} />
+          <SoftInput onChange={handlenameChange} error={nameError}/>
           {nameError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a name</span>}
           {/* <div>
             <label className="text-xs font-bold p-1">Status</label>

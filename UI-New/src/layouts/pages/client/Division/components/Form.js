@@ -6,6 +6,7 @@ import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftSelect from "components/SoftSelect";
 import SoftInput from "components/SoftInput";
+import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
 const Forms = ({ setShow, fetchData }) => {
@@ -13,6 +14,7 @@ const Forms = ({ setShow, fetchData }) => {
   const [status, setStatus] = useState(null);
   const [divisionNameError, setdivisionNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
+  const { addToast } = useToasts();
 
   const handleStateNameChange = (event) => {
     setdivisionName(event.target.value);
@@ -65,7 +67,7 @@ const Forms = ({ setShow, fetchData }) => {
           <label className="text-xs font-bold p-1">Division Name</label>
           <SoftInput
             onChange={handleStateNameChange}
-            style={{ borderColor: statusError ? "red" : "" }}
+            error={divisionNameError}
           />
           {divisionNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please Enter A Division Name</span>
@@ -77,6 +79,7 @@ const Forms = ({ setShow, fetchData }) => {
               onChange={handleStatusChange}
               value={status}
               placeholder="Select Satus"
+              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },

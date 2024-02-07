@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card, TextareaAutosize } from "@mui/material";
-import axios from "axios";
+import { Card } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftDatePicker from "components/SoftDatePicker";
@@ -60,10 +59,20 @@ function Addtenderform({ sethide, fetchData }) {
           },
         });
         const option = result.data.map((item) => ({
-          code: item.id,
-          name: item.fullName,
+          value: item.id,
+          label: (
+            <div className="flex">
+              <img
+                src={item.profilePhoto}
+                alt={item.fullName}
+                style={{ width: "24px", height: "24px", borderRadius: "50%", marginRight: "8px" }}
+              />
+              <p className="my-auto">{item.fullName}</p>
+            </div>
+          ),
         }));
         setuseroption(option);
+        console.log(option);
 
         const currentUser = result.data.find((item) => item.id === userId);
         if (currentUser) {
@@ -71,8 +80,22 @@ function Addtenderform({ sethide, fetchData }) {
             ...formData,
             assignedUsers: [
               {
-                code: currentUser.id,
-                name: currentUser.fullName,
+                value: currentUser.id,
+                label: (
+                  <div className="flex ">
+                    <img
+                      src={currentUser.profilePhoto}
+                      alt={currentUser.fullName}
+                      style={{
+                        width: "24px",
+                        height: "24px",
+                        borderRadius: "50%",
+                        marginRight: "8px",
+                      }}
+                    />
+                    <p className="my-auto">{currentUser.fullName}</p>
+                  </div>
+                ),
               },
             ],
           });
@@ -162,8 +185,9 @@ function Addtenderform({ sethide, fetchData }) {
   function handleInputChange(key, value) {
     setFormData({
       ...formData,
-      [key]: key === "assignedUsers" ? [...value.value] : value,
+      [key]: value,
     });
+    console.log(value);
     setFormErrors({
       ...formErrors,
       [key]: false,
@@ -171,7 +195,7 @@ function Addtenderform({ sethide, fetchData }) {
   }
 
   return (
-    <Card className="md:mx-36">
+    <Card className="md:mx-36 ">
       <SoftBox p={2}>
         <div className="m-0">
           <label className="text-xs font-bold p-1">Project Name</label>
@@ -275,6 +299,23 @@ function Addtenderform({ sethide, fetchData }) {
             {formErrors.emds && <span className="text-xs text-red-500">Please Enter A Emds</span>}
           </div>
         </div>
+
+        <div>
+          <label className="text-xs font-bold p-1">Assigned Users</label>
+          <SoftSelect
+            value={formData.assignedUsers}
+            onChange={(selected) => handleInputChange("assignedUsers", selected)}
+            error={formErrors.assignedUsers}
+            isMulti
+            optionLabel="label"
+            optionValue="value"
+            options={useroption}
+          />
+
+          {formErrors.assignedUsers && (
+            <span className="text-xs text-red-500">Please Select Assigned Users</span>
+          )}
+        </div>
         <div>
           <label className="text-xs font-bold p-1">Location</label>
           <textarea
@@ -288,22 +329,7 @@ function Addtenderform({ sethide, fetchData }) {
             <span className="text-xs text-red-500">Please Enter A Location</span>
           )}
         </div>
-        <div>
-          <label className="text-xs font-bold p-1">Assigned Users</label>
-          <MultiSelect
-            value={formData.assignedUsers}
-            onChange={(selected) => handleInputChange("assignedUsers", selected)}
-            options={useroption}
-            optionLabel="name"
-            placeholder="Select Users"
-            maxSelectedLabels={3}
-            className="w-full md:w-20rem p-2"
-          />
-          {formErrors.assignedUsers && (
-            <span className="text-xs text-red-500">Please Select Assigned Users</span>
-          )}
-        </div>
-        <SoftBox mt={2} width="100%" display="flex" justifyContent="space-between">
+        <SoftBox mt={5} width="100%" display="flex" justifyContent="space-between">
           <SoftButton onClick={() => sethide(true)} variant="gradient" color="light">
             Cancel
           </SoftButton>

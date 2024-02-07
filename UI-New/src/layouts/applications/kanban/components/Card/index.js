@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /**
 =========================================================
 * Soft UI Dashboard PRO React - v4.0.2
@@ -29,7 +30,9 @@ import SoftProgress from "components/SoftProgress";
 // Custom styles for the Card
 
 function Card({ image, badge, content, progress, attachedFiles, members }) {
-  const renderMembers = members.map((member, key) => {
+  const MAX_MEMBERS_DISPLAYED = 3;
+
+  const renderMembers = members.slice(0, MAX_MEMBERS_DISPLAYED).map((member, key) => {
     const imageAlt = `image-${key}`;
 
     return (
@@ -52,6 +55,8 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
       />
     );
   });
+
+  const remainingMembers = members.length - MAX_MEMBERS_DISPLAYED;
 
   return (
     <div className="h-32">
@@ -80,7 +85,17 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
             </>
           )}
         </SoftBox>
-        <SoftBox display="flex">{renderMembers}</SoftBox>
+        {/* <SoftBox display="flex">{renderMembers}</SoftBox> */}
+        <SoftBox display="flex">
+          {renderMembers}
+          {remainingMembers > 0 && (
+            <div className="text-center">
+            <SoftTypography variant="button" fontWeight="regular" color="text">
+              &nbsp;{remainingMembers}+
+            </SoftTypography>
+            </div>
+          )}
+        </SoftBox>
       </SoftBox>
     </div>
   );

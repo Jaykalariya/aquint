@@ -78,9 +78,9 @@ function DashboardNavbar({ absolute, light, isMini }) {
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
-      setNavbarType("sticky");
-    } else {
       setNavbarType("static");
+    } else {
+      setNavbarType("sticky");
     }
 
     // A function that sets the transparent state of the navbar.

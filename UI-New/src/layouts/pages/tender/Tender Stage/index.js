@@ -100,7 +100,7 @@ function Tenderstage() {
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox>
-        <div className="mt-3">
+        <div className="mt-3 h-screen">
           {show ? (
             <>
               <div className="flex justify-end mb-2">

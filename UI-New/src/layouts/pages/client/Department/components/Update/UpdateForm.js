@@ -81,7 +81,7 @@ const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
           <SoftInput
             value={departmentName}
             onChange={handleStateNameChange}
-            style={{ borderColor: departmentNameError ? "red" : "" }}
+            error={departmentNameError}
           />
           {departmentNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please Enter A Department Name</span>
@@ -93,6 +93,7 @@ const UpdateForm = ({ selectedItemData, itemId, sethide, fetchData }) => {
               onChange={handleStatusChange}
               value={status}
               placeholder="Select Satus"
+              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },

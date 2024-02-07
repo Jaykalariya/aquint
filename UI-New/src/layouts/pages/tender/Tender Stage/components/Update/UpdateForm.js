@@ -78,7 +78,7 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
           <SoftInput
             onChange={handleTenderTypeChange}
             value={tenderStageName}
-            style={{ borderColor: tenderStageNameError ? "red" : "" }}
+            error={tenderStageNameError}
           />
           {tenderStageNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please enter a Tender StageName</span>
@@ -89,6 +89,7 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
               onChange={handleStatusChange}
               value={status}
               placeholder="Select Satus"
+              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },

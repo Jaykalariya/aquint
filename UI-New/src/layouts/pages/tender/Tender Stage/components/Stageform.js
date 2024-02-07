@@ -67,7 +67,7 @@ function Stageform({ setShow, fetchData }) {
           <label className="text-xs font-bold p-1">Tender StageName</label>
           <SoftInput
             onChange={handletenderStageName}
-            style={{ borderColor: tenderStageNameError ? "red" : "" }}
+            error={tenderStageNameError}
           />
           {tenderStageNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please enter a Tender StageName</span>
@@ -78,6 +78,7 @@ function Stageform({ setShow, fetchData }) {
               onChange={handleStatusChange}
               value={status}
               placeholder="Select Satus"
+              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },
