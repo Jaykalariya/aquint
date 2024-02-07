@@ -1,7 +1,9 @@
 package com.beit.aquint.tender.tenderprocess.repository;
 
+import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.tender.tenderprocess.dto.TenderFullDetailsDto;
+import com.beit.aquint.tender.tenderprocess.dto.TenderTimelineDto;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
 import org.apache.tomcat.util.bcel.Const;
 import org.springframework.data.domain.Page;
@@ -50,7 +52,7 @@ public interface TenderDetailsRepository extends JpaRepository<TenderDetails, Lo
             "group by td.id, tt.tender_type_name", nativeQuery = true)
     public List<Map<String, Object>> findTenderByUser(@Param(value = "userId") Long userId);
 
-    @Query(value = Constant.Query.TENDER_FULL_DETAILS,
+    @Query(value = Constant.Query.ALL_TENDER_FULL_DETAILS,
             nativeQuery = true)
     List<TenderFullDetailsDto> getAllTenderFullDetail();
 
@@ -61,4 +63,12 @@ public interface TenderDetailsRepository extends JpaRepository<TenderDetails, Lo
     @Query(value = Constant.Query.TENDER_PAGING_WITHOUT_SEARCH,
             nativeQuery = true)
     Page<TenderFullDetailsDto> findTenderPageWithoutSearch(Pageable pageable);
+
+    @Query(value = Constant.Query.TENDER_FULL_DETAILS,
+            nativeQuery = true)
+    TenderFullDetailsDto getTenderFullDetail(@Param("tenderId") Long tenderId);
+
+    @Query(value = Constant.Query.TENDER_TIMELINE,
+            nativeQuery = true)
+    List<TenderTimelineDto> getTenderTimeline(@Param("tenderId") Long tenderId);
 }

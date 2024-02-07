@@ -85,4 +85,5 @@ public class UserDetail extends EntityAuditInfo implements Serializable {
         this.middlename = middlename;
         this.lastname = lastname;
     }
+
 }

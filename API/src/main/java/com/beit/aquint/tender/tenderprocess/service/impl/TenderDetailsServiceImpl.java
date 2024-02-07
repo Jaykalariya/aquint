@@ -2,18 +2,23 @@ package com.beit.aquint.tender.tenderprocess.service.impl;
 
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
+import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.common.file.FileUploadService;
 import com.beit.aquint.common.service.PageUtilService;
 import com.beit.aquint.tender.tenderprocess.dto.ChangeStageDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderAddRequestDto;
 import com.beit.aquint.tender.tenderprocess.dto.TenderFullDetailsDto;
+import com.beit.aquint.tender.tenderprocess.dto.TenderTimelineDto;
 import com.beit.aquint.tender.tenderprocess.entity.TenderAssignedUsers;
 import com.beit.aquint.tender.tenderprocess.entity.TenderDetails;
+import com.beit.aquint.tender.tenderprocess.entity.TenderDocuments;
 import com.beit.aquint.tender.tenderprocess.entity.TenderHistory;
 import com.beit.aquint.tender.tenderprocess.mapper.TenderMapper;
 import com.beit.aquint.tender.tenderprocess.repository.TenderAssignedUsersRepository;
 import com.beit.aquint.tender.tenderprocess.repository.TenderDetailsRepository;
+import com.beit.aquint.tender.tenderprocess.repository.TenderDocumentsRepository;
 import com.beit.aquint.tender.tenderprocess.repository.TenderHistoryRepository;
 import com.beit.aquint.tender.tenderprocess.service.TenderDetailsService;
 import com.beit.aquint.tender.tenderstage.entity.TenderStage;
@@ -31,8 +36,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -66,6 +73,12 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
     @Autowired
     PageUtilService pageUtilService;
+
+    @Autowired
+    FileUploadService fileUploadService;
+
+    @Autowired
+    TenderDocumentsRepository tenderDocumentsRepository;
 
     @Override
     @Transactional
@@ -151,6 +164,17 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         return tenderDetailsRepository.getAllTenderFullDetail();
     }
 
+
+    @Override
+    public TenderFullDetailsDto getTenderFullDetail(Long tenderId) {
+        return tenderDetailsRepository.getTenderFullDetail(tenderId);
+    }
+
+    @Override
+    public List<TenderTimelineDto> getTenderTimeline(Long tenderId) {
+        return tenderDetailsRepository.getTenderTimeline(tenderId);
+    }
+
     @Override
     public Page<TenderFullDetailsDto> getTenderPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
         try {
@@ -165,4 +189,28 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
             throw new AquintCommonException("Tenders throws exception");
         }
     }
+
+    @Override
+    @Transactional
+    public ResponseMessage uploadTenderFile(MultipartFile multipartFile, Long tenderId) throws IOException {
+        String userFolderPath = Constant.File.FILE_FOLDER_PATH_FOR_TENDER_FILES + "/" + tenderId;
+        String documentName = multipartFile.getOriginalFilename();
+        String documentUrl = fileUploadService.uploadFile(multipartFile, userFolderPath);
+        String extension = fileUploadService.getExtension(multipartFile);
+        TenderDocuments tenderDocument = new TenderDocuments(tenderId,documentName,documentUrl,extension);
+        tenderDocumentsRepository.save(tenderDocument);
+        saveTenderHistory(tenderId,String.format("%s %s ",documentName, Constant.TenderHistoryConstant.UPLOADED_BY), null);
+        return new ResponseMessage("File successfully uploaded and tender history saved", tenderDocument);
+    }
+
+    private boolean saveTenderHistory(Long tenderId, String name, Long userId){
+        UserDetail currentUser = userService.getCurrentUserDetails();
+        TenderHistory tenderMemberHistory = new TenderHistory();
+        tenderMemberHistory.setTenderId(tenderId);
+        tenderMemberHistory.setName(name + currentUser.getFirstname()+ " " +currentUser.getLastname());
+        tenderMemberHistory.setUserId(userId);
+        tenderHistoryRepository.save(tenderMemberHistory);
+        return true;
+    }
+
 }

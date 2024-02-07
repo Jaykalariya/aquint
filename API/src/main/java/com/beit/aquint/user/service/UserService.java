@@ -53,4 +53,6 @@ public interface UserService {
     public User getCurrentUserPrivateInfo();
 
     public MessageResponse changeUserStatus(UserFullDetailsDto userFullDetailsDto);
+
+    public MessageResponse changeProfileImage(UserFullDetailsDto userFullDetailsDto);
 }

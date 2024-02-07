@@ -1,5 +1,6 @@
 package com.beit.aquint.tender.tenderprocess.controller;
 
+import com.amazonaws.services.directconnect.model.transform.LoaMarshaller;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.responses.ErrorResponse;
 import com.beit.aquint.common.constant.Constant;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <h1> Add heading here </h1>
@@ -82,6 +84,30 @@ public class TenderProcessController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.ALL_TENDER_DETAILS + "/{tenderId}")
+    public ResponseEntity<?> getTenderFullDetails(@PathVariable(value = "tenderId")Long tenderId) {
+        try {
+            return ResponseEntity.ok().body(tenderDetailsService.getTenderFullDetail(tenderId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "No Data",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.TIMELINE + "/{tenderId}")
+    public ResponseEntity<?> getTenderTimeline(@PathVariable(value = "tenderId") Long tenderId) {
+        try {
+            return ResponseEntity.ok().body(tenderDetailsService.getTenderTimeline(tenderId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "No Data",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
     @PostMapping(value = Constant.Mappping.TENDER_GET_ALL_WITH_PAGINATION)
     public ResponseEntity<?> getTenderPage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {
@@ -90,6 +116,20 @@ public class TenderProcessController {
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Getting Tenders Has Some Issue"));
+        }
+    }
+
+
+
+    @PostMapping(value = Constant.Mappping.UPLOAD_FILE + "/{tenderId}")
+    public ResponseEntity<?> uploadTenderFile(@RequestPart("file") MultipartFile file,@PathVariable("tenderId") Long tenderId) {
+        try {
+            return ResponseEntity.ok().body(tenderDetailsService.uploadTenderFile(file, tenderId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "Data Not Saved Properly",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
         }
     }
 }

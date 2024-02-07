@@ -159,6 +159,18 @@ public class UserServiceImpl implements UserService {
         return new MessageResponse(String.format("%s status change to %s",user.getUsername(), userFullDetailsDto.getStatus()));
     }
 
+    @Override
+    public MessageResponse changeProfileImage(UserFullDetailsDto userFullDetailsDto) {
+        UserDetail user = userDetailRepository.findByUserId(userFullDetailsDto.getId());
+        if(userFullDetailsDto.getImageUrl().isEmpty()) {
+            return new MessageResponse("Profile image is empty");
+        }
+        user.setImageUrl(userFullDetailsDto.getStatus());
+        userDetailRepository.save(user);
+        return new MessageResponse("Profile image successfully updated");
+    }
+
+
 
     @Override
     public UserDetail addUserProfileBasicDetails(UserDetail userDetail) {
