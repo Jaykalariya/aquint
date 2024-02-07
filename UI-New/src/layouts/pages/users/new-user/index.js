@@ -24,7 +24,16 @@ import Profile from "layouts/pages/users/new-user/components/Profile";
 import validations from "layouts/pages/users/new-user/schemas/validations";
 import form from "layouts/pages/users/new-user/schemas/form";
 import initialValues from "layouts/pages/users/new-user/schemas/initialValues";
-import { Chip, Icon, Tooltip } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Icon,
+  Tooltip,
+} from "@mui/material";
 import DataTable from "examples/Tables/DataTable";
 
 import Nodata from "components/Nodata";
@@ -42,6 +51,12 @@ function NewUser() {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [hide, sethide] = useState(false);
   const [selectedTenderData, setSelectedTenderData] = useState(null);
+  const [statusChangeDialogOpen, setStatusChangeDialogOpen] = useState(false);
+  const [statusChangeConfirmationData, setStatusChangeConfirmationData] = useState({
+    id: null,
+    userName: null,
+    currentStatus: null,
+  });
   const navigate = useNavigate();
   const { addToast } = useToasts();
   const tableData = {
@@ -74,6 +89,42 @@ function NewUser() {
     ],
     rows: transformedRows,
   };
+
+  const handleConfirmStatusChange = async () => {
+    try {
+      const { id, userName, currentStatus } = statusChangeConfirmationData;
+      const newStatus = currentStatus === "Active" ? "Inactive" : "Active";
+      const response = await axiosInstance.post(
+        "_v1/user/changeUserStatus",
+        {
+          id: id,
+          status: newStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const toastAppearance = newStatus === "Active" ? "success" : "error";
+
+      addToast(response.data.message, {
+        appearance: toastAppearance,
+      });
+      setStatusChangeDialogOpen(false);
+      fetchData();
+    } catch (error) {
+      toast.error("Error changing status");
+      console.error("Error changing status:", error);
+    }
+  };
+
+  const handleCloseStatusChangeDialog = () => {
+    // Close the confirmation dialog without making any changes
+    setStatusChangeDialogOpen(false);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -84,9 +135,9 @@ function NewUser() {
         {
           page: 1,
           size: 100,
-          sortBy: "username", // replace with the actual field you want to sort by
+          sortBy: "username",
           orderBy: true,
-          searchBy: "", // replace with the actual search term
+          searchBy: "", 
         },
         {
           headers: {
@@ -145,7 +196,7 @@ function NewUser() {
       Image: item.imageUrl,
       Status: (
         <Chip
-          onClick={() => handleStatusChange(item.id, item.status)}
+          onClick={() => handleStatusChange(item.id, item.username, item.status)}
           label={item.status == "Active" ? "Active" : "Inactive"}
           variant="outlined"
           style={{
@@ -158,12 +209,6 @@ function NewUser() {
       ),
       Action: (
         <div>
-          {/* <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
-          edit
-        </Icon>
-        <Icon className ="ml-1"onClick={() => handleProfile(item.id)} style={{ cursor: "pointer" }}>
-        <HelpOutlineIcon />
-      </Icon> */}
           <SoftBox display="flex" alignItems="center">
             <SoftTypography
               variant="body1"
@@ -205,28 +250,14 @@ function NewUser() {
   const handleProfile = (itemId) => {
     navigate(`/Home/profile/${itemId}`);
   };
-  const handleStatusChange = async (id, currentStatus) => {
+  const handleStatusChange = async (id, userName, currentStatus) => {
     try {
-      const newStatus = currentStatus === "Active" ? "Inactive" : "Active";
-      const response = await axiosInstance.post(
-        "_v1/user/changeUserStatus",
-        {
-          id: id,
-          status: newStatus,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const toastAppearance = newStatus === "Active" ? "success" : "error";
-
-      addToast(response.data.message, {
-        appearance: toastAppearance,
+      setStatusChangeDialogOpen(true);
+      setStatusChangeConfirmationData({
+        id,
+        userName,
+        currentStatus,
       });
-      fetchData(); // Refresh the data after status change
     } catch (error) {
       toast.error("Error changing status");
       console.error("Error changing status:", error);
@@ -238,6 +269,29 @@ function NewUser() {
   }, [transformedRows, selectedItemId]);
   return (
     <DashboardLayout>
+      <Dialog open={statusChangeDialogOpen} onClose={handleCloseStatusChangeDialog}>
+        <DialogTitle>Status Change Confirmation</DialogTitle>
+        <DialogContent>
+          <p>
+            Are you sure you want to change the status of user{" "}
+            <strong>
+              {statusChangeConfirmationData?.userName}
+            </strong>{" "}
+            from &ldquo;
+            {statusChangeConfirmationData?.currentStatus}&rdquo; to &ldquo;
+            {statusChangeConfirmationData?.currentStatus === "Active" ? "Inactive" : "Active"}
+            &rdquo;?
+          </p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseStatusChangeDialog} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmStatusChange} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
       <DashboardNavbar />
       <SoftBox className="mt-2">
         <div className="mt-3">
