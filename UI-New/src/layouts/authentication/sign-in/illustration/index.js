@@ -72,6 +72,15 @@ function Illustration() {
     }
   };
 
+  const handleSignInClick = () => {
+    // Check if both username and password are not empty before calling handleLogin
+    if (username.trim() !== "" && password.trim() !== "") {
+      handleLogin();
+    } else {
+      addToast("Please enter both Username and Password.", { appearance: "error" });
+    }
+  };
+
   return (
     <IllustrationLayout
       title="Sign In"
@@ -93,6 +102,11 @@ function Illustration() {
         <SoftBox mb={2}>
           <SoftInput
             onChange={(e) => setpassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSignInClick(); // Call your sign-in action
+              }
+            }}
             type="password"
             placeholder="Password"
             size="large"
@@ -110,7 +124,7 @@ function Illustration() {
       </SoftTypography>
     </SoftBox> */}
         <SoftBox mt={4} mb={1}>
-          <SoftButton onClick={handleLogin} variant="gradient" color="info" size="large" fullWidth>
+          <SoftButton onClick={handleSignInClick} variant="gradient" color="info" size="large" fullWidth>
             sign in
           </SoftButton>
         </SoftBox>

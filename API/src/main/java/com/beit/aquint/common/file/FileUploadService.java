@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.apache.tika.Tika;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +46,7 @@ public class FileUploadService {
 
     private AmazonS3 s3client;
 
+
     public String uploadFile(MultipartFile multipartFile, String path) throws IOException {
         try {
             initializeAmazon();
@@ -79,5 +82,12 @@ public class FileUploadService {
     private void uploadFileTos3bucket(String fileName, File file) {
         s3client.putObject(new PutObjectRequest(BUCKET_NAME, fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
+    }
+
+    public String getExtension(MultipartFile multipartFile) throws IOException {
+        Tika tika = new Tika();
+        String mimeType = tika.detect(multipartFile.getInputStream());
+        String extension = mimeType.split("/")[1];
+        return extension;
     }
 }

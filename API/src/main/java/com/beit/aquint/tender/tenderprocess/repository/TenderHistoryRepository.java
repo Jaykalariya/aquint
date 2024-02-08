@@ -15,4 +15,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TenderHistoryRepository extends JpaRepository<TenderHistory, Long> {
+
 }

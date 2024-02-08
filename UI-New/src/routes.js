@@ -108,6 +108,7 @@ import Department from "layouts/pages/client/Department";
 import Illustration from "layouts/authentication/sign-in/illustration";
 import Roles from "layouts/pages/roles";
 import Protected from "layouts/authentication/sign-in/Protected";
+import UserProfile from "layouts/pages/profile/User-profile";
 
 const routes = [
   {
@@ -782,6 +783,20 @@ const routes = [
     route: "/Home/profile",
     component: <ProfileOverview />,
   },
+  {
+    name: "Profile Overview",
+    key: "profile-overview",
+    route: "/Home/profile/:id",
+    component: <ProfileOverview />,
+  },
+
+
+  {
+    name: "User Profile",
+    key: "user-profile",
+    route: "/Home/userprofile/:id",
+    component: <UserProfile />,
+  }
 ];
 
 export default routes;

@@ -2,7 +2,10 @@ package com.beit.aquint.tender.tenderprocess.entity;
 
 import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +22,9 @@ import java.util.Date;
 @Entity
 @Table(name = "tender_details")
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TenderDetails extends EntityAuditInfo implements Serializable {
 
     @Id
@@ -39,9 +45,16 @@ public class TenderDetails extends EntityAuditInfo implements Serializable {
 
     private Date submissionDate;
 
-    private String tenderEmds;
+    private String emdExemption;
+
+    private Double emdAmount;
+
+    private String tenderFeeExemption;
+
+    private Double tenderFee;
 
     private Double emd;
 
     private String location;
+
 }

@@ -23,4 +23,5 @@ public interface RoleService {
     public Page<Role> getRolePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
 
     public List<Role> getAllRole();
+    public List<Role> getAllActiveRole();
 }

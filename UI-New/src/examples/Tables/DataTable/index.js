@@ -38,6 +38,7 @@ import SoftPagination from "components/SoftPagination";
 // Soft UI Dashboard PRO React example components
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
 import DataTableBodyCell from "examples/Tables/DataTable/DataTableBodyCell";
+import axiosInstance from "config/https";
 
 function DataTable({
   entriesPerPage,
@@ -80,9 +81,58 @@ function DataTable({
 
   // Set the default value for the entries per page when component mounts
   useEffect(() => setPageSize(defaultValue || 10), [defaultValue]);
+  const token = localStorage.getItem("token");
 
+  const fetchData = async (pageNumber, pageSize, search) => {
+    try {
+      const result = await axiosInstance.post("/_v1/user/page",
+      {
+        
+          page: pageNumber,
+          size: pageSize,
+          sortBy: "username", 
+          orderBy: true,
+          searchBy: search
+        
+
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(result);
+      return result.data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+    }
+  
   // Set the entries per page value based on the select value
-  const setEntriesPerPage = ({ value }) => setPageSize(value);
+  const setEntriesPerPage = async ({ value }) => {
+    try {
+      const newData = await fetchData(pageIndex, value, globalFilter);
+
+      tableInstance.setPageSize(value);
+      tableInstance.setData(newData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const goToPage = async (pageNumber) => {
+    try {
+      // Fetch data based on the new page number
+      const newData = await fetchData(pageNumber, pageSize, globalFilter);
+
+      // Update the table data with the new data
+      tableInstance.gotoPage(pageNumber);
+      tableInstance.setData(newData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   // Render the paginations
   const renderPagination = pageOptions.map((option) => (
@@ -113,6 +163,20 @@ function DataTable({
   const onSearchChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
   }, 100);
+
+  const searchTable = async (value) => {
+    try {
+      // Fetch data based on the search term
+      const newData = await fetchData(pageIndex, pageSize, value);
+
+      // Update the table data with the new data
+      tableInstance.setGlobalFilter(value);
+      tableInstance.setAllFilters([]); // Clear any other filters
+      tableInstance.setData(newData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   // A function that sets the sorted value for the table
   const setSortedValue = (column) => {
@@ -168,8 +232,9 @@ function DataTable({
                 placeholder="Search..."
                 value={search}
                 onChange={({ currentTarget }) => {
-                  setSearch(search);
-                  onSearchChange(currentTarget.value);
+                   setSearch(search);
+                  // onSearchChange(currentTarget.value);
+                  searchTable(currentTarget.value);
                 }}
               />
             </SoftBox>
@@ -235,7 +300,7 @@ function DataTable({
             color={pagination.color ? pagination.color : "info"}
           >
             {canPreviousPage && (
-              <SoftPagination item onClick={() => previousPage()}>
+              <SoftPagination item onClick={() => goToPage(pageIndex-1)}>
                 <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
               </SoftPagination>
             )}
@@ -244,14 +309,14 @@ function DataTable({
                 <SoftInput
                   inputProps={{ type: "number", min: 1, max: customizedPageOptions.length }}
                   value={customizedPageOptions[pageIndex]}
-                  onChange={(handleInputPagination, handleInputPaginationValue)}
+                  onChange={(e) => goToPage(Number(e.target.value - 1))}
                 />
               </SoftBox>
             ) : (
               renderPagination
             )}
             {canNextPage && (
-              <SoftPagination item onClick={() => nextPage()}>
+              <SoftPagination item onClick={() => goToPage(pageIndex + 1)}>
                 <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
               </SoftPagination>
             )}
