@@ -258,6 +258,8 @@ public class Constant {
                 tau.tender_id
             FROM
                 tender_assigned_users tau
+            WHERE
+                tau.user_id = :userId
         )
         AND
     Lower(td.project_name) LIKE Lower(CONCAT('%', :search, '%'))
@@ -299,7 +301,7 @@ public class Constant {
         td.id IN (
              SELECT tau.tender_id
              FROM tender_assigned_users tau
-             WHERE td.id = tau.tender_id
+             WHERE tau.user_id = :userId
              )
    GROUP BY
         td.id, tt.tender_type_name, ts.tender_stage_name
