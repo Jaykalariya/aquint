@@ -27,7 +27,6 @@ public class TenderAddRequestDto {
     private String tenderFeeExemption;
     private Double emdAmount;
     private Double tenderFee;
-    private Double emds;
     private String location;
     private List<Long> assignedUsers;
 }

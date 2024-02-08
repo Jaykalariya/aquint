@@ -53,8 +53,6 @@ public class TenderDetails extends EntityAuditInfo implements Serializable {
 
     private Double tenderFee;
 
-    private Double emd;
-
     private String location;
 
 }

@@ -30,7 +30,6 @@ public class TenderMapper {
         details.setEmdAmount(tenderAddRequestDto.getEmdAmount());
         details.setTenderFeeExemption(tenderAddRequestDto.getTenderFeeExemption());
         details.setTenderFee(tenderAddRequestDto.getTenderFee());
-        details.setEmd(tenderAddRequestDto.getEmds());
         details.setProjectValue(tenderAddRequestDto.getProjectValue());
         details.setSubmissionDate(tenderAddRequestDto.getSubmissionDate());
         details.setLocation(tenderAddRequestDto.getLocation());

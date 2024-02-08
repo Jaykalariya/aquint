@@ -143,7 +143,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         CAST((
             SELECT
@@ -190,7 +189,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         CAST((
             SELECT
@@ -232,7 +230,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         CAST((
             SELECT
@@ -283,7 +280,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         jsonb_agg(json_build_object(
              'fullName', COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,''),
