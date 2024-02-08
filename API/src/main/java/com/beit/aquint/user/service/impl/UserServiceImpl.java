@@ -165,8 +165,8 @@ public class UserServiceImpl implements UserService {
         if(userFullDetailsDto.getImageUrl().isEmpty()) {
             return new MessageResponse("Profile image is empty");
         }
-        user.setImageUrl(userFullDetailsDto.getStatus());
-        userDetailRepository.save(user);
+        user.setImageUrl(userFullDetailsDto.getImageUrl());
+        userDetailRepository.save(user) ;
         return new MessageResponse("Profile image successfully updated");
     }
 
