@@ -78,12 +78,12 @@ try {
     }
     else{
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body("User status is Inactive, Please Contact Admin");
+                .body(new MessageResponse(Constant.Status.CONTACT_ADMIN));
     }
 }
 catch(Exception exception){
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body("Can not process");
+            .body(new MessageResponse(Constant.Status.USER_NOT_FOUND));
 }
 }
 

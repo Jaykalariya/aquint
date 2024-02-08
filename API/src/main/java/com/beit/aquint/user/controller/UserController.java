@@ -77,6 +77,30 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.USER_BASIC_INFO)
+    public ResponseEntity<?> getUserBasicInfo() {
+        try {
+            return ResponseEntity.ok().body(userService.getUserBasicInfo());
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "No Data",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.USER_BASIC_INFO + "/{userId}")
+    public ResponseEntity<?> getUserBasicInfoByUserId(@PathVariable(value = "userId") Long userId) {
+        try {
+            return ResponseEntity.ok().body(userService.getUserBasicInfoByUserId(userId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "No Data",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
     @GetMapping(value = Constant.Mappping.ALL_USER_DETAILS + "/{userId}")
     public ResponseEntity<?> getUserFullDetails(@PathVariable(value = "userId") Long userId) {
         try {

@@ -136,6 +136,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDetail> getUserBasicInfo(){
+        try {
+            return userDetailRepository.findAll();
+        }
+        catch (Exception exception) {
+            throw new RuntimeException("Error retrieving users basic info", exception);
+        }
+    }
+
+    @Override
+    public UserDetail getUserBasicInfoByUserId(Long userId){
+        try {
+            return userDetailRepository.findByUserId(userId);
+        }
+        catch (Exception exception) {
+            throw new RuntimeException("Error retrieving user basic info", exception);
+        }
+    }
+
+    @Override
     public Page<UserFullDetail> getUserPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
         try {
             log.debug("Page Data Creating");

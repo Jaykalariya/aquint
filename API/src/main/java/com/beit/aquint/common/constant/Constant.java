@@ -42,6 +42,8 @@ public class Constant {
         public static  final  String EMAIL ="/email";
         public static  final  String USERNAME ="/username";
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
+
+        public static final String USER_BASIC_INFO = "/userBasicInfo";
         public static final String ADD_USER = "/addUser";
         public static final String UPDATE_USER = "/updateUser";
         public static final String ALL_USER_DETAILS = "/allUserDetails";
@@ -83,7 +85,10 @@ public class Constant {
 
     public class Status {
         public static final String ACTIVE = "Active";
-        public static final String IN_ACTIVE = "In Active";
+        public static final String IN_ACTIVE = "Inactive";
+        public static final String CONTACT_ADMIN = "User status is Inactive, Please Contact Admin";
+        public static final String USER_NOT_FOUND = "User not found, Please enter correct credentials";
+
     }
 
     public class Query {
@@ -329,6 +334,7 @@ ORDER BY
 SELECT
     tn.created_on AS createdOn,
     tn.note AS note,
+    ud.user_id AS userId,
     COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
     ud.image_url as profileUrl
 FROM
