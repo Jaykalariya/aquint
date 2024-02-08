@@ -19,7 +19,6 @@ public interface TenderFullDetailsDto {
     public String getTenderFeeExemption();
     public Double getEmdAmount();
     public Double getTenderFee();
-    public Double getEmd();
     public String getLocation();
     public String getAssignedUser();
 }

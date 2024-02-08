@@ -55,4 +55,8 @@ public interface UserService {
     public MessageResponse changeUserStatus(UserFullDetailsDto userFullDetailsDto);
 
     public MessageResponse changeProfileImage(UserFullDetailsDto userFullDetailsDto);
+
+    public List<UserDetail> getUserBasicInfo();
+
+    public UserDetail getUserBasicInfoByUserId(Long userId);
 }

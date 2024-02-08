@@ -13,7 +13,7 @@ public class Constant {
 
     public class Page {
         public static final Integer DEFAULT_PAGE_SIZE = 10;
-        public static final String DEFAULT_PAGE_SORT = "createdOn";
+        public static final String DEFAULT_PAGE_SORT = "id";
         public static final Boolean DEFAULT_PAGE_ORDER = Boolean.TRUE;
     }
 
@@ -42,6 +42,8 @@ public class Constant {
         public static  final  String EMAIL ="/email";
         public static  final  String USERNAME ="/username";
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
+
+        public static final String USER_BASIC_INFO = "/userBasicInfo";
         public static final String ADD_USER = "/addUser";
         public static final String UPDATE_USER = "/updateUser";
         public static final String ALL_USER_DETAILS = "/allUserDetails";
@@ -83,7 +85,10 @@ public class Constant {
 
     public class Status {
         public static final String ACTIVE = "Active";
-        public static final String IN_ACTIVE = "In Active";
+        public static final String IN_ACTIVE = "Inactive";
+        public static final String CONTACT_ADMIN = "User status is Inactive, Please Contact Admin";
+        public static final String USER_NOT_FOUND = "User not found, Please enter correct credentials";
+
     }
 
     public class Query {
@@ -138,7 +143,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         CAST((
             SELECT
@@ -185,7 +189,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         CAST((
             SELECT
@@ -227,7 +230,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         CAST((
             SELECT
@@ -256,6 +258,8 @@ public class Constant {
                 tau.tender_id
             FROM
                 tender_assigned_users tau
+            WHERE
+                tau.user_id = :userId
         )
         AND
     Lower(td.project_name) LIKE Lower(CONCAT('%', :search, '%'))
@@ -278,7 +282,6 @@ public class Constant {
         td.tender_fee_exemption AS "tenderFeeExemption",
         td.emd_amount AS "emdAmount",
         td.tender_fee AS "tenderFee",
-        td.emd AS "emd",
         td.location AS "location",
         jsonb_agg(json_build_object(
              'fullName', COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,''),
@@ -298,7 +301,7 @@ public class Constant {
         td.id IN (
              SELECT tau.tender_id
              FROM tender_assigned_users tau
-             WHERE td.id = tau.tender_id
+             WHERE tau.user_id = :userId
              )
    GROUP BY
         td.id, tt.tender_type_name, ts.tender_stage_name
@@ -329,6 +332,7 @@ ORDER BY
 SELECT
     tn.created_on AS createdOn,
     tn.note AS note,
+    ud.user_id AS userId,
     COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
     ud.image_url as profileUrl
 FROM

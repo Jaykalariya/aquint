@@ -7,6 +7,7 @@ import java.util.Date;
 public interface TenderNotesDto {
     public String getNote();
     public String getCreatedBy();
+    public String getUserId();
     public String getProfileUrl();
     public Date getCreatedOn();
 }

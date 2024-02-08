@@ -13,7 +13,8 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -41,9 +42,10 @@ import breakpoints from "assets/theme/base/breakpoints";
 // Images
 import burceMars from "assets/images/bruce-mars.jpg";
 import curved0 from "assets/images/curved-images/curved0.jpg";
-import { Box } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import { useParams } from "react-router-dom";
 import axiosInstance from "config/https";
+import SoftButton from "components/SoftButton";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -53,24 +55,30 @@ function Header() {
   const token = localStorage.getItem("token");
   const defaultId = JSON.parse(localStorage.getItem("userProfile")).id;
   const userId = id || defaultId;
+  const [editMode, setEditMode] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [updatedUser, setUpdatedUser] = useState(null);
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axiosInstance.get(`_v1/user/allUserDetails/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setUser(result.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchData();
   }, [userId]);
+  const fetchData = async () => {
+    try {
+      const result = await axiosInstance.get(`_v1/user/allUserDetails/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUser(result.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -93,6 +101,80 @@ function Header() {
   }, [tabsOrientation]);
 
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+
+  const handleEditClick = () => {
+    // Trigger the click event of the hidden file input
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  
+
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   console.log(file.name);
+  //   setSelectedImage(file);
+    
+  //   handleImageChange(user.id,)
+  // };
+
+  const handleImageChange= async (event) => {
+    try {
+    const file = event.target.files[0];
+
+    // Create a FormData object and append the file to it
+    const formData = new FormData();
+    formData.append("file", file);
+
+      console.log(file);
+      console.log(formData);
+  
+      const result = await axiosInstance.post(`_v1/user/upload/profilePhoto`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(result.data);
+      setUpdatedUser(result.data);
+      setEditMode(false);
+      setSelectedImage(null);
+      handleImageUpload(result.data);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+  const handleImageUpload = async (updatedUser) => {
+    try {
+      const result = await axiosInstance.put(`_v1/user/changeProfileImage`,
+      {
+        "id": user.id,
+        "imageUrl": updatedUser
+    }
+    , {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Photo uploaded");
+      fetchData();
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
+  const handleUpdateButtonClick = () => {
+    if (editMode) {
+      // Upload the selected image
+      handleImageUpload();
+    } else {
+      // Navigate to the update page
+      navigate(`/pages/account/settings/${userId}`);
+    }
+  };
 
   return (
     <SoftBox position="relative">
@@ -127,7 +209,25 @@ function Header() {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-          <Grid item>
+        <SoftBox className="ml-5 pt-5" position="relative" height="max-content">
+        <SoftBox alt="spotify logo" position="absolute" right={0} bottom={0} mr={-1} mb={-1} style={{ zIndex: editMode ? 3 : 2  }}>
+        {id==null? (
+          <SoftBox
+            alt="spotify logo"
+            position="absolute"
+            right={0}
+            bottom={0}
+            mr={-1}
+            mb={-1}
+            style={{ zIndex: editMode ? 3 : 2 }}
+          >
+            <SoftButton variant="gradient" color="light" size="small" iconOnly onClick={handleEditClick}>
+              <Icon>edit</Icon>
+            </SoftButton>
+          </SoftBox>
+        ) : null}
+              </SoftBox>
+        <Grid item>
             <div>
               {user.imageUrl ? (
                 <SoftAvatar
@@ -147,6 +247,7 @@ function Header() {
               )}
             </div>
           </Grid>
+        </SoftBox>
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
@@ -166,13 +267,20 @@ function Header() {
                   onChange={handleSetTabValue}
                   sx={{ background: "transparent", width: "50%" }}
                 >
-                  <Tab label="Update" icon={<Settings />} />
+                  <Tab label="Update" icon={<Settings />} onClick={handleUpdateButtonClick} />
                 </Tabs>
               </Box>
             </AppBar>
           </Grid>
         </Grid>
       </Card>
+      <input
+        type="file"
+        // accept="image/*"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={handleImageChange}
+      />
     </SoftBox>
   );
 }

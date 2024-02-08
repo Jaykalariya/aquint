@@ -31,4 +31,10 @@ public class TenderStage extends EntityAuditInfo implements Serializable {
 
     @NotNull
     private Boolean status;
+
+    private String color;
+
+    private String icon;
+
+    private Integer stageValue;
 }

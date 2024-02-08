@@ -58,11 +58,11 @@ public interface TenderDetailsRepository extends JpaRepository<TenderDetails, Lo
 
     @Query(value = Constant.Query.TENDER_PAGING_WITH_SEARCH, countQuery = Constant.Query.COUNT_QUERY,
             nativeQuery = true)
-    Page<TenderFullDetailsDto> findTenderPageWithSearch(Pageable pageable,@Param("search") String searchBy);
+    Page<TenderFullDetailsDto> findTenderPageWithSearch(Pageable pageable,@Param("search") String searchBy, @Param("userId") Long userId);
 
     @Query(value = Constant.Query.TENDER_PAGING_WITHOUT_SEARCH,
             nativeQuery = true)
-    Page<TenderFullDetailsDto> findTenderPageWithoutSearch(Pageable pageable);
+    Page<TenderFullDetailsDto> findTenderPageWithoutSearch(Pageable pageable, @Param("userId") Long userId);
 
     @Query(value = Constant.Query.TENDER_FULL_DETAILS,
             nativeQuery = true)

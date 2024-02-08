@@ -117,7 +117,12 @@ const routes = [
     key: "dashboards",
     icon: <Shop size="12px" />,
     collapse: [
-      { name: "Dashboard", key: "Dashboard", route: "/dashboard", component: <Protected Component={CRM} /> },
+      {
+        name: "Dashboard",
+        key: "Dashboard",
+        route: "/dashboard",
+        component: <Protected Component={CRM} />,
+      },
       // {
       //   name: "Default",
       //   key: "default",
@@ -790,13 +795,12 @@ const routes = [
     component: <ProfileOverview />,
   },
 
-
   {
-    name: "User Profile",
-    key: "user-profile",
-    route: "/Home/userprofile/:id",
-    component: <UserProfile />,
-  }
+    name: "Settings",
+    key: "settings",
+    route: "/pages/account/settings/:id",
+    component: <Settings />,
+  },
 ];
 
 export default routes;
