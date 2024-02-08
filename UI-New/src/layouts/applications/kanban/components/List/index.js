@@ -2,10 +2,16 @@ import React, { useEffect, useState } from "react";
 import DataTable from "examples/Tables/DataTable";
 import BirthdateFormatter from "examples/BirthdateFormatter";
 import axiosInstance from "config/https";
+import SoftBox from "components/SoftBox";
+import SoftTypography from "components/SoftTypography";
+import { Icon, Tooltip } from "@mui/material";
+import Tenderprofile from "../Tenderprofile";
 
 function List() {
   const [transformedRows, setTransformedRows] = useState([]);
   const token = localStorage.getItem("token");
+  const [show, setshow] = useState(true);
+  const [tenderid, settenderid] = useState(102);
   const tableData = {
     columns: [
       {
@@ -40,6 +46,10 @@ function List() {
         Header: "Location",
         accessor: "Location",
       },
+      {
+        Header: "Action",
+        accessor: "Action",
+      },
     ],
     rows: transformedRows,
   };
@@ -51,22 +61,37 @@ function List() {
     }).format(value);
     return formattedValue;
   };
+
+  const handleaction = (id) => {
+    settenderid(id);
+    setshow(!show);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const result = await axiosInstance.get("/_v1/tender/allTenderDetails", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const result = await axiosInstance.post(
+        "/_v1/tender/page",
+        {
+          page: 1,
+          size: 10,
+          orderBy: true,
         },
-      });
-      const transformedData = transformData(result.data);
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(result.data.content);
+      const transformedData = transformData(result.data.content);
       console.log(result.data);
       setTransformedRows(transformedData);
     } catch (error) {
-      //  throw error
+      throw error;
       console.log(error);
     }
   };
@@ -81,21 +106,43 @@ function List() {
       "Project Value": IndianCurrency(item.projectValue),
       "Submission Date": item.submissionDate,
       Location: item.location,
+      Action: (
+        <div>
+          <SoftBox display="flex" alignItems="center">
+            <SoftTypography
+              variant="body1"
+              onClick={() => handleaction(item.id)}
+              color="secondary"
+              sx={{ cursor: "pointer", lineHeight: 0 }}
+            >
+              <Tooltip title="Show Tender Details" placement="top">
+                <Icon>visibility</Icon>
+              </Tooltip>
+            </SoftTypography>
+          </SoftBox>
+        </div>
+      ),
     }));
 
     return rows;
   };
 
   return (
-    <DataTable
-      entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
-      canSearch={true}
-      showTotalEntries={true}
-      table={tableData}
-      pagination={{ variant: "gradient", color: "info" }}
-      isSorted={true}
-      noEndBorder={false}
-    />
+    <>
+      {show ? (
+        <DataTable
+          entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
+          canSearch={true}
+          showTotalEntries={true}
+          table={tableData}
+          pagination={{ variant: "gradient", color: "info" }}
+          isSorted={true}
+          noEndBorder={false}
+        />
+      ) : (
+        <Tenderprofile tenderid={tenderid} />
+      )}
+    </>
   );
 }
 

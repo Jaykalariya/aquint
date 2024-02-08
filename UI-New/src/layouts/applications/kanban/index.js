@@ -53,6 +53,7 @@ import meeting from "assets/images/meeting.jpg";
 import Addtenderform from "./components/Addtenderform";
 import BirthdateFormatter from "examples/BirthdateFormatter";
 import List from "./components/List";
+import { Tooltip } from "chart.js";
 
 function Kanban() {
   const [newCardForm, setNewCardForm] = useState(false);
@@ -77,7 +78,6 @@ function Kanban() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(tenderList.data);
       const result = await axiosInstance.get("/_v1/tender/stage/getAllTenderStage", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -91,26 +91,6 @@ function Kanban() {
   }
 
   function handelchangecard(board, columns, source, destination) {
-    // console.log(board);
-    // console.log(columns.id); // tender id
-    // // const  tenderId = columns.id
-    // const sourceColumnId = source.fromColumnId; // up stage id
-    // const sourceCardIndex = source.fromPosition;
-    // console.log("up stage id", sourceColumnId);
-
-    // const destinationColumnId = destination.toColumnId; //down stageid
-    // const destinationCardIndex = destination.toPosition;
-    // // const stageId = destinationColumnId;
-    // console.log("down stageid", destinationColumnId);
-
-    // const tenderId = board.columns[sourceColumnId].cards[sourceCardIndex].id;
-    // const result = board.columns[destinationColumnId];
-    // const sourceStageId = board.columns[sourceColumnId].id;
-
-
-    // const destinationStageId = board.columns[destinationColumnId].id;
-
-    // console.log(tenderId,sourceStageId);
     const data = { tenderId: columns.id, stageId: destination.toColumnId };
     axiosInstance.post("/_v1/tender/changeStage", data, {
       headers: {
@@ -120,7 +100,6 @@ function Kanban() {
   }
 
   const transformData = (data, tenderdata) => {
-    console.log(tenderdata);
     const columns = data.map((item) => ({
       id: item.id,
       title: item.tenderStageName,
@@ -134,9 +113,9 @@ function Kanban() {
               content={tender.tenderType}
               attachedFiles={BirthdateFormatter(tender.createdOn)}
               members={tender.assignedUser}
-              // assignedUser={tender.assignedUser}
             />
           ),
+         
         })),
     }));
     return { columns };
@@ -177,14 +156,14 @@ function Kanban() {
                     allowAddColumn
                     renderColumnHeader={({ id, title }, { addCard }) => (
                       <>
-                        <SoftBox
+                        {/* <SoftBox
                           display="flex"
                           justifyContent="space-between"
                           alignItems="center"
                           mb={3}
-                        >
+                        > */}
                           <SoftTypography variant="h6">{title}</SoftTypography>
-                          <SoftButton size="small" onClick={(event) => openNewCardForm(event, id)}>
+                          {/* <SoftButton size="small" onClick={(event) => openNewCardForm(event, id)}>
                             <Icon
                               sx={{
                                 fontWeight: "bold",
@@ -194,7 +173,7 @@ function Kanban() {
                               add
                             </Icon>
                           </SoftButton>
-                        </SoftBox>
+                        </SoftBox> */}
                         {newCardForm === id ? (
                           <SoftBox my={2.5}>
                             <SoftInput

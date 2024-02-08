@@ -21,7 +21,7 @@ import SidenavRoot from "examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 // Soft UI Dashboard PRO React context
 import { useSoftUIController, setMiniSidenav } from "context";
-import logo from "../../Image/Aquint-logo-PNG-1-e1661857588498.png";
+import logo from "../../Image/Aquint Logo PNG.png";
 import miniSidebarImage from "../../Image/icon.png";
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [openCollapse, setOpenCollapse] = useState(false);
