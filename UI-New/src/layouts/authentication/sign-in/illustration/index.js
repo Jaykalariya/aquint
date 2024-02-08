@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // react-router-dom components
 import {useNavigate } from "react-router-dom";
@@ -39,6 +39,7 @@ import { useToasts } from "react-toast-notifications";
 function Illustration() {
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
+  const passwordInputRef = useRef();
   const navigate = useNavigate();
   const { addToast } = useToasts();
   useEffect(()=>{
@@ -81,6 +82,14 @@ function Illustration() {
     }
   };
 
+  const handleEmailKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      // Focus on the password input when "Enter" is pressed in the email field
+      passwordInputRef.current.focus();
+    }
+  };
+
   return (
     <IllustrationLayout
       title="Sign In"
@@ -96,12 +105,15 @@ function Illustration() {
             type="email"
             placeholder="Email"
             size="large"
+            ref={passwordInputRef}
             onChange={(e) => setusername(e.target.value)}
+            onKeyDown={handleEmailKeyDown}
           />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftInput
             onChange={(e) => setpassword(e.target.value)}
+        
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 handleSignInClick(); // Call your sign-in action
