@@ -13,7 +13,7 @@ public class Constant {
 
     public class Page {
         public static final Integer DEFAULT_PAGE_SIZE = 10;
-        public static final String DEFAULT_PAGE_SORT = "createdOn";
+        public static final String DEFAULT_PAGE_SORT = "id";
         public static final Boolean DEFAULT_PAGE_ORDER = Boolean.TRUE;
     }
 
