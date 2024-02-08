@@ -1,7 +1,9 @@
 package com.beit.aquint.tender.tenderprocess.service.impl;
 
 import com.amazonaws.services.xray.model.Http;
+import com.beit.aquint.auth.models.User;
 import com.beit.aquint.auth.payload.response.MessageResponse;
+import com.beit.aquint.auth.security.services.UserDetailsServiceImpl;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
@@ -27,6 +29,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -74,6 +77,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
     @Autowired
     TenderNotesRepository tenderNotesRepository;
+
 
 
     @Override
@@ -176,10 +180,11 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         try {
             log.debug("Page Data Creating");
             Pageable pageable = pageUtilService.getPageable(paginationRequestDto);
+            User user = userService.getCurrentUserPrivateInfo();
             if (Objects.nonNull(paginationRequestDto.getSearchBy())) {
-                return tenderDetailsRepository.findTenderPageWithSearch(pageable, paginationRequestDto.getSearchBy());
+                return tenderDetailsRepository.findTenderPageWithSearch(pageable, paginationRequestDto.getSearchBy(),user.getId());
             } else {
-                return tenderDetailsRepository.findTenderPageWithoutSearch(pageable);
+                return tenderDetailsRepository.findTenderPageWithoutSearch(pageable,user.getId());
             }
         } catch (Exception ex) {
             throw new AquintCommonException("Tenders throws exception");
