@@ -65,7 +65,7 @@ function Overview() {
     const fetchData = async () => {
       try {
         
-        const result = await axiosInstance.get(`_v1/user/allUserDetails/${userId}`, {
+        const result = await axiosInstance.get(`_v1/user/userBasicInfo/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
