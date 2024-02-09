@@ -26,9 +26,9 @@ import SoftButton from "components/SoftButton";
 
 import { useState } from "react";
 import { Button, IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import { Menu as MenuIcon, KeyboardArrowDown, ViewList} from "@mui/icons-material";
+import { Menu as MenuIcon, KeyboardArrowDown, ViewList } from "@mui/icons-material";
 
-function Header({ sethide, hide, setshow }) {
+function Header({ setclose, sethide, hide, setshow }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -43,12 +43,14 @@ function Header({ sethide, hide, setshow }) {
     sethide(true);
     setshow(true);
     setAnchorEl(null);
+    setclose(true);
   }
 
   function handelchangelist() {
     sethide(true);
     setshow(false);
     setAnchorEl(null);
+    setclose(true);
   }
 
   return (

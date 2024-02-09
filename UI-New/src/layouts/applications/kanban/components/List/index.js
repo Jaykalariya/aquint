@@ -11,7 +11,7 @@ function List() {
   const [transformedRows, setTransformedRows] = useState([]);
   const token = localStorage.getItem("token");
   const [show, setshow] = useState(true);
-  const [tenderid, settenderid] = useState(102);
+  const [tenderid, settenderid] = useState();
   const tableData = {
     columns: [
       {
@@ -77,7 +77,7 @@ function List() {
         "/_v1/tender/page",
         {
           page: 1,
-          size: 10,
+          size: 100,
           orderBy: true,
         },
         {
@@ -86,7 +86,7 @@ function List() {
           },
         }
       );
-      console.log(result.data.content);
+      console.log("abhi",result.data.content);
       const transformedData = transformData(result.data.content);
       console.log(result.data);
       setTransformedRows(transformedData);

@@ -2,7 +2,6 @@ import axiosInstance from "config/https";
 
 async function Service(formData) {
   const token = localStorage.getItem("token");
-
   const codeArray = formData.assignedUsers.map((item) => item.value);
   const data = {
     projectName: formData.projectName,
@@ -10,7 +9,7 @@ async function Service(formData) {
     tenderStage: formData.tenderStage.value,
     tenderType: formData.tenderType.value,
     projectValue: formData.projectValue,
-    submissionDate: formData.submissionDate,
+    submissionDate: formData.submissionDate.split(" "),
     tenderEmds: formData.tenderEmds,
     emds: formData.emds,
     location: formData.location,

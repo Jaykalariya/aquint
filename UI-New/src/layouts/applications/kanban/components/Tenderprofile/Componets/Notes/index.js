@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import axiosInstance from "config/https";
+import BirthdateFormatter from "examples/BirthdateFormatter";
 import { item } from "examples/Sidenav/styles/sidenavItem";
 import { useEffect, useState } from "react";
 
@@ -57,7 +58,7 @@ function Notes({ tenderid }) {
   };
 
   return (
-    <div className="flex flex-col h-96">
+    <div className="flex flex-col h-3/4">
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
           <div>
@@ -65,8 +66,17 @@ function Notes({ tenderid }) {
               item.userId == id ? (
                 <div key={item.id} className="flex items-center justify-end mb-2">
                   <div className="flex items-center mb-2">
-                    <div className="bg-gray-300 rounded-lg py-2 px-4 max-w-xs">
+                    <div className="bg-gray-300 rounded-lg py-1 px-2 max-w-md">
+                      <p className="text-xs mb-1" style={{ fontSize: "8px" }}>
+                        {item.createdBy}
+                      </p>
                       <p className="text-sm">{item.note}</p>
+                      <p style={{ fontSize: "8px" }} className="text-right mt-1.5">
+                        {new Date(BirthdateFormatter(item.createdOn)).toLocaleDateString(
+                          undefined,
+                          { day: "numeric", month: "short" }
+                        )}
+                      </p>
                     </div>
                     <img
                       src={item.profileUrl}
@@ -77,14 +87,23 @@ function Notes({ tenderid }) {
                 </div>
               ) : (
                 <div key={item.id} className="flex flex-col mb-4">
-                  <div className="flex items-center mb-2">
+                  <div className="flex items-start mb-2">
                     <img
                       src={item.profileUrl}
                       alt="User Profile"
                       className="rounded-full w-8 h-8 mr-2"
                     />
-                    <div className="bg-gray-300 rounded-lg py-2 px-4 max-w-xs">
+                    <div className="bg-gray-300 rounded-lg py-1 px-2 max-w-md">
+                      <p className="text-xs mb-1" style={{ fontSize: "8px" }}>
+                        {item.createdBy}
+                      </p>
                       <p className="text-sm">{item.note}</p>
+                      <p style={{ fontSize: "8px" }} className="text-right mt-1.5">
+                        {new Date(BirthdateFormatter(item.createdOn)).toLocaleDateString(
+                          undefined,
+                          { day: "numeric", month: "short" }
+                        )}
+                      </p>
                     </div>
                   </div>
                 </div>
