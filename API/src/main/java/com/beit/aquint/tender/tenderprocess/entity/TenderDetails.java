@@ -2,6 +2,7 @@ package com.beit.aquint.tender.tenderprocess.entity;
 
 import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

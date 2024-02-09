@@ -11,8 +11,10 @@ async function Service(formData) {
     tenderType: formData.tenderType.value,
     projectValue: formData.projectValue,
     submissionDate: formData.submissionDate,
-    tenderEmds: formData.tenderEmds,
-    emds: formData.emds,
+    emdExemption: formData.emdExemption ,
+    emdAmount: formData.emdAmount,
+    tenderFeeExemption: formData.tenderFeeExemption,
+    tenderFee: formData.tenderFee,
     location: formData.location,
     assignedUsers: codeArray,
   };
