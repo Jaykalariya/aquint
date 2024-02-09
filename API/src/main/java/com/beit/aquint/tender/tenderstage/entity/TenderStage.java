@@ -3,6 +3,7 @@ package com.beit.aquint.tender.tenderstage.entity;
 import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -34,7 +35,6 @@ public class TenderStage extends EntityAuditInfo implements Serializable {
 
     private String color;
 
-    private String icon;
-
+    @NotNull
     private Integer stageValue;
 }

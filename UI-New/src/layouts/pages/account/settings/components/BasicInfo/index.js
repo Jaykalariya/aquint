@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -35,7 +35,11 @@ import selectData from "layouts/pages/account/settings/components/BasicInfo/data
 import SoftInput from "components/SoftInput";
 import SoftDatePicker from "components/SoftDatePicker";
 import axiosInstance from "config/https";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { MenuItem, Select } from "@mui/material";
+import SoftButton from "components/SoftButton";
+import { useToasts } from "react-toast-notifications";
+import initialValues from "layouts/pages/users/new-user/schemas/initialValues";
 
 function BasicInfo() {
   const { id } = useParams();
@@ -55,14 +59,81 @@ function BasicInfo() {
   const [anniversaryDate, setAnniversaryDate] = useState(null);
   const [bloodGroup, setBloodGroup] = useState(null);
   const [address, setAddress] = useState(null);
-  const [martitalStatus, setmaritalStatus] = useState(null);
+  const [maritalStatus, setmaritalStatus] = useState(null);
   const [religion, setReligion] = useState(null);
   const [nationality, setNationality] = useState(null);
+  const navigate = useNavigate();
+  const { addToast } = useToasts();
+  const initialValues = useRef({
+    firstname,
+    middlename,
+    lastname,
+    mobileNumber,
+    gender,
+    email,
+    birthDate,
+    anniversaryDate,
+    bloodGroup,
+    address,
+    maritalStatus,
+    religion,
+    nationality,
+  });
 
-  
   useEffect(() => {
     fetchData();
   }, [userId]);
+  // useEffect(() => {
+  //   // Check if the current values match the initial values
+  //   const hasChanges = Object.keys(initialValues).some(
+  //     key => initialValues[key] !== eval(key) // eval is used to dynamically get the current value
+  //   );
+  //   console.log(hasChanges);
+  //   console.log(isModified);
+
+  //   setIsModified(hasChanges);
+  // }, [firstname, middlename, lastname, mobileNumber, gender, email, birthDate, anniversaryDate, bloodGroup, address, maritalStatus, religion, nationality]);
+
+  const postData = async () => {
+    try {
+      const result = await axiosInstance.post(
+        `_v1/user/details/add`,
+        {
+          id: user.id,
+          userId: user.userId,
+          firstname: firstname,
+          middlename: middlename,
+          lastname: lastname,
+          email: email,
+          mobileNumber: mobileNumber,
+          birthDate: birthDate,
+          gender: gender,
+          bloodGroup: bloodGroup,
+          maritalStatus: maritalStatus,
+          anniversaryDate: anniversaryDate,
+          nationality: nationality,
+          religion: religion,
+          address: address,
+          imageUrl: user.imageUrl,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        fetchData();
+        return true;
+      } else {
+        console.error("Error adding user. Unexpected response:", response);
+        return false;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const fetchData = async () => {
     try {
       const result = await axiosInstance.get(`_v1/user/userBasicInfo/${userId}`, {
@@ -72,30 +143,109 @@ function BasicInfo() {
       });
 
       setUser(result.data);
-      setUser(result.data);
-    setFirstName(result.data.firstname);
-    setMiddleName(result.data.middlename);
-    setLastName(result.data.lastname);
-    setEmail(result.data.email);
-    setGender(result.data.gender);
-    setBirthDate(result.data.birthDate);
-    setMobileNumber(result.data.mobileNumber);
-    setAnniversaryDate(result.data.anniversaryDate);
-    setBloodGroup(result.data.bloodGroup);
-    setAddress(result.data.address);
-    setmaritalStatus(result.data.maritalStatus);
-    setReligion(result.data.religion);
-    setNationality(result.data.nationality);
+
+      setFirstName(result.data.firstname);
+      initialValues.firstname = firstname;
+      setMiddleName(result.data.middlename);
+      setLastName(result.data.lastname);
+      setEmail(result.data.email);
+      setGender(result.data.gender);
+      setBirthDate(result.data.birthDate);
+      setMobileNumber(result.data.mobileNumber);
+      setAnniversaryDate(result.data.anniversaryDate);
+      setBloodGroup(result.data.bloodGroup);
+      setAddress(result.data.address);
+      setmaritalStatus(result.data.maritalStatus);
+      setReligion(result.data.religion);
+      setNationality(result.data.nationality);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handlefirstnameChange = (event) => {
-    setFirstName(event.target.value);
-    
+  const [isModified, setIsModified] = useState(false);
+
+  // Function to set the modified state
+  const setModified = () => {
+    if (!isModified) {
+      setIsModified(true);
+    }
   };
 
+  const handlefirstnameChange = (event) => {
+    setModified();
+    setFirstName(event.target.value);
+  };
+
+  const handlemiddlenameChange = (event) => {
+    setModified();
+    setMiddleName(event.target.value);
+  };
+
+  const handlelastnameChange = (event) => {
+    setModified();
+    setLastName(event.target.value);
+  };
+
+  const handleMobileNumber = (event) => {
+    setModified();
+    setMobileNumber(event.target.value);
+  };
+
+  const handleGender = (event) => {
+    setModified();
+    setGender(event.target.value);
+  };
+
+  const handleEmailChange = (event) => {
+    setModified();
+    setEmail(event.target.value);
+  };
+
+  const handleBirthDateChange = (date) => {
+    setModified();
+    setBirthDate(date);
+  };
+
+  const handleAnniversaryDateChange = (date) => {
+    setModified();
+    setAnniversaryDate(date);
+  };
+
+  const handleBloodGroupChange = (event) => {
+    setModified();
+    setBloodGroup(event.target.value);
+  };
+
+  const handleAddressChange = (event) => {
+    setModified();
+    setAddress(event.target.value);
+  };
+
+  const handleMaritalStatusChange = (event) => {
+    setModified();
+    setmaritalStatus(event.target.value);
+  };
+
+  const handleReligionChange = (event) => {
+    setModified();
+    setReligion(event.target.value);
+  };
+
+  const handleNationalityChange = (event) => {
+    setModified();
+    setNationality(event.target.value);
+  };
+  const handleSave = () => {
+    if (postData()) {
+      addToast("User update successful!", {
+        appearance: "success",
+      });
+    } else {
+      addToast("failed. Please try again.", { appearance: "error" });
+    }
+    setIsModified(false); // Reset the modified state after saving
+  };
 
   return (
     <Card id="basic-info" sx={{ overflow: "visible" }}>
@@ -109,11 +259,10 @@ function BasicInfo() {
               First Name <span style={{ color: "red" }}>*</span>
             </label>
             <SoftInput
-    
-           value={firstname}
-            onChange={handlefirstnameChange}
-            // onBlur={() => handleFieldBlur("firstname")}
-            // style={{ borderColor: firstnameError ? "red" : "", width: "100%" }}
+              value={firstname}
+              onChange={handlefirstnameChange}
+              // onBlur={() => handleFieldBlur("firstname")}
+              // style={{ borderColor: firstnameError ? "red" : "", width: "100%" }}
             />
             {/* {firstnameError && (
                 <span style={{ color: "red", fontSize: "12px" }}>Please enter firstname</span>
@@ -122,8 +271,10 @@ function BasicInfo() {
           <div style={{ width: "33%" }}>
             <label className="text-xs font-bold p-1">Middle Name</label>
             <SoftInput
-            value={middlename}
-            // onChange={handlemiddlenameChange}
+              value={middlename}
+              onChange={handlemiddlenameChange}
+
+              // onChange={handlemiddlenameChange}
             />
           </div>
           <div className="ml-4 " style={{ width: "33%" }}>
@@ -131,10 +282,10 @@ function BasicInfo() {
               Last Name <span style={{ color: "red" }}>*</span>
             </label>
             <SoftInput
-            value={lastname}
-            // onChange={handlelastnameChange}
-            // onBlur={() => handleFieldBlur("lastname")}
-            // style={{ borderColor: lastnameError ? "red" : "" }}
+              value={lastname}
+              onChange={handlelastnameChange}
+              // onBlur={() => handleFieldBlur("lastname")}
+              // style={{ borderColor: lastnameError ? "red" : "" }}
             />
             {/* {lastnameError && (
                 <span style={{ color: "red", fontSize: "12px" }}>Please enter lastname</span>
@@ -156,10 +307,7 @@ function BasicInfo() {
                     Mobile no.
                   </SoftTypography>
                 </SoftBox>
-                <SoftInput
-                value={mobileNumber}
-                // onChange={handlemiddlenameChange}
-                />
+                <SoftInput value={mobileNumber} onChange={handleMobileNumber} />
               </SoftBox>
             </Grid>
 
@@ -175,7 +323,7 @@ function BasicInfo() {
                     Email
                   </SoftTypography>
                 </SoftBox>
-                <SoftInput value={email}/>
+                <SoftInput value={email} onChange={handleEmailChange} />
               </SoftBox>
             </Grid>
           </Grid>
@@ -192,15 +340,10 @@ function BasicInfo() {
                   Gender
                 </SoftTypography>
               </SoftBox>
-              <SoftSelect
-                // onChange={handleStatusChange}
-                value={gender}
-                placeholder="Select Gender"
-                options={[
-                  { value: "true", label: "Male" },
-                  { value: "false", label: "Female" },
-                ]}
-              />
+              <Select input={<SoftInput />} value={gender} onChange={handleGender}>
+                <MenuItem value="Male">Male</MenuItem>
+                <MenuItem value="Female">Female</MenuItem>
+              </Select>
             </SoftBox>
           </div>
           <div style={{ width: "30%" }}>
@@ -210,7 +353,7 @@ function BasicInfo() {
                   Date of Birth
                 </SoftTypography>
               </SoftBox>
-              <SoftDatePicker value={birthDate}/>
+              <SoftDatePicker value={birthDate} onChange={handleBirthDateChange} />
             </SoftBox>
           </div>
           <div className="mr-4" style={{ width: "30%" }}>
@@ -220,7 +363,7 @@ function BasicInfo() {
                   Anniversary Date
                 </SoftTypography>
               </SoftBox>
-              <SoftDatePicker value={anniversaryDate}/>
+              <SoftDatePicker value={anniversaryDate} onChange={handleAnniversaryDateChange} />
             </SoftBox>
           </div>
         </div>
@@ -228,22 +371,21 @@ function BasicInfo() {
           className="ml-4 "
           style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
         >
-          <div style={{ width: "20%" }}>
+          <div style={{ width: "25%" }}>
             <SoftBox display="flex" flexDirection="column" justifyContent="flex-end" height="100%">
               <SoftBox mb={1} ml={0.5} mt={3} lineHeight={0} display="inline-block">
                 <SoftTypography component="label" variant="caption" fontWeight="bold">
                   Marital Status
                 </SoftTypography>
               </SoftBox>
-              <SoftSelect
-                // onChange={handleStatusChange}
-                value={martitalStatus}
-                placeholder="Select"
-                options={[
-                  { value: "Single", label: "Single" },
-                  { value: "Married", label: "Married" },
-                ]}
-              />
+              <Select
+                input={<SoftInput />}
+                value={maritalStatus}
+                onChange={handleMaritalStatusChange}
+              >
+                <MenuItem value="Single">Single</MenuItem>
+                <MenuItem value="Married">Married</MenuItem>
+              </Select>
             </SoftBox>
           </div>
 
@@ -254,21 +396,17 @@ function BasicInfo() {
                   Blood group
                 </SoftTypography>
               </SoftBox>
-              <SoftSelect
-                // onChange={handleStatusChange}
-                value={bloodGroup}
-                placeholder="Select"
-                options={[
-                  { value: "O+", label: "O+" },
-                  { value: "O-", label: "O-" },
-                  { value: "A+", label: "A+" },
-                  { value: "A-", label: "A-" },
-                  { value: "B+", label: "B+" },
-                  { value: "B-", label: "B-" },
-                  { value: "AB+", label: "AB+" },
-                  { value: "AB-", label: "AB-" },
-                ]}
-              />
+              <Select value={bloodGroup} onChange={handleBloodGroupChange}>
+                <MenuItem value="A+">A+</MenuItem>
+                <MenuItem value="A-">A-</MenuItem>
+                <MenuItem value="B+">B+</MenuItem>
+                <MenuItem value="B-">B-</MenuItem>
+                <MenuItem value="AB+">AB+</MenuItem>
+                <MenuItem value="AB-">AB-</MenuItem>
+                <MenuItem value="O+">O+</MenuItem>
+                <MenuItem value="O-">O-</MenuItem>
+                {/* Add more options as needed */}
+              </Select>
             </SoftBox>
           </div>
 
@@ -279,12 +417,24 @@ function BasicInfo() {
                   Religion
                 </SoftTypography>
               </SoftBox>
-              <SoftSelect
-                // onChange={handleStatusChange}
+              <Select
                 value={religion}
-                placeholder="Select"
-                options={[{ value: "Hindu", label: "Hindu" }]}
-              />
+                onChange={handleReligionChange}
+                style={{
+                  width: "100%",
+                  borderRadius: "8px",
+                  borderColor: "#ced4da",
+                  borderWidth: "1px",
+                  padding: "8px",
+                }}
+              >
+                <MenuItem value="Hindu">Hindu</MenuItem>
+                <MenuItem value="Christian">Christian</MenuItem>
+                <MenuItem value="Muslim">Muslim</MenuItem>
+                <MenuItem value="Buddhist">Buddhist</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+                {/* Add more options as needed */}
+              </Select>
             </SoftBox>
           </div>
 
@@ -295,12 +445,21 @@ function BasicInfo() {
                   Nationality
                 </SoftTypography>
               </SoftBox>
-              <SoftSelect
-                // onChange={handleStatusChange}
+              <Select
                 value={nationality}
-                placeholder="Select"
-                options={[{ value: "India", label: "India" }]}
-              />
+                onChange={handleNationalityChange}
+                style={{
+                  width: "100%",
+                  borderRadius: "8px",
+                  borderColor: "#ced4da",
+                  borderWidth: "1px",
+                  padding: "8px",
+                }}
+              >
+                <MenuItem value="Indian">Indian</MenuItem>
+
+                {/* Add more options as needed */}
+              </Select>
             </SoftBox>
           </div>
         </div>
@@ -331,121 +490,26 @@ function BasicInfo() {
                   width: "100%",
                   height: "100px",
                   borderRadius: "8px",
-                  borderColor: "#ced4da", 
+                  borderColor: "#ced4da",
                   borderWidth: "1px",
-                  padding: "8px", // 
+                  padding: "8px", //
                   resize: "vertical",
+                  overflowX: "hidden",
+                  fontSize: "14px",
                 }}
+                onChange={handleAddressChange}
+                value={address}
               />
             </div>
           </SoftBox>
+          {isModified && (
+            <div className="flex justify-end gap-2 mr-4 mt-3 mb-3">
+              <SoftButton color="info" onClick={() => handleSave()}>
+                Update
+              </SoftButton>
+            </div>
+          )}
         </div>
-
-        {/* <Grid item xs={12}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={4}>
-                <SoftBox
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="flex-end"
-                  height="100%"
-                >
-                  <SoftBox mb={1} ml={0.5} lineHeight={0} display="inline-block">
-                    <SoftTypography
-                      component="label"
-                      variant="caption"
-                      fontWeight="bold"
-                      textTransform="capitalize"
-                    >
-                      I&apos;m
-                    </SoftTypography>
-                  </SoftBox>
-                  <SoftSelect placeholder="Male" options={selectData.gender} />
-                </SoftBox>
-              </Grid>
-              <Grid item xs={12} sm={8}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={5}>
-                    <SoftBox
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="flex-end"
-                      height="100%"
-                    >
-                      <SoftBox mb={1} ml={0.5} lineHeight={0} display="inline-block">
-                        <SoftTypography
-                          component="label"
-                          variant="caption"
-                          fontWeight="bold"
-                          textTransform="capitalize"
-                        >
-                          birth date
-                        </SoftTypography>
-                      </SoftBox>
-                      <SoftSelect placeholder="February" options={selectData.birthDate} />
-                    </SoftBox>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <SoftBox
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="flex-end"
-                      height="100%"
-                    >
-                      <SoftSelect placeholder={1} options={selectData.days} />
-                    </SoftBox>
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <SoftBox
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="flex-end"
-                      height="100%"
-                    >
-                      <SoftSelect placeholder={2021} options={selectData.years} />
-                    </SoftBox>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid> */}
-        {/* <Grid item xs={12} sm={6}>
-            <FormField
-              label="email"
-              placeholder="example@email.com"
-              inputProps={{ type: "email" }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormField
-              label="confirmation email"
-              placeholder="example@email.com"
-              inputProps={{ type: "email" }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormField label="your location" placeholder="Sydney, A" />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormField
-              label="phone number"
-              placeholder="+40 735 631 620"
-              inputProps={{ type: "number" }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormField label="language" placeholder="English" />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <SoftBox display="flex" flexDirection="column" justifyContent="flex-end" height="100%">
-              <SoftTagInput
-                tags={skills}
-                placeholder=" "
-                onChange={(newSkill) => setSkills(newSkill)}
-                removeOnBackspace
-              />
-            </SoftBox>
-          </Grid> */}
       </SoftBox>
     </Card>
   );

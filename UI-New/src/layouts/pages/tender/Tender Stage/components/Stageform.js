@@ -4,26 +4,52 @@ import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 import SoftSelect from "components/SoftSelect";
-import { useState } from "react";
+import { useState ,useRef,useEffect} from "react";
 import Service from "../service";
 import { useToasts } from "react-toast-notifications";
+import { ChromePicker, SketchPicker } from 'react-color';
 
 function Stageform({ setShow, fetchData }) {
   const [tenderStageName, settenderStageName] = useState(null);
   const [status, setstatus] = useState(null);
+  const [color, setcolor] = useState('');
+  const [stageValue, setstageValue] = useState(null);
   const [tenderStageNameError, settenderStageNameError] = useState(false);
   const [statusError, setStatusError] = useState(false);
+  const [colorError, setcolorError] = useState(null);
+  const [stageValueError, setstageValueError] = useState(null);
   const { addToast } = useToasts();
+  const [showSketchPicker, setShowSketchPicker] = useState(false);
+  const pickerRef = useRef(null);
 
   const handletenderStageName = (event) => {
     settenderStageName(event.target.value);
     settenderStageNameError(false);
   };
-
+  
   const handleStatusChange = (selectedOption) => {
     setstatus(selectedOption);
     setStatusError(false);
   };
+
+  const handleStageValueChange = (selectedOption) => {
+    setstageValue(selectedOption);
+    setstageValueError(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        setShowSketchPicker(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setShowSketchPicker]);
+
 
   const handleCancel = () => {
     setShow(false);
@@ -43,12 +69,23 @@ function Stageform({ setShow, fetchData }) {
       hasError = true;
     }
 
+    if (color === null) {
+      setcolorError(true);
+      hasError = true;
+    }
+
+
+    if (stageValue === null) {
+      setstageValueError(true);
+      hasError = true;
+    }
+
     if (hasError) {
       return addToast("Please fill in all the details", { appearance: "error" });
     }
 
     const parsedStatus = status.value === "true";
-    const result = await Service(tenderStageName, parsedStatus);
+    const result = await Service(tenderStageName, color, stageValue, parsedStatus);
     if (result === true) {
       addToast("add TenderStage successful!", {
         appearance: "success",
@@ -72,17 +109,68 @@ function Stageform({ setShow, fetchData }) {
           {tenderStageNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please enter a Tender StageName</span>
           )}
+
+
+
+          <div className="md:grid md:grid-cols-2 md:gap-5">
           <div>
+  <label className="text-xs font-bold p-1">Color</label>
+  <SoftButton
+        className="font-bold hover:opacity-100"
+        style={{
+          backgroundColor: color,
+        }}
+        backgroundColor={color}
+        onClick={() => { setShowSketchPicker(showSketchPicker => !showSketchPicker) }}
+        placeholder="Pick a Color"
+        fullWidth
+      >
+        Pick a Color
+      </SoftButton>
+      {showSketchPicker && (
+        <div ref={pickerRef}>
+          <SketchPicker
+            color={color}
+            onChange={updatedColor => setcolor(updatedColor.hex)}
+            onBlur={() => { setShowSketchPicker(showSketchPicker => !showSketchPicker) }}
+          />
+        </div>
+      )}
+      {colorError && (
+        <span style={{ color: "red", fontSize: "12px" }}>Please select a Color</span>
+      )}
+
+</div>
+
+            <div>
+              <label className="text-xs font-bold p-1">Stage Value</label>
+              <SoftSelect
+                placeholder="Select Stage Value"
+                options={[
+                  { value: 1, label: "Final WIN" },
+                  { value: 2, label: "Final LOSS" },
+                  { value: 3, label: "OTHER" }
+                ]}
+                error={stageValueError}
+                onChange={(selected) => handleStageValueChange(selected.value)}
+              />
+              {stageValueError && (
+                <span style={{ color: "red", fontSize: "12px" }}>Please select a Stage Value</span>
+              )}
+            </div>
+          </div> 
+           
+         <div>
             <label className="text-xs font-bold p-1">Status</label>
             <SoftSelect
-              onChange={handleStatusChange}
-              value={status}
               placeholder="Select Satus"
-              error={statusError}
               options={[
                 { value: "true", label: "Active" },
                 { value: "false", label: "Inactive" },
               ]}
+              onChange={(selected) => handleStatusChange(selected)}
+
+              error={statusError}
             />
             {statusError && (
               <span style={{ color: "red", fontSize: "12px" }}>Please select a Status</span>

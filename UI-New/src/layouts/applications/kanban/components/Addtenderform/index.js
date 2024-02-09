@@ -21,8 +21,10 @@ function Addtenderform({ sethide, fetchData }) {
     tenderType: null,
     projectValue: null,
     submissionDate: new Date(),
-    tenderEmds: null,
-    emds: null,
+    emdExemption: null,
+    emdAmount: null,
+    tenderFeeExemption: null,
+    tenderFee: null,
     location: null,
     assignedUsers: [],
   });
@@ -34,8 +36,10 @@ function Addtenderform({ sethide, fetchData }) {
     tenderType: false,
     projectValue: false,
     submissionDate: false,
-    tenderEmds: false,
-    emds: false,
+    emdExemption: false,
+    emdAmount: false,
+    tenderFeeExemption: false,
+    tenderFee: false,
     location: false,
     assignedUsers: false,
   });
@@ -154,7 +158,7 @@ function Addtenderform({ sethide, fetchData }) {
   async function submit() {
     let hasError = false;
     const newFormErrors = { ...formErrors };
-
+console.log(formData);
     Object.keys(formData).forEach((key) => {
       if (!formData[key] || formData[key] === undefined) {
         newFormErrors[key] = true;
@@ -274,29 +278,64 @@ function Addtenderform({ sethide, fetchData }) {
             )}
           </div>
         </div>
+
         <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="text-xs font-bold p-1">Tender Emds</label>
-            <SoftInput
-              value={formData.tenderEmds}
-              onChange={(e) => handleInputChange("tenderEmds", e.target.value)}
-              error={formErrors.tenderEmds}
+            <label className="text-xs font-bold p-1">EMD Exemption</label>
+<SoftSelect  
+placeholder="Select"
+options={[
+     {value: "None", label: "None"},
+     {value: "MSME", label: "MSME" },
+     {value: "Startup (Dipp)", label: "Startup (Dipp)"}
+    ]}
+     onChange={(selected) => handleInputChange("emdExemption", selected.value)}
+     error={formErrors.emdExemption}
             />
-            {formErrors.tenderEmds && (
-              <span className="text-xs text-red-500">Please Enter A Tender Emds</span>
-            )}
+{formErrors.emdExemption && (
+              <span className="text-xs text-red-500">Please Select EMD Exemption </span>)}
           </div>
           <div>
-            <label className="text-xs font-bold p-1">EMDS</label>
+            <label className="text-xs font-bold p-1">EMD Amount</label>
             <SoftInput
               placeholder="Type here..."
               icon={{ component: indianrupee, direction: "left" }}
-              onChange={(e) => handleInputChange("emds", e.target.value)}
-              value={formData.emds}
-              error={formErrors.emds}
+              onChange={(e) => handleInputChange("emdAmount", e.target.value)}
+              value={formData.emdAmount}
+              error={formErrors.emdAmount}
               type="number"
             />
-            {formErrors.emds && <span className="text-xs text-red-500">Please Enter A Emds</span>}
+            {formErrors.emdAmount && <span className="text-xs text-red-500">Please Enter the EMD Amount</span >} 
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-5">
+          <div>
+            <label className="text-xs font-bold p-1">Tender Fee Exemption</label>
+            <SoftSelect 
+placeholder="Select"
+options={[
+     {value: "None", label: "None"},
+     {value: "MSME", label: "MSME" },
+     {value: "Startup (Dipp)", label: "Startup (Dipp)"}
+    ]}
+     onChange={(selected) => handleInputChange("tenderFeeExemption", selected.value)}
+     error={formErrors.tenderFeeExemption}
+            />
+{formErrors.tenderFeeExemption && (
+              <span className="text-xs text-red-500">Please Select Ter Fee Exemption </span>)}
+          </div>
+          <div>
+            <label className="text-xs font-bold p-1">Tender Fee</label>
+            <SoftInput
+              placeholder="Type here..."
+              icon={{ component: indianrupee, direction: "left" }}
+              onChange={(e) => handleInputChange("tenderFee", e.target.value)}
+              value={formData.tenderFee}
+              error={formErrors.tenderFee}
+              type="number"
+            />
+            {formErrors.tenderFee && <span className="text-xs text-red-500">Please Enter the Tender Fee</span >} 
           </div>
         </div>
 

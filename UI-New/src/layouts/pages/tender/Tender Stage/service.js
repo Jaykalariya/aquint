@@ -1,6 +1,6 @@
 import axiosInstance from "config/https";
 
-async function Service(tenderStageName, status) {
+async function Service(tenderStageName, color,stageValue,status) {
   const token = localStorage.getItem("token");
   try {
     const response = await axiosInstance.post(
@@ -8,6 +8,8 @@ async function Service(tenderStageName, status) {
       {
         tenderStageName,
         status,
+        color,
+        stageValue
       },
       {
         headers: {
