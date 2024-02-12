@@ -91,7 +91,7 @@ function Overview() {
               title="profile information"
               // description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
               info={{
-                fullName: `${user.firstname || "N/A"} ${user.middlename || "N/A"} ${
+                fullName: `${user.firstname || "N/A"} ${user.middlename || ""} ${
                   user.lastname || "N/A"
                 }`,
                 mobile: `${user.mobileNumber || "N/A"}`,

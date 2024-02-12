@@ -51,7 +51,7 @@ function BasicInfo() {
   const [skills, setSkills] = useState(["react", "angular"]);
   const [firstname, setFirstName] = useState(null);
   const [middlename, setMiddleName] = useState(null);
-  const [lastname, setLastName] = useState(null);
+  const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState(null);
   const [gender, setGender] = useState(null);
   const [birthDate, setBirthDate] = useState(null);
@@ -62,23 +62,15 @@ function BasicInfo() {
   const [maritalStatus, setmaritalStatus] = useState(null);
   const [religion, setReligion] = useState(null);
   const [nationality, setNationality] = useState(null);
+
+  const [nameError, setnameError] = useState(false);
+  const [firstnameError, setFirstnameError] = useState(false);
+  const [lastnameError, setLastnameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setemailErrorMessage] = useState(false);
+
   const navigate = useNavigate();
   const { addToast } = useToasts();
-  const initialValues = useRef({
-    firstname,
-    middlename,
-    lastname,
-    mobileNumber,
-    gender,
-    email,
-    birthDate,
-    anniversaryDate,
-    bloodGroup,
-    address,
-    maritalStatus,
-    religion,
-    nationality,
-  });
 
   useEffect(() => {
     fetchData();
@@ -122,11 +114,11 @@ function BasicInfo() {
           },
         }
       );
-      if (response.status === 200) {
+      if (result.status === 200) {
         fetchData();
         return true;
       } else {
-        console.error("Error adding user. Unexpected response:", response);
+        console.error("Error adding user. Unexpected response:", result);
         return false;
       }
     } catch (error) {
@@ -143,9 +135,7 @@ function BasicInfo() {
       });
 
       setUser(result.data);
-
       setFirstName(result.data.firstname);
-      initialValues.firstname = firstname;
       setMiddleName(result.data.middlename);
       setLastName(result.data.lastname);
       setEmail(result.data.email);
@@ -175,6 +165,7 @@ function BasicInfo() {
   const handlefirstnameChange = (event) => {
     setModified();
     setFirstName(event.target.value);
+    setFirstnameError(false);
   };
 
   const handlemiddlenameChange = (event) => {
@@ -185,58 +176,137 @@ function BasicInfo() {
   const handlelastnameChange = (event) => {
     setModified();
     setLastName(event.target.value);
+    setLastnameError(false);
   };
 
   const handleMobileNumber = (event) => {
     setModified();
+    setMobileNumberError(false);
     setMobileNumber(event.target.value);
+    console.log(mobileNumber);
   };
 
   const handleGender = (event) => {
     setModified();
+    setGenderError(false);
     setGender(event.target.value);
   };
 
   const handleEmailChange = (event) => {
-    setModified();
     setEmail(event.target.value);
+    setEmailError(false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(event.target.value)) {
+      setEmailError(true);
+    }
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   const handleBirthDateChange = (date) => {
     setModified();
     setBirthDate(date);
+    setBirthDateError(false);
+    console.log(date);
+    console.log(birthDate);
   };
 
   const handleAnniversaryDateChange = (date) => {
     setModified();
+    setAnniversaryDateError(false);
     setAnniversaryDate(date);
   };
 
   const handleBloodGroupChange = (event) => {
     setModified();
+    setBloodGroupError(false);
     setBloodGroup(event.target.value);
   };
 
   const handleAddressChange = (event) => {
     setModified();
+    setAddressError(false);
     setAddress(event.target.value);
   };
 
   const handleMaritalStatusChange = (event) => {
     setModified();
+    setMaritalStatusError(false);
     setmaritalStatus(event.target.value);
   };
 
   const handleReligionChange = (event) => {
     setModified();
+    setReligionError(false);
     setReligion(event.target.value);
   };
 
   const handleNationalityChange = (event) => {
     setModified();
+    setNationalityError(false);
     setNationality(event.target.value);
   };
-  const handleSave = () => {
+
+  const handleFieldBlur = async (fieldName) => {
+    switch (fieldName) {
+      case "firstname":
+        if (firstname === "") {
+          setFirstnameError(true);
+        }
+        break;
+      case "lastname":
+        if (lastname === "") {
+          setLastnameError(true);
+        }
+        break;
+      case "email":
+        if (email === "" || !isValidEmail(email)) {
+          setEmailError(true);
+          setemailErrorMessage(false);
+        } else {
+          try {
+            const response = await axiosInstance.post(`/existedCredential/email/${email}`);
+            console.log(response.data);
+            setIsEmailValid(response.data !== true);
+            if (response.data === true) {
+              setemailErrorMessage(true);
+            } else {
+              setemailErrorMessage(false);
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSave = async () => {
+    let hasError = false;
+
+    if (firstname === "") {
+      setFirstnameError(true);
+      hasError = true;
+    }
+    if (lastname === "") {
+      setLastnameError(true);
+      hasError = true;
+    }
+
+    if (email === "") {
+      setEmailError(true);
+      hasError = true;
+    }
+
+    if (hasError) {
+      return addToast("Please fill in all the details", { appearance: "error" });
+    }
+
     if (postData()) {
       addToast("User update successful!", {
         appearance: "success",
@@ -244,6 +314,7 @@ function BasicInfo() {
     } else {
       addToast("failed. Please try again.", { appearance: "error" });
     }
+
     setIsModified(false); // Reset the modified state after saving
   };
 
@@ -260,13 +331,14 @@ function BasicInfo() {
             </label>
             <SoftInput
               value={firstname}
+              onBlur={() => handleFieldBlur("firstname")}
               onChange={handlefirstnameChange}
               // onBlur={() => handleFieldBlur("firstname")}
               // style={{ borderColor: firstnameError ? "red" : "", width: "100%" }}
             />
-            {/* {firstnameError && (
-                <span style={{ color: "red", fontSize: "12px" }}>Please enter firstname</span>
-              )} */}
+            {firstnameError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter firstname</span>
+            )}
           </div>
           <div style={{ width: "33%" }}>
             <label className="text-xs font-bold p-1">Middle Name</label>
@@ -284,12 +356,12 @@ function BasicInfo() {
             <SoftInput
               value={lastname}
               onChange={handlelastnameChange}
-              // onBlur={() => handleFieldBlur("lastname")}
-              // style={{ borderColor: lastnameError ? "red" : "" }}
+              onBlur={() => handleFieldBlur("lastname")}
+              style={{ borderColor: lastnameError ? "red" : "" }}
             />
-            {/* {lastnameError && (
-                <span style={{ color: "red", fontSize: "12px" }}>Please enter lastname</span>
-              )} */}
+            {lastnameError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter lastname</span>
+            )}
           </div>
         </div>
 
@@ -320,10 +392,18 @@ function BasicInfo() {
               >
                 <SoftBox mb={1} ml={0.5} mt={3} lineHeight={0} display="inline-block">
                   <SoftTypography component="label" variant="caption" fontWeight="bold">
-                    Email
+                    Email <span style={{ color: "red" }}>*</span>
                   </SoftTypography>
                 </SoftBox>
-                <SoftInput value={email} onChange={handleEmailChange} />
+                <SoftInput
+                  onChange={handleEmailChange}
+                  onBlur={() => handleFieldBlur("email")}
+                  value={email}
+                  style={{
+                    borderColor: emailError || emailErrorMessage ? "red" : "",
+                    borderWidth: emailError || emailErrorMessage ? "2px" : "1px",
+                  }}
+                />
               </SoftBox>
             </Grid>
           </Grid>
@@ -353,7 +433,14 @@ function BasicInfo() {
                   Date of Birth
                 </SoftTypography>
               </SoftBox>
-              <SoftDatePicker value={birthDate} onChange={handleBirthDateChange} />
+              <div style={{ borderRadius: "1px", borderColor: "black" }}>
+                <DatePicker
+                  selected={birthDate}
+                  onChange={handleBirthDateChange}
+                  className="custom-datepicker"
+                  dateFormat="dd/MM/yyyy"
+                />
+              </div>
             </SoftBox>
           </div>
           <div className="mr-4" style={{ width: "30%" }}>
@@ -363,7 +450,14 @@ function BasicInfo() {
                   Anniversary Date
                 </SoftTypography>
               </SoftBox>
-              <SoftDatePicker value={anniversaryDate} onChange={handleAnniversaryDateChange} />
+              <div style={{ borderRadius: "1px", borderColor: "black" }}>
+                <DatePicker
+                  selected={anniversaryDate}
+                  onChange={handleAnniversaryDateChange}
+                  className="custom-datepicker"
+                  dateFormat="dd/MM/yyyy"
+                />
+              </div>{" "}
             </SoftBox>
           </div>
         </div>
