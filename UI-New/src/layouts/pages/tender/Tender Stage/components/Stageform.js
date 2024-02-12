@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card } from "@mui/material";
+import { Card, Icon } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
@@ -26,7 +26,7 @@ function Stageform({ setShow, fetchData }) {
     settenderStageName(event.target.value);
     settenderStageNameError(false);
   };
-  
+
   const handleStatusChange = (selectedOption) => {
     setstatus(selectedOption);
     setStatusError(false);
@@ -37,11 +37,19 @@ function Stageform({ setShow, fetchData }) {
     setstageValueError(false);
   };
 
+  const options =[
+    { value: 1, label: <><Icon size='10px' color='success'>thumb_up</Icon> Final WIN</>},
+    { value: 2, label: <><Icon color='error'>thumb_down</Icon> Final LOSS </>},
+    { value: 3, label: <><Icon size='10px' color='warning'>directions_run</Icon>  Others </> }
+  ]
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
         setShowSketchPicker(false);
       }
+
+      
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -109,9 +117,6 @@ function Stageform({ setShow, fetchData }) {
           {tenderStageNameError && (
             <span style={{ color: "red", fontSize: "12px" }}>Please enter a Tender StageName</span>
           )}
-
-
-
           <div className="md:grid md:grid-cols-2 md:gap-5">
           <div>
   <label className="text-xs font-bold p-1">Color</label>
@@ -120,16 +125,24 @@ function Stageform({ setShow, fetchData }) {
         style={{
           backgroundColor: color,
         }}
-        backgroundColor={color}
-        onClick={() => { setShowSketchPicker(showSketchPicker => !showSketchPicker) }}
+        onClick={() => {setShowSketchPicker(showSketchPicker => !showSketchPicker) }}
         placeholder="Pick a Color"
         fullWidth
       >
         Pick a Color
       </SoftButton>
       {showSketchPicker && (
-        <div ref={pickerRef}>
+        <div ref={pickerRef}           
+        style={{
+          display:"flex",
+          zIndex: 1,
+          width: '100%',
+          justifyContent:"center",
+          alignItems:"center",
+        }}>
           <SketchPicker
+           className="font-bold hover:opacity-100"
+            width="80%"
             color={color}
             onChange={updatedColor => setcolor(updatedColor.hex)}
             onBlur={() => { setShowSketchPicker(showSketchPicker => !showSketchPicker) }}
@@ -146,11 +159,7 @@ function Stageform({ setShow, fetchData }) {
               <label className="text-xs font-bold p-1">Stage Value</label>
               <SoftSelect
                 placeholder="Select Stage Value"
-                options={[
-                  { value: 1, label: "Final WIN" },
-                  { value: 2, label: "Final LOSS" },
-                  { value: 3, label: "OTHER" }
-                ]}
+                options={options}
                 error={stageValueError}
                 onChange={(selected) => handleStageValueChange(selected.value)}
               />

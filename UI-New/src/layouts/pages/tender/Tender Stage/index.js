@@ -17,6 +17,8 @@ function Tenderstage() {
   const [transformedRows, setTransformedRows] = useState([]);
   const [hide, sethide] = useState(false);
   const [selectedTenderData, setSelectedTenderData] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedStageValue, setStageValue] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
 
   const tableData = {
@@ -27,12 +29,12 @@ function Tenderstage() {
       },
       {
         Header: "Tender StageName",
-        accessor: "Tender StageName",
+        accessor: "Tender Stage Name",
       },
       {
         Header: "Status",
         accessor: "Status",
-      },
+      },      
       {
         Header: "Action",
         accessor: "Action",
@@ -64,7 +66,27 @@ function Tenderstage() {
     const rows = data.map((item, index) => ({
       id : item.id,
       "#": index + 1,
-      "Tender StageName": item.tenderStageName,
+      "Tender StageName":item.tenderStageName,
+      "Tender Stage Name": (
+        <div>
+          {item.stageValue === 1 ? (
+            <>
+             <Icon style={{margin: "7px 5px 0px 5px", color: item.color }}>thumb_up</Icon>
+            </>
+          ) : item.stageValue === 2 ? (
+            <>
+              <Icon style={{ margin: "7px 5px 0px 5px", color: item.color }}>thumb_down</Icon>
+            </>
+          ) : (
+            <>
+              <Icon style={{ margin: "7px 5px 0px 5px", color: item.color }}>directions_run</Icon>
+            </>
+          )}
+          {item.tenderStageName}
+        </div>
+      ),
+      "Stage": item.stageValue,
+      "Color": item.color,
       Status: (
         <Chip
           label={item.status ? "Active" : "Inactive"}
