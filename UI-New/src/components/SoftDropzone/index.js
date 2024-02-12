@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /**
 =========================================================
 * Soft UI Dashboard PRO React - v4.0.2
@@ -30,7 +31,7 @@ import SoftBox from "components/SoftBox";
 // Custom styles for the SoftDropzone
 import SoftDropzoneRoot from "components/SoftDropzone/SoftDropzoneRoot";
 
-function SoftDropzone({ options }) {
+function SoftDropzone({ options}) {
   const dropzoneRef = useRef();
 
   useEffect(() => {

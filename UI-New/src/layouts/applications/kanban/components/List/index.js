@@ -6,6 +6,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import { Icon, Tooltip } from "@mui/material";
 import Tenderprofile from "../Tenderprofile";
+import IndianCurrency from "examples/IndianCurrencyFormatter";
 
 function List() {
   const [transformedRows, setTransformedRows] = useState([]);
@@ -52,14 +53,6 @@ function List() {
       },
     ],
     rows: transformedRows,
-  };
-
-  const IndianCurrency = (value) => {
-    const formattedValue = new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-    }).format(value);
-    return formattedValue;
   };
 
   const handleaction = (id) => {

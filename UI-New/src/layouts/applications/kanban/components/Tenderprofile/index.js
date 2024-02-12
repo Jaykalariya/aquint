@@ -4,25 +4,43 @@ import Timeline from "./Componets/Timeline";
 import Notes from "./Componets/Notes";
 import Tenderinfo from "./Componets/Tenderinfo";
 import File from "./Componets/Files/Index";
+import BaseLayout from "layouts/pages/account/components/BaseLayout";
+import SoftBox from "components/SoftBox";
+import { Grid } from "@mui/material";
 
 /* eslint-disable react/prop-types */
 function Tenderprofile({ tenderid }) {
-  const [activeTab, setActiveTab] = useState("tender-info");
   console.log(tenderid);
 
   return (
-    <div class="flex gap-5 h-screen">
-      <div class="w-64">
-        <Sidenav setActiveTab={setActiveTab} />
-      </div>
-
-      <div class="flex-grow bg-white shadow-md rounded-2xl ">
-        {activeTab === "tender-info" && <Tenderinfo tenderid={tenderid} />}
-        {activeTab === "timeline" && <Timeline tenderid={tenderid} />}
-        {activeTab === "notes" && <Notes tenderid={tenderid} />}
-        {activeTab === "file" && <File tenderid={tenderid} />}
-      </div>
-    </div>
+    <SoftBox >
+      <Grid container spacing={3}>
+        <Grid item xs={12} lg={3}>
+          <Sidenav />
+        </Grid>
+        <Grid item xs={12} lg={9}>
+          <SoftBox mb={3}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                {/* <Header /> */}
+              </Grid>
+              <Grid item xs={12}>
+              <Tenderinfo tenderid={tenderid} />
+              </Grid>
+              <Grid item xs={12}>
+              <Timeline tenderid={tenderid} />
+              </Grid>
+              <Grid item xs={12}>
+              <Notes tenderid={tenderid} />
+              </Grid>
+              <Grid item xs={12}>
+              <File tenderid={tenderid} />
+              </Grid>
+            </Grid>
+          </SoftBox>
+        </Grid>
+      </Grid>
+    </SoftBox>
   );
 }
 
