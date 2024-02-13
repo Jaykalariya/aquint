@@ -26,9 +26,10 @@ import SoftButton from "components/SoftButton";
 
 import { useState } from "react";
 import { Button, IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import { Menu as MenuIcon, KeyboardArrowDown, ViewList} from "@mui/icons-material";
+import { Menu as MenuIcon, KeyboardArrowDown, ViewList } from "@mui/icons-material";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 
-function Header({ sethide, hide, setshow }) {
+function Header({ setclose, sethide, hide, setshow }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -43,12 +44,14 @@ function Header({ sethide, hide, setshow }) {
     sethide(true);
     setshow(true);
     setAnchorEl(null);
+    setclose(true);
   }
 
   function handelchangelist() {
     sethide(true);
     setshow(false);
     setAnchorEl(null);
+    setclose(true);
   }
 
   return (
@@ -62,7 +65,7 @@ function Header({ sethide, hide, setshow }) {
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
         <MenuItem onClick={handelchangepipe}>
-          <ViewList fontSize="small" style={{ marginRight: "8px" }} />
+          <EqualizerIcon fontSize="small" style={{ marginRight: "8px" }} />
           Pipeline View
         </MenuItem>
         <MenuItem onClick={handelchangelist}>

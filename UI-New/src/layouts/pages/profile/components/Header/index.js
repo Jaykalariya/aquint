@@ -79,7 +79,6 @@ function Header() {
     }
   };
 
-
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
@@ -174,6 +173,11 @@ function Header() {
       // Navigate to the update page
       navigate(`/pages/account/settings/${userId}`);
     }
+  };
+  const handleSave = () => {
+    // Perform save operation or API call here
+
+    setIsModified(false); // Reset the modified state after saving
   };
 
   return (

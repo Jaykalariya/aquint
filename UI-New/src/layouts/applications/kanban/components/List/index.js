@@ -6,12 +6,13 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import { Icon, Tooltip } from "@mui/material";
 import Tenderprofile from "../Tenderprofile";
+import IndianCurrency from "examples/IndianCurrencyFormatter";
 
 function List() {
   const [transformedRows, setTransformedRows] = useState([]);
   const token = localStorage.getItem("token");
   const [show, setshow] = useState(true);
-  const [tenderid, settenderid] = useState(102);
+  const [tenderid, settenderid] = useState();
   const tableData = {
     columns: [
       {
@@ -54,14 +55,6 @@ function List() {
     rows: transformedRows,
   };
 
-  const IndianCurrency = (value) => {
-    const formattedValue = new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-    }).format(value);
-    return formattedValue;
-  };
-
   const handleaction = (id) => {
     settenderid(id);
     setshow(!show);
@@ -77,7 +70,7 @@ function List() {
         "/_v1/tender/page",
         {
           page: 1,
-          size: 10,
+          size: 100,
           orderBy: true,
         },
         {
@@ -86,7 +79,7 @@ function List() {
           },
         }
       );
-      console.log(result.data.content);
+      console.log("abhi",result.data.content);
       const transformedData = transformData(result.data.content);
       console.log(result.data);
       setTransformedRows(transformedData);

@@ -54,6 +54,7 @@ import Addtenderform from "./components/Addtenderform";
 import BirthdateFormatter from "examples/BirthdateFormatter";
 import List from "./components/List";
 import { Tooltip } from "chart.js";
+import Tenderprofile from "./components/Tenderprofile";
 
 function Kanban() {
   const [newCardForm, setNewCardForm] = useState(false);
@@ -62,6 +63,8 @@ function Kanban() {
   const [boardse, setboards] = useState({ columns: [] });
   const [hide, sethide] = useState(true);
   const [show, setshow] = useState(true);
+  const [closed, setclose] = useState(true);
+  const [tenderid, settenderid] = useState();
 
   const openNewCardForm = (event, id) => setNewCardForm(id);
   const closeNewCardForm = () => setNewCardForm(false);
@@ -87,6 +90,7 @@ function Kanban() {
       setboards(transformedData);
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 
@@ -97,6 +101,11 @@ function Kanban() {
         Authorization: `Bearer ${token}`,
       },
     });
+  }
+
+  function handelclick(id) {
+    settenderid(id);
+    setclose(!closed);
   }
 
   const transformData = (data, tenderdata) => {
@@ -115,7 +124,6 @@ function Kanban() {
               members={tender.assignedUser}
             />
           ),
-         
         })),
     }));
     return { columns };
@@ -126,37 +134,38 @@ function Kanban() {
       <DashboardNavbar />
       <SoftBox py={1} className="h-screen">
         <SoftBox display="flex" justifyContent="flex-end">
-          <Header sethide={sethide} hide={hide} setshow={setshow} />
+          <Header setclose={setclose} sethide={sethide} hide={hide} setshow={setshow} />
         </SoftBox>
         <div style={{ height: "100%", marginTop: "20px" }}>
           {hide ? (
             show ? (
-              <SoftBox
-                position="relative"
-                my={4}
-                sx={({
-                  palette: { light },
-                  functions: { pxToRem },
-                  borders: { borderRadius },
-                }) => ({
-                  "& .react-kanban-column": {
-                    backgroundColor: light.main,
-                    width: pxToRem(300),
-                    margin: `0 ${pxToRem(10)}`,
-                    padding: pxToRem(20),
-                    borderRadius: borderRadius.lg,
-                  },
-                })}
-              >
-                {boardse.columns.length > 0 && (
-                  <Board
-                    initialBoard={boardse}
-                    onCardDragEnd={handelchangecard}
-                    allowAddCard
-                    allowAddColumn
-                    renderColumnHeader={({ id, title }, { addCard }) => (
-                      <>
-                        {/* <SoftBox
+              closed ? (
+                <SoftBox
+                  position="relative"
+                  my={4}
+                  sx={({
+                    palette: { light },
+                    functions: { pxToRem },
+                    borders: { borderRadius },
+                  }) => ({
+                    "& .react-kanban-column": {
+                      backgroundColor: light.main,
+                      width: pxToRem(300),
+                      margin: `0 ${pxToRem(10)}`,
+                      padding: pxToRem(20),
+                      borderRadius: borderRadius.lg,
+                    },
+                  })}
+                >
+                  {boardse.columns.length > 0 && (
+                    <Board
+                      initialBoard={boardse}
+                      onCardDragEnd={handelchangecard}
+                      allowAddCard
+                      allowAddColumn
+                      renderColumnHeader={({ id, title }, { addCard }) => (
+                        <>
+                          {/* <SoftBox
                           display="flex"
                           justifyContent="space-between"
                           alignItems="center"
@@ -174,66 +183,70 @@ function Kanban() {
                             </Icon>
                           </SoftButton>
                         </SoftBox> */}
-                        {newCardForm === id ? (
-                          <SoftBox my={2.5}>
-                            <SoftInput
-                              value={formValue}
-                              inputProps={{ rows: 2 }}
-                              onChange={handeSetFormValue}
-                              multiline
-                            />
-                            <SoftBox display="flex" mt={2}>
-                              <SoftButton
-                                variant="gradient"
-                                color="success"
-                                size="small"
-                                onClick={() => {
-                                  addCard({ id: uuidv4(), template: formValue });
-                                  setFormValue("");
-                                }}
-                              >
-                                add
-                              </SoftButton>
-                              <SoftBox ml={1}>
+                          {newCardForm === id ? (
+                            <SoftBox my={2.5}>
+                              <SoftInput
+                                value={formValue}
+                                inputProps={{ rows: 2 }}
+                                onChange={handeSetFormValue}
+                                multiline
+                              />
+                              <SoftBox display="flex" mt={2}>
                                 <SoftButton
                                   variant="gradient"
-                                  color="light"
+                                  color="success"
                                   size="small"
-                                  onClick={closeNewCardForm}
+                                  onClick={() => {
+                                    addCard({ id: uuidv4(), template: formValue });
+                                    setFormValue("");
+                                  }}
                                 >
-                                  cancel
+                                  add
                                 </SoftButton>
+                                <SoftBox ml={1}>
+                                  <SoftButton
+                                    variant="gradient"
+                                    color="light"
+                                    size="small"
+                                    onClick={closeNewCardForm}
+                                  >
+                                    cancel
+                                  </SoftButton>
+                                </SoftBox>
                               </SoftBox>
                             </SoftBox>
-                          </SoftBox>
-                        ) : null}
-                      </>
-                    )}
-                    renderCard={({ id, template }, { dragging }) => (
-                      <SoftBox
-                        key={id}
-                        dragging={dragging.toString() || undefined}
-                        display="block"
-                        width="calc(300px - 40px)"
-                        // height = "calc(200px - 40px)"
-                        bgColor="white"
-                        color="text"
-                        borderRadius="md"
-                        mt={2.5}
-                        py={1.875}
-                        px={1.875}
-                        lineHeight={1.5}
-                        sx={{
-                          fontSize: ({ typography: { size } }) => size.md,
-                        }}
-                      >
-                        {typeof template === "string" ? parse(template) : template}
-                      </SoftBox>
-                    )}
-                    onCardNew={() => null}
-                  />
-                )}
-              </SoftBox>
+                          ) : null}
+                        </>
+                      )}
+                      renderCard={({ id, template }, { dragging }) => (
+                        <SoftBox
+                          key={id}
+                          dragging={dragging.toString() || undefined}
+                          display="block"
+                          width="calc(300px - 40px)"
+                          // height = "calc(200px - 40px)"
+                          bgColor="white"
+                          color="text"
+                          borderRadius="md"
+                          mt={2.5}
+                          py={1.875}
+                          px={1.875}
+                          lineHeight={1.5}
+                          onClick={() => handelclick(id)}
+                          sx={{
+                            fontSize: ({ typography: { size } }) => size.md,
+                          }}
+                        >
+                          {typeof template === "string" ? parse(template) : template}
+                        </SoftBox>
+                      )}
+                      onCardNew={() => null}
+                    />
+                  )}
+                </SoftBox>
+              ) : (
+                <Tenderprofile tenderid={tenderid} />
+              )
             ) : (
               <List />
             )
