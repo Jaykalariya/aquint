@@ -109,6 +109,7 @@ import Illustration from "layouts/authentication/sign-in/illustration";
 import Roles from "layouts/pages/roles";
 import Protected from "layouts/authentication/sign-in/Protected";
 import UserProfile from "layouts/pages/profile/User-profile";
+import { Dashboard } from "@mui/icons-material";
 
 const routes = [
   {
@@ -123,6 +124,7 @@ const routes = [
         route: "/dashboard",
         component: <Protected Component={CRM} />,
       },
+      
       // {
       //   name: "Default",
       //   key: "default",
