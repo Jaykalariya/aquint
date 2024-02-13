@@ -29,7 +29,7 @@ import { Button, IconButton, ListItemIcon, Menu, MenuItem } from "@mui/material"
 import { Menu as MenuIcon, KeyboardArrowDown, ViewList } from "@mui/icons-material";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 
-function Header({ setclose, sethide, hide, setshow }) {
+function Header({ setshows, setbuttonhide, buttonhide, setclose, sethide, hide, setshow }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -53,38 +53,49 @@ function Header({ setclose, sethide, hide, setshow }) {
     setAnchorEl(null);
     setclose(true);
   }
-
+  function handelback() {
+    setclose(true), setbuttonhide(true);
+    setshows(true);
+  }
   return (
-    <div className="flex gap-2">
-      <IconButton
-        onClick={handleClick}
-        style={{ backgroundColor: "white", border: "2px solid skyblue", borderRadius: "16px" }}
-      >
-        <MenuIcon />
-        <KeyboardArrowDown />
-      </IconButton>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-        <MenuItem onClick={handelchangepipe}>
-          <EqualizerIcon fontSize="small" style={{ marginRight: "8px" }} />
-          Pipeline View
-        </MenuItem>
-        <MenuItem onClick={handelchangelist}>
-          <ViewList fontSize="small" style={{ marginRight: "8px" }} />
-          List View
-        </MenuItem>
-      </Menu>
-      <>
-        {hide ? (
-          <SoftButton color="info" onClick={() => sethide(false)}>
-            +Add
-          </SoftButton>
-        ) : (
-          <SoftButton color="info" onClick={() => sethide(true)}>
-            Back
-          </SoftButton>
-        )}
-      </>
-    </div>
+    <>
+      {buttonhide ? (
+        <div className="flex gap-2">
+          <IconButton
+            onClick={handleClick}
+            style={{ backgroundColor: "white", border: "2px solid skyblue", borderRadius: "16px" }}
+          >
+            <MenuIcon />
+            <KeyboardArrowDown />
+          </IconButton>
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+            <MenuItem onClick={handelchangepipe}>
+              <EqualizerIcon fontSize="small" style={{ marginRight: "8px" }} />
+              Pipeline View
+            </MenuItem>
+            <MenuItem onClick={handelchangelist}>
+              <ViewList fontSize="small" style={{ marginRight: "8px" }} />
+              List View
+            </MenuItem>
+          </Menu>
+          <>
+            {hide ? (
+              <SoftButton color="info" onClick={() => sethide(false)}>
+                +Add
+              </SoftButton>
+            ) : (
+              <SoftButton color="info" onClick={() => sethide(true)}>
+                Back
+              </SoftButton>
+            )}
+          </>
+        </div>
+      ) : (
+        <SoftButton color="info" onClick={handelback}>
+          Back
+        </SoftButton>
+      )}
+    </>
   );
 }
 

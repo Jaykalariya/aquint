@@ -65,6 +65,8 @@ function Kanban() {
   const [show, setshow] = useState(true);
   const [closed, setclose] = useState(true);
   const [tenderid, settenderid] = useState();
+  const [buttonhide, setbuttonhide] = useState(true);
+  const [shows, setshows] = useState(true);
 
   const openNewCardForm = (event, id) => setNewCardForm(id);
   const closeNewCardForm = () => setNewCardForm(false);
@@ -106,6 +108,7 @@ function Kanban() {
   function handelclick(id) {
     settenderid(id);
     setclose(!closed);
+    setbuttonhide(false);
   }
 
   const transformData = (data, tenderdata) => {
@@ -134,7 +137,15 @@ function Kanban() {
       <DashboardNavbar />
       <SoftBox py={1} className="h-screen">
         <SoftBox display="flex" justifyContent="flex-end">
-          <Header setclose={setclose} sethide={sethide} hide={hide} setshow={setshow} />
+          <Header
+           setbuttonhide={ setbuttonhide}
+            buttonhide={buttonhide}
+            setclose={setclose}
+            sethide={sethide}
+            hide={hide}
+            setshow={setshow}
+            setshows={setshows}
+          />
         </SoftBox>
         <div style={{ height: "100%", marginTop: "20px" }}>
           {hide ? (
@@ -248,7 +259,7 @@ function Kanban() {
                 <Tenderprofile tenderid={tenderid} />
               )
             ) : (
-              <List />
+              <List show= {shows} setshow={setshows}  setbuttonhide={setbuttonhide}/>
             )
           ) : (
             <Addtenderform sethide={sethide} fetchData={fetchData} />

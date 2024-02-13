@@ -7,6 +7,7 @@ import File from "./Componets/Files/Index";
 import BaseLayout from "layouts/pages/account/components/BaseLayout";
 import SoftBox from "components/SoftBox";
 import { Grid } from "@mui/material";
+import Header from "../Header";
 
 /* eslint-disable react/prop-types */
 function Tenderprofile({ tenderid }) {

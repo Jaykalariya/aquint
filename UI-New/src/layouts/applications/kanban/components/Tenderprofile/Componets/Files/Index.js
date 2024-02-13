@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "config/https";
 import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
-import { Card } from "@mui/material";
+import { Card, Icon } from "@mui/material";
 import SoftTypography from "components/SoftTypography";
 import { Delete, GetApp, Visibility } from "@mui/icons-material";
 import BirthdateFormatter from "examples/BirthdateFormatter";
@@ -19,9 +19,12 @@ const File = ({ tenderid }) => {
   const [Filelist, setfilelist] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
 
+  console.log("tenderid", tenderid);
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
+    console.log(e.target.files);
   };
 
   useEffect(() => {
@@ -34,18 +37,35 @@ const File = ({ tenderid }) => {
       },
     });
     setfilelist(result.data);
-    console.log("abhi", result.data);
   };
 
-  const handleFileUpload = () => {
-    // axiosInstance.post(`/_v1/tender/upload/file/${tenderid}`, {
-    //   selectedFile,
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-    console.log(selectedFile);
-    setMessage("Files uploaded successfully!");
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      setMessage("No file selected!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await axiosInstance.post(`/_v1/tender/upload/file/${tenderid}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Upload response:", response.data);
+
+      setMessage("File uploaded successfully!");
+      setSelectedFile(null);
+      fetchData();
+      document.getElementById('fileInput').value = '';
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setMessage("Failed to upload file. Please try again.");
+    }
   };
 
   const FileListItem = ({ extension }) => {
@@ -123,31 +143,31 @@ const File = ({ tenderid }) => {
             ))}
           </ul>
         </div>
-        <div className="w-2/3 p-4 border-l" style={{ maxHeight: "500px" }}>
-          <h2 className="text-lg font-bold mb-4">Upload Files</h2>
-          <div className="flex flex-col items-center justify-center">
-            <div className="w-64 h-64 border-2 border-dashed border-gray-400 flex flex-col items-center justify-center cursor-pointer">
-              <label htmlFor="file-upload" className="text-gray-600">
-                {selectedFile ? (
-                  <img
-                    src={URL.createObjectURL(selectedFile)}
-                    alt="Selected File"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span>Click or drag file here</span>
-                )}
-              </label>
-              <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} />
-            </div>
-            {selectedFile && (
-              <div className="mt-4">
-                <p className="text-gray-800">Selected File: {selectedFile.name}</p>
-              </div>
-            )}
-          </div>
-          <div className="flex justify-center items-center mt-5">
-            <SoftButton color="info" onClick={handleFileUpload}>
+        <div className="grid content-center justify-center">
+          {/* <h2 className="text-xl font-bold ">Files</h2> */}
+          <div className="flex items-center justify-center space-x-4 mt-5">
+            <label
+              htmlFor="fileInput"
+              className="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-lg flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+              <span>Choose File</span>
+              <input type="file" id="fileInput" className="hidden" onChange={handleFileChange} />
+            </label>
+            <SoftButton p={2.5} color="info" onClick={handleFileUpload}>
               Upload
             </SoftButton>
           </div>

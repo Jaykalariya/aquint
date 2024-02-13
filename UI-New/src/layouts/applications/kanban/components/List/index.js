@@ -8,10 +8,11 @@ import { Icon, Tooltip } from "@mui/material";
 import Tenderprofile from "../Tenderprofile";
 import IndianCurrency from "examples/IndianCurrencyFormatter";
 
-function List() {
+// eslint-disable-next-line react/prop-types
+function List({setbuttonhide,show, setshow}) {
   const [transformedRows, setTransformedRows] = useState([]);
   const token = localStorage.getItem("token");
-  const [show, setshow] = useState(true);
+  // const [show, setshow] = useState(true);
   const [tenderid, settenderid] = useState();
   const tableData = {
     columns: [
@@ -58,6 +59,7 @@ function List() {
   const handleaction = (id) => {
     settenderid(id);
     setshow(!show);
+    setbuttonhide(false);
   };
 
   useEffect(() => {
