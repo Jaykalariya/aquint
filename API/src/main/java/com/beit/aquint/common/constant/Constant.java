@@ -52,6 +52,7 @@ public class Constant {
         public static final String CHANGE_USER_STATUS = "/changeUserStatus";
         public static final String CHANGE_PROFILE_IMAGE = "/changeProfileImage";
 
+        public static final String TENDER_DASHBOARD = "/tenderDashboard";
         public static final String ADD_TENDER_NOTE = "/addTenderNote";
         public static final String TENDER_NOTES = "/tenderNotes";
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
