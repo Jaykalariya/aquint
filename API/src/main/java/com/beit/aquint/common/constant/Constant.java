@@ -365,6 +365,104 @@ ORDER BY
 
     }
 
+        public class TenderDashboardQuery {
+            public static final String PROJECT_VALUE_BY_TENDER_STAGE_VALUE = """
+        SELECT
+          sum(project_value) AS projectValue,
+          count(td.tender_stage) AS projectCount,
+          ts.stage_value AS stageValue
+        FROM
+          tender_details td
+          FULL JOIN tender_stage ts ON td.tender_stage = ts.id
+        WHERE
+          ts.status = true
+        GROUP BY
+          ts.stage_value
+        """;
+
+            public static final String EMD_AMOUNT_AND_TENDER_FEE_BY_TENDER_STAGE_VALUE = """
+        SELECT
+          sum(emd_amount) AS emdAmount,
+          sum(tender_fee) AS tenderFee,
+          count(td.tender_stage) AS projectCount,
+          ts.stage_value AS stageValue
+        FROM
+          tender_details td
+          FULL JOIN tender_stage ts ON td.tender_stage = ts.id
+        WHERE
+          ts.status = true
+        GROUP BY
+          ts.stage_value
+        """;
+
+            public static final String PROJECT_VALUE_BY_EACH_TENDER_STAGE = """
+        SELECT
+          sum(project_value) AS projectValue,
+          count(td.tender_stage) AS projectCount,
+          ts.tender_stage_name AS tenderStageName
+        FROM
+          tender_details td
+          LEFT JOIN tender_stage ts ON td.tender_stage = ts.id
+        WHERE
+          ts.status = true
+        GROUP BY
+          ts.id
+        """;
+
+            public static final String PROJECT_VALUE_BY_EACH_TENDER_TYPE = """
+        SELECT
+          sum(project_value) AS projectValue,
+          count(td.tender_type) AS projectCount,
+          tt.tender_type_name AS tenderStageType
+        FROM
+          tender_details td
+          LEFT JOIN tender_type tt ON td.tender_type = tt.id
+        WHERE
+          tt.status = true
+        GROUP BY
+          tt.id
+        """;
+
+            public static final String PROJECT_VALUE_AND_PROJECT_COUNTS_BY_MONTH = """
+        SELECT
+          to_char(months, 'Month') AS month_name,
+          DATE_TRUNC('month', months) AS month,
+          COALESCE(SUM(project_value), 0) AS project_value,
+          COALESCE(COUNT(td.tender_stage), 0) AS project_count,
+          ts.stage_value AS stageValue
+        FROM
+          generate_series(
+            (SELECT MIN(DATE_TRUNC('month', created_on)) FROM tender_details),
+            (SELECT MAX(DATE_TRUNC('month', created_on)) FROM tender_details),
+            '1 month'
+          ) AS months
+          LEFT JOIN tender_details td ON DATE_TRUNC('month', created_on) = months
+          LEFT JOIN tender_stage ts ON td.tender_stage = ts.id
+        WHERE
+          ts.status = true
+        GROUP BY
+          months.months, ts.stage_value
+        ORDER BY
+          month, ts.stage_value
+        """;
+
+            public static final String LAST_FIVE_TENDER_HISTORY = """
+        SELECT
+          td.project_name,
+          th.name,
+          COALESCE(ud.firstname, '') || COALESCE(' ' || ud.middlename || ' ', '') || COALESCE(ud.lastname, '') AS fullName,
+          ud.image_url
+        FROM
+          tender_details td
+          LEFT JOIN tender_history th ON td.id = th.tender_id
+          LEFT JOIN user_detail ud ON th.created_by = ud.user_id
+        ORDER BY
+          th.created_on DESC
+        LIMIT 5
+        """;
+        }
+
+
     public class TenderHistoryConstant {
         public static final String ADD_NEW_TENDER = "Tender Created By ";
         public static final String ADD_NEW_MEMBER = " Was added By ";

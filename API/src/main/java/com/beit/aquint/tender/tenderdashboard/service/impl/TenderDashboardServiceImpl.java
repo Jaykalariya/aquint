@@ -32,6 +32,7 @@ public class TenderDashboardServiceImpl implements TenderDashboardService {
             dashboard.put("Last Five Tender History",getLastFiveTenderHistory());
             return dashboard;
         } catch (Exception exception) {
+            log.error("Error fetching Tender Dashboard", exception);
             throw new AquintCommonException("Unable to Fetch");
         }
     }
