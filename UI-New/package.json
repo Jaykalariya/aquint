@@ -30,7 +30,7 @@
     "@fullcalendar/react": "6.1.7",
     "@fullcalendar/timegrid": "6.1.7",
     "@material-ui/icons": "^4.11.3",
-    "@mui/icons-material": "^5.15.9",
+    "@mui/icons-material": "^5.15.10",
     "@mui/material": "5.13.2",
     "@mui/styled-engine": "5.13.2",
     "@pathofdev/react-tag-input": "1.0.7",

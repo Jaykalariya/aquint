@@ -113,7 +113,7 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
     }
 
     const parsedStatus = status.value === "true";
-    const result = await Service(tenderStageName, color, stageValue, parsedStatus, itemId);
+    const result = await Service(tenderStageName, color, stageValue.value, parsedStatus, itemId);
     if (result === true) {
       addToast("Update Tender Stage successful!", {
         appearance: "success",
@@ -183,7 +183,7 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
                 value={stageValue} 
                 options={options}
                 error={stageValueError}
-                onChange={(selected) => handleStageValueChange(selected.value)}
+                onChange={(selected) => handleStageValueChange(selected)}
               />
               {stageValueError && (
                 <span style={{ color: "red", fontSize: "12px" }}>Please select a Stage Value</span>
@@ -193,7 +193,7 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
 </div>
 <label className="text-xs font-bold p-1">Status</label>
             <SoftSelect
-              onChange={(selected) => handleStatusChange(selected.value)}
+              onChange={(selected) => handleStatusChange(selected)}
               value={status}
               placeholder="Select Satus"
               error={statusError}
