@@ -224,6 +224,8 @@ public class Constant {
         td.project_name AS projectName,
         td.project_display_name AS "projectDisplayName",
         ts.tender_stage_name AS "tenderStage",
+        ts.color AS tenderStageColor,
+        ts.stage_value AS tenderStageValue,
         tt.tender_type_name AS "tenderType",
         td.project_value AS "projectValue",
         td.submission_date AS "submissionDate",
@@ -265,7 +267,7 @@ public class Constant {
         AND
     Lower(td.project_name) LIKE Lower(CONCAT('%', :search, '%'))
     GROUP BY
-        td.id, tt.tender_type_name, ts.tender_stage_name
+        td.id, tt.tender_type_name, ts.tender_stage_name,ts.color,ts.stage_value
 """;
 
 
@@ -276,6 +278,8 @@ public class Constant {
         td.project_name AS projectName,
         td.project_display_name AS "projectDisplayName",
         ts.tender_stage_name AS "tenderStage",
+        ts.color AS tenderStageColor,
+        ts.stage_value AS tenderStageValue,
         tt.tender_type_name AS "tenderType",
         td.project_value AS "projectValue",
         td.submission_date AS "submissionDate",
@@ -305,7 +309,7 @@ public class Constant {
              WHERE tau.user_id = :userId
              )
    GROUP BY
-        td.id, tt.tender_type_name, ts.tender_stage_name
+        td.id, tt.tender_type_name, ts.tender_stage_name,ts.color,ts.stage_value
 """;
 
         public static final String COUNT_QUERY = """

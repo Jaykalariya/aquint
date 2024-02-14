@@ -24,12 +24,12 @@ public class TenderDashboardServiceImpl implements TenderDashboardService {
         try {
             log.debug("Getting Tender Dashboard");
             Map<String,List<Map<String,Object>>> dashboard = new HashMap<>();
-            dashboard.put("Project Value By Tender Stage",getProjectValueByTenderStageValue());
-            dashboard.put("Emd Amount and Tender Fee By Tender Stage",getEmdAmountAndTenderFeeByTenderStageValue());
-            dashboard.put("Project Value By Each Tender Stage",getProjectValueByEachTenderStage());
-            dashboard.put("Project Value By Each Tender Type",getProjectValueByEachTenderType());
-            dashboard.put("Project Value And Project Count By Month", getProjectValueAndProjectCountsByMonth());
-            dashboard.put("Last Five Tender History",getLastFiveTenderHistory());
+            dashboard.put("valueByStage",getProjectValueByTenderStageValue());
+            dashboard.put("amountAndFeeByStage",getEmdAmountAndTenderFeeByTenderStageValue());
+            dashboard.put("pieChartForStage",getProjectValueByEachTenderStage());
+            dashboard.put("pieChartForType",getProjectValueByEachTenderType());
+            dashboard.put("graph", getProjectValueAndProjectCountsByMonth());
+            dashboard.put("dashboardHistory",getLastFiveTenderHistory());
             return dashboard;
         } catch (Exception exception) {
             log.error("Error fetching Tender Dashboard", exception);
@@ -39,11 +39,11 @@ public class TenderDashboardServiceImpl implements TenderDashboardService {
 
 
     private List<Map<String,Object>> getProjectValueByTenderStageValue(){
-        return tenderDashboardRepository.getEmdAmountAndTenderFeeByTenderStageValue();
+        return tenderDashboardRepository.getProjectValueByTenderStageValue();
     }
 
     private List<Map<String, Object>> getEmdAmountAndTenderFeeByTenderStageValue(){
-        return tenderDashboardRepository.getProjectValueByTenderStageValue();
+        return tenderDashboardRepository.getEmdAmountAndTenderFeeByTenderStageValue();
     }
 
     private List<Map<String,Object>> getProjectValueByEachTenderStage(){
