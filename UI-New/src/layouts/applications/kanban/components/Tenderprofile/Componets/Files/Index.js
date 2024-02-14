@@ -18,6 +18,7 @@ const File = ({ tenderid }) => {
   const [message, setMessage] = useState("");
   const [Filelist, setfilelist] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [hide, sethide] = useState(false);
 
   console.log("tenderid", tenderid);
 
@@ -61,7 +62,8 @@ const File = ({ tenderid }) => {
       setMessage("File uploaded successfully!");
       setSelectedFile(null);
       fetchData();
-      document.getElementById('fileInput').value = '';
+      sethide(!hide);
+      document.getElementById("fileInput").value = "";
     } catch (error) {
       console.error("Error uploading file:", error);
       setMessage("Failed to upload file. Please try again.");
@@ -102,50 +104,64 @@ const File = ({ tenderid }) => {
           File
         </SoftTypography>
       </SoftBox>
-      <div className="flex overflow-y-auto" style={{ maxHeight: "500px" }}>
-        <div className=" p-4 rounded-md w-2/3 overflow-y-auto" style={{ maxHeight: "400px" }}>
-          <h2 className="text-xl font-bold mb-4">Files</h2>
-          <ul className="divide-y divide-gray-200">
-            {Filelist.map((file, index) => (
-              <li key={index} className="py-2 flex justify-between items-center">
-                <div className="flex items-center gap-1.5">
-                  <div className="my-auto">
-                    <FileListItem extension={file.extension} />
-                  </div>
-                  <div>
-                    <span className="text-lg font-semibold">{file.documentName}</span>
-                    <p className="text-sm text-gray-500">
-                      {file.createdBy} -{BirthdateFormatter(file.createdOn)}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex">
-                  <button
-                    onClick={() => onView(file)}
-                    className="text-blue-500 hover:text-blue-700 mr-2"
-                  >
-                    <Visibility />
-                  </button>
-                  <button
-                    onClick={() => onDownload(file)}
-                    className="text-green-500 hover:text-green-700 mr-2"
-                  >
-                    <GetApp />
-                  </button>
-                  <button
-                    onClick={() => onDelete(file)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <Delete />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="grid content-center justify-center">
-          {/* <h2 className="text-xl font-bold ">Files</h2> */}
-          <div className="flex items-center justify-center space-x-4 mt-5">
+      {hide ? (
+        <SoftBox className="flex justify-end mt-2 mb-2.5 mr-5">
+          <SoftButton color="info" onClick={()=>sethide(!hide)} >Upload</SoftButton>
+        </SoftBox>
+      ) : (
+        <SoftBox className="flex justify-end mt-2 mb-2.5 mr-5">
+          <SoftButton color="info" onClick={()=>sethide(!hide)}>Back</SoftButton>
+        </SoftBox>
+      )}
+      <div style={{ maxHeight: "500px" }}>
+        {hide ? (
+          <div className="flex overflow-y-auto">
+            <div
+              className=" p-4 rounded-md w-screen overflow-y-auto"
+              style={{ maxHeight: "400px" }}
+            >
+              <h2 className="text-xl font-bold mb-4">Files</h2>
+              <ul className="divide-y divide-gray-200">
+                {Filelist.map((file, index) => (
+                  <li key={index} className="py-2 flex justify-between items-center">
+                    <div className="flex items-center gap-1.5">
+                      <div className="my-auto">
+                        <FileListItem extension={file.extension} />
+                      </div>
+                      <div>
+                        <span className="text-lg font-semibold">{file.documentName}</span>
+                        <p className="text-sm text-gray-500">
+                          {file.createdBy} -{BirthdateFormatter(file.createdOn)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <button
+                        onClick={() => onView(file)}
+                        className="text-blue-500 hover:text-blue-700 mr-2"
+                      >
+                        <Visibility />
+                      </button>
+                      <button
+                        onClick={() => onDownload(file)}
+                        className="text-green-500 hover:text-green-700 mr-2"
+                      >
+                        <GetApp />
+                      </button>
+                      <button
+                        onClick={() => onDelete(file)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Delete />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center space-y-4">
             <label
               htmlFor="fileInput"
               className="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-lg flex items-center"
@@ -170,9 +186,9 @@ const File = ({ tenderid }) => {
             <SoftButton p={2.5} color="info" onClick={handleFileUpload}>
               Upload
             </SoftButton>
+            {message && <p className="text-green-500 mt-2">{message}</p>}
           </div>
-          {message && <p className="text-green-500 mt-2">{message}</p>}
-        </div>
+        )}
       </div>
     </Card>
   );
