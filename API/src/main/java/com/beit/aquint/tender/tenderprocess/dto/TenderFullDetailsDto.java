@@ -12,6 +12,9 @@ public interface TenderFullDetailsDto {
     public String getProjectName();
     public String getProjectDisplayName();
     public String getTenderStage();
+    public String getTenderStageColor();
+    public Integer getTenderStageValue();
+
     public String getTenderType();
     public Double getProjectValue();
     public String getSubmissionDate();
