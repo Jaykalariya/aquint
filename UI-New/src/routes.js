@@ -110,57 +110,27 @@ import Roles from "layouts/pages/roles";
 import Protected from "layouts/authentication/sign-in/Protected";
 import UserProfile from "layouts/pages/profile/User-profile";
 import { Dashboard } from "@mui/icons-material";
+import Tender from "layouts/dashboards/Tender";
 
 const routes = [
   {
     type: "collapse",
-    name: "Dashboards",
-    key: "dashboards",
+    name: "Dashboard",
+    key: "dashboard",
     icon: <Shop size="12px" />,
     collapse: [
       {
-        name: "Dashboard",
-        key: "Dashboard",
-        route: "/dashboard",
-        component: <Protected Component={CRM} />,
+        name: "Default",
+        key: "default",
+        route: "/dashboard/default",
+        component: <CRM />,
       },
-      
-      // {
-      //   name: "Default",
-      //   key: "default",
-      //   route: "/dashboards/default",
-      //   component: <Default />,
-      // },
-      // {
-      //   name: "Automotive",
-      //   key: "automotive",
-      //   route: "/dashboards/automotive",
-      //   component: <Automotive />,
-      // },
-      // {
-      //   name: "Smart Home",
-      //   key: "smart-home",
-      //   route: "/dashboards/smart-home",
-      //   component: <SmartHome />,
-      // },
-      // {
-      //   name: "Virtual Reality",
-      //   key: "virtual-reality",
-      //   collapse: [
-      //     {
-      //       name: "VR Default",
-      //       key: "vr-default",
-      //       route: "/dashboards/virtual-reality/default",
-      //       // component: <VRDefault />,
-      //     },
-      //     {
-      //       name: "VR Info",
-      //       key: "vr-info",
-      //       route: "/dashboards/virtual-reality/info",
-      //       // component: <VRInfo />,
-      //     },
-      //   ],
-      // },
+      {
+        name: "Tender",
+        key: "tenderDashboard",
+        route: "/dashboard/tender",
+        component: <Tender />,
+      },
     ],
   },
   {
@@ -354,6 +324,7 @@ const routes = [
       // },
     ],
   },
+  
   // {
   //   type: "collapse",
   //   name: "Applications",

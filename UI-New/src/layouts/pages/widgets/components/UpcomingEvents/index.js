@@ -28,10 +28,10 @@ function UpcomingEvents() {
     <Card sx={{ height: "100%" }}>
       <SoftBox pt={2} px={2} lineHeight={1}>
         <SoftTypography variant="h6" fontWeight="medium">
-          Upcoming events
+         EMD & Fees
         </SoftTypography>
         <SoftTypography variant="button" color="text" fontWeight="medium">
-          Joined
+          total
         </SoftTypography>
       </SoftBox>
       <SoftBox p={2}>
