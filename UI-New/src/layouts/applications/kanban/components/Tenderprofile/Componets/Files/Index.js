@@ -18,7 +18,7 @@ const File = ({ tenderid }) => {
   const [message, setMessage] = useState("");
   const [Filelist, setfilelist] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [hide, sethide] = useState(false);
+  const [hide, sethide] = useState(true);
 
   console.log("tenderid", tenderid);
 
