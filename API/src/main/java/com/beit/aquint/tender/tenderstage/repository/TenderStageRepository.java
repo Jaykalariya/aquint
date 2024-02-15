@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <h1> Add heading here </h1>
@@ -30,4 +31,7 @@ public interface TenderStageRepository extends JpaRepository<TenderStage, Long> 
 
     @Query(value = "from TenderStage ts")
     Page<TenderStage> findTenderStagePageWithoutSearch(Pageable pageable);
+
+    @Query(value = "SELECT td.id AS tender_id, td.project_name,td.project_display_name,td.tender_type,td.location,ts.tender_stage_name,td.modified_on FROM tender_stage ts RIGHT JOIN tender_details td ON ts.id=td.tender_stage WHERE ts.id=:stageId ORDER BY td.modified_on DESC", nativeQuery = true)
+    List<Map<String,Object>> getAllTenderByStageId(@Param("stageId") Long stageId);
 }
