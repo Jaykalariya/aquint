@@ -12,6 +12,7 @@ import jpg from "../../../../../../../Image/jpg.png";
 import png from "../../../../../../../Image/png.png";
 import txt from "../../../../../../../Image/txt.png";
 import Default from "../../../../../../../Image/documents.png";
+import Swal from "sweetalert2";
 
 const File = ({ tenderid }) => {
   const token = localStorage.getItem("token");
@@ -22,6 +23,10 @@ const File = ({ tenderid }) => {
 
   console.log("tenderid", tenderid);
 
+  const handleEverything = async(e) =>{
+    handleFileChange(e);
+   await handleFileUpload(); 
+  }
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -43,6 +48,7 @@ const File = ({ tenderid }) => {
   const handleFileUpload = async () => {
     if (!selectedFile) {
       setMessage("No file selected!");
+      console.log("No file selected!");
       return;
     }
 
@@ -61,6 +67,7 @@ const File = ({ tenderid }) => {
 
       setMessage("File uploaded successfully!");
       setSelectedFile(null);
+      Swal.fire("Done!", "File uploaded", "success");
       fetchData();
       sethide(!hide);
       document.getElementById("fileInput").value = "";
@@ -161,7 +168,7 @@ const File = ({ tenderid }) => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="flex flex-col items-center justify-center mb-20 space-y-4">
             <label
               htmlFor="fileInput"
               className="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-lg flex items-center"
@@ -181,12 +188,12 @@ const File = ({ tenderid }) => {
                 />
               </svg>
               <span>Choose File</span>
-              <input type="file" id="fileInput" className="hidden" onChange={handleFileChange} />
+              <input type="file" id="fileInput" className="hidden" onChange={handleEverything} />
             </label>
-            <SoftButton p={2.5} color="info" onClick={handleFileUpload}>
+            <SoftButton p={2.5} color="info" onClick={handleFileChange}>
               Upload
             </SoftButton>
-            {message && <p className="text-green-500 mt-2">{message}</p>}
+            {/* {message && <p className="text-green-500 mt-2">{message}</p>} */}
           </div>
         )}
       </div>
