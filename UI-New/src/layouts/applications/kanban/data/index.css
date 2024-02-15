@@ -1,0 +1,22 @@
+.css-15bluo4 .react-kanban-column{
+    background: linear-gradient(180deg, #62e2ff 64px, #dff3ff99 70px);
+    border-radius: 1rem !important;
+    border: 4px solid #bcdaff0f;
+    border-top: 1px solid var(--main-bg-color);
+}
+.css-srvm6p-MuiBadge-root .MuiBadge-badge {
+    background: linear-gradient(310deg, #365be7db, #394858) !important;
+}
+
+
+:root {
+    --main-bg-color: #dff3ff99; /* default background color */
+  }
+
+  .css-1qigvih {
+    color: whitesmoke!important
+  }
+/* 
+.css-15bluo4 .react-kanban-column{
+    background-color: #F1F8FF;
+} */

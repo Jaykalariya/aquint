@@ -6,6 +6,7 @@ import com.beit.aquint.tender.tenderstage.entity.TenderStage;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <h1> Add heading here </h1>
@@ -22,5 +23,11 @@ public interface TenderStageService {
 
     public List<TenderStage> getAllTenderStage() throws AquintCommonException;
 
+    public List<TenderStage> getAllActiveTenderStage() throws AquintCommonException;
+
+
+
     public Page<TenderStage> getTenderStagePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
+
+    public Optional<List<TenderStage>> getAllTenderByStageId(Long stageId) throws AquintCommonException;
 }

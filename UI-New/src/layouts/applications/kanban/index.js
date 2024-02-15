@@ -55,6 +55,8 @@ import BirthdateFormatter from "examples/BirthdateFormatter";
 import List from "./components/List";
 import { Tooltip } from "chart.js";
 import Tenderprofile from "./components/Tenderprofile";
+import './data/index.css'
+import SoftAvatar from "components/SoftAvatar";
 
 function Kanban() {
   const [newCardForm, setNewCardForm] = useState(false);
@@ -115,6 +117,8 @@ function Kanban() {
     const columns = data.map((item) => ({
       id: item.id,
       title: item.tenderStageName,
+      titleColor :item.color,
+      titleValue: item.stageValue,
       cards: tenderdata
         .filter((tender) => tender.tenderStage === item.id)
         .map((tender) => ({
@@ -128,10 +132,13 @@ function Kanban() {
             />
           ),
         })),
+        
     }));
     return { columns };
   };
 
+
+  
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -155,26 +162,26 @@ function Kanban() {
                   position="relative"
                   my={4}
                   sx={({
-                    palette: { light },
+                    palette: {light},
                     functions: { pxToRem },
                     borders: { borderRadius },
                   }) => ({
                     "& .react-kanban-column": {
-                      backgroundColor: light.main,
                       width: pxToRem(300),
                       margin: `0 ${pxToRem(10)}`,
                       padding: pxToRem(20),
                       borderRadius: borderRadius.lg,
+                
                     },
                   })}
                 >
                   {boardse.columns.length > 0 && (
-                    <Board
+                    <Board 
                       initialBoard={boardse}
                       onCardDragEnd={handelchangecard}
                       allowAddCard
                       allowAddColumn
-                      renderColumnHeader={({ id, title }, { addCard }) => (
+                      renderColumnHeader={({ id, title ,titleColor,titleValue}, { addCard }) => (
                         <>
                           {/* <SoftBox
                           display="flex"
@@ -182,7 +189,30 @@ function Kanban() {
                           alignItems="center"
                           mb={3}
                         > */}
-                          <SoftTypography variant="h6">{title}</SoftTypography>
+                    <div style={{display:"inline-flex"}}>
+                                                      {titleValue === 1 ? (
+    <>
+      <Icon fontSize="xl"
+      style={{marginTop:"2px",  margin: "5px 8px 0px 5px", color: titleColor }}>thumb_up</Icon>
+    </>
+  ) : titleValue === 2 ? (
+    <>
+      <Icon fontSize="lg" style={{marginTop:"2px",  margin: "7px 8px 0px 5px", color: titleColor }}>thumb_down</Icon>
+    </>
+  ) : (
+    <>
+      <Icon fontSize="lg" style={{marginTop:"2px", margin: "7px 5px 0px 5px", color: titleColor }}>directions_run</Icon>
+    </>
+  )}
+                          <SoftTypography style={{
+                          color:"black",
+                            fontSize:"18px",
+                            marginBottom:"5px",
+                            padding:"0px 5px 5px 2px"
+                            }} variant="h6">
+                              {title}
+                            </SoftTypography>
+                            </div>
                           {/* <SoftButton size="small" onClick={(event) => openNewCardForm(event, id)}>
                             <Icon
                               sx={{
@@ -202,7 +232,7 @@ function Kanban() {
                                 onChange={handeSetFormValue}
                                 multiline
                               />
-                              <SoftBox display="flex" mt={2}>
+                              <SoftBox display="flex" mt={2}> 
                                 <SoftButton
                                   variant="gradient"
                                   color="success"
@@ -214,8 +244,8 @@ function Kanban() {
                                 >
                                   add
                                 </SoftButton>
-                                <SoftBox ml={1}>
-                                  <SoftButton
+                                <SoftBox ml={1} >
+                                  <SoftButton 
                                     variant="gradient"
                                     color="light"
                                     size="small"

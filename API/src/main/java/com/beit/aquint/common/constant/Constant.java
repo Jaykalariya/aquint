@@ -57,6 +57,7 @@ public class Constant {
         public static final String TENDER_NOTES = "/tenderNotes";
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
+        public static final String ACTIVE_TENDER_STAGE_GET_ALL = "/getAllActiveTenderStage";
         public static final String TENDER_STAGE_GET_PAGE = "/getTenderStageByPage";
         public static final String CHANGE_STAGE = "/changeStage";
         public static final String TIMELINE = "/timeline";

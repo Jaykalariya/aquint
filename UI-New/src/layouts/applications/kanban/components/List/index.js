@@ -4,7 +4,7 @@ import BirthdateFormatter from "examples/BirthdateFormatter";
 import axiosInstance from "config/https";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
-import { Icon, Tooltip } from "@mui/material";
+import { Chip, Icon, Tooltip } from "@mui/material";
 import Tenderprofile from "../Tenderprofile";
 import IndianCurrency from "examples/IndianCurrencyFormatter";
 
@@ -30,7 +30,7 @@ function List({setbuttonhide,show, setshow}) {
       },
       {
         Header: "Tender Stage",
-        accessor: "Tender Stage",
+        accessor: "Stage",
       },
       {
         Header: "Tender Type",
@@ -97,6 +97,24 @@ function List({setbuttonhide,show, setshow}) {
       "Project Name": item.projectName,
       "Project Display Name": item.projectDisplayName,
       "Tender Stage": item.tenderStage,
+      "Stage": (
+  <div style={{ color: item.tenderStageColor }}>
+  {item.tenderStageValue === 1 ? (
+    <>
+      <Icon style={{ margin: "7px 5px 0px 5px", color: item.tenderStageColor }}>thumb_up</Icon>
+    </>
+  ) : item.tenderStageValue === 2 ? (
+    <>
+      <Icon style={{ margin: "7px 5px 0px 5px", color: item.tenderStageColor }}>thumb_down</Icon>
+    </>
+  ) : (
+    <>
+      <Icon style={{ margin: "7px 5px 0px 5px", color: item.tenderStageColor }}>directions_run</Icon>
+    </>
+  )}
+  {item.tenderStage}
+  </div>
+      ),
       "Tender Type": item.tenderType,
       "Project Value": IndianCurrency(item.projectValue),
       "Submission Date": item.submissionDate,

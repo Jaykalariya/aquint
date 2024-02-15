@@ -52,6 +52,28 @@ public class TenderStageController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.ACTIVE_TENDER_STAGE_GET_ALL)
+    public ResponseEntity<?> getAllActiveTenderStage() {
+        try {
+            log.debug("Getting all Tender Stage");
+            return ResponseEntity.ok().body(tenderStageService.getAllActiveTenderStage());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Tender Stage Has Some Issue"));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.ALL_TENDER_DETAILS + "/{stageId}")
+    public ResponseEntity<?> getAllTenderByStageId(@PathVariable("stageId") Long stageId) {
+        try {
+            log.debug("Getting all Tenders");
+            return ResponseEntity.ok().body(tenderStageService.getAllTenderByStageId(stageId));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Tender Stage Has Some Issue"));
+        }
+    }
+
     @PostMapping(value = Constant.Mappping.TENDER_STAGE_GET_PAGE)
     public ResponseEntity<?> getTenderStagePage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {
