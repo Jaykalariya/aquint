@@ -12,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * <h1> Add heading here </h1>
@@ -67,10 +64,10 @@ public class TenderStageServiceImpl implements TenderStageService {
     }
 
     @Override
-    public Optional<List<TenderStage>> getAllTenderByStageId(Long stageId) throws AquintCommonException{
+    public List<Map<String,Object>> getAllTenderByStageId(Long stageId) throws AquintCommonException{
         try {
             log.debug("Getting tenders");
-            return Optional.of(tenderStageRepository.findAllById(Collections.singleton(stageId)));
+            return tenderStageRepository.getAllTenderByStageId(stageId);
         } catch (Exception exception) {
                 throw new AquintCommonException("Error");
         }
