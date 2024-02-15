@@ -190,7 +190,7 @@ function Kanban() {
                           mb={3}
                         > */}
                     <div style={{display:"inline-flex"}}>
-                                                      {titleValue === 1 ? (
+                                                      {/* {titleValue === 1 ? (
     <>
       <Icon fontSize="xl"
       style={{marginTop:"2px",  margin: "5px 8px 0px 5px", color: titleColor }}>thumb_up</Icon>
@@ -203,9 +203,9 @@ function Kanban() {
     <>
       <Icon fontSize="lg" style={{marginTop:"2px", margin: "7px 5px 0px 5px", color: titleColor }}>directions_run</Icon>
     </>
-  )}
+  )} */}
                           <SoftTypography style={{
-                          color:"black",
+                          color:"white",
                             fontSize:"18px",
                             marginBottom:"5px",
                             padding:"0px 5px 5px 2px"

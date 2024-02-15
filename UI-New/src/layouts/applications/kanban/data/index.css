@@ -1,11 +1,11 @@
 .css-15bluo4 .react-kanban-column{
-    background: linear-gradient(180deg, #62e2ff 64px, #dff3ff99 70px);
+background: linear-gradient(180deg, #00b4dd 64px, #dff3ff99 70px);
     border-radius: 1rem !important;
     border: 4px solid #bcdaff0f;
     border-top: 1px solid var(--main-bg-color);
 }
 .css-srvm6p-MuiBadge-root .MuiBadge-badge {
-    background: linear-gradient(310deg, #365be7db, #394858) !important;
+    background: linear-gradient(310deg, #3fb8d5db, #114f6c) !important;
 }
 
 
