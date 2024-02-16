@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axiosInstance from "config/https";
 import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
@@ -20,6 +20,8 @@ const File = ({ tenderid }) => {
   const [Filelist, setfilelist] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [hide, sethide] = useState(true);
+  const fileInputRef = useRef(null);
+
 
   console.log("tenderid", tenderid);
 
@@ -34,8 +36,9 @@ const File = ({ tenderid }) => {
   };
 
   useEffect(() => {
+    handleFileUpload();
     fetchData();
-  }, []);
+  }, [selectedFile]);
   const fetchData = async () => {
     const result = await axiosInstance.get(`/_v1/tender/allDocuments/${tenderid}`, {
       headers: {
@@ -68,8 +71,8 @@ const File = ({ tenderid }) => {
       setMessage("File uploaded successfully!");
       setSelectedFile(null);
       Swal.fire("Done!", "File uploaded", "success");
-      fetchData();
-      sethide(!hide);
+      // fetchData();
+      // sethide(!hide);
       document.getElementById("fileInput").value = "";
     } catch (error) {
       console.error("Error uploading file:", error);
