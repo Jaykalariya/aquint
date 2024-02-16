@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axiosInstance from "config/https";
 import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
@@ -20,6 +20,8 @@ const File = ({ tenderid }) => {
   const [Filelist, setfilelist] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [hide, sethide] = useState(true);
+  const fileInputRef = useRef(null);
+
 
   console.log("tenderid", tenderid);
 
@@ -34,8 +36,9 @@ const File = ({ tenderid }) => {
   };
 
   useEffect(() => {
+    handleFileUpload();
     fetchData();
-  }, []);
+  }, [selectedFile]);
   const fetchData = async () => {
     const result = await axiosInstance.get(`/_v1/tender/allDocuments/${tenderid}`, {
       headers: {
@@ -68,8 +71,8 @@ const File = ({ tenderid }) => {
       setMessage("File uploaded successfully!");
       setSelectedFile(null);
       Swal.fire("Done!", "File uploaded", "success");
-      fetchData();
-      sethide(!hide);
+      // fetchData();
+      // sethide(!hide);
       document.getElementById("fileInput").value = "";
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -113,8 +116,14 @@ const File = ({ tenderid }) => {
       </SoftBox>
       {hide ? (
         <SoftBox className="flex justify-end mt-2 mb-2.5 mr-5">
-          <SoftButton color="info" onClick={()=>sethide(!hide)} >Upload</SoftButton>
-        </SoftBox>
+        <input
+          type="file"
+          style={{ display: 'none' }}
+          onChange={(e) => handleFileChange(e)}
+          ref={fileInputRef}
+        />
+        <SoftButton color="info" onClick={() => fileInputRef.current.click()}>Upload</SoftButton>
+      </SoftBox>
       ) : (
         <SoftBox className="flex justify-end mt-2 mb-2.5 mr-5">
           <SoftButton color="info" onClick={()=>sethide(!hide)}>Back</SoftButton>
@@ -138,7 +147,7 @@ const File = ({ tenderid }) => {
                       <div>
                         <span className="text-lg font-semibold">{file.documentName}</span>
                         <p className="text-sm text-gray-500">
-                          {file.createdBy} -{BirthdateFormatter(file.createdOn)}
+                          {file.createdBy} -  {BirthdateFormatter(file.createdOn)}
                         </p>
                       </div>
                     </div>
@@ -173,7 +182,7 @@ const File = ({ tenderid }) => {
               htmlFor="fileInput"
               className="cursor-pointer bg-gray-200 hover:bg-gray-300 p-2 rounded-lg flex items-center"
             >
-              <svg
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 mr-1"
                 fill="none"
@@ -186,11 +195,11 @@ const File = ({ tenderid }) => {
                   strokeWidth="2"
                   d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                 />
-              </svg>
+              </svg> */}
               <span>Choose File</span>
-              <input type="file" id="fileInput" className="hidden" onChange={handleEverything} />
+              <input type="file" id="fileInput"  className="hidden" onChange={handleFileChange} />
             </label>
-            <SoftButton p={2.5} color="info" onClick={handleFileChange}>
+            <SoftButton p={2.5} color="info" onClick={handleFileUpload}>
               Upload
             </SoftButton>
             {/* {message && <p className="text-green-500 mt-2">{message}</p>} */}
