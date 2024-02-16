@@ -23,6 +23,10 @@ const File = ({ tenderid }) => {
 
   console.log("tenderid", tenderid);
 
+  const handleEverything = async(e) =>{
+    handleFileChange(e);
+   await handleFileUpload(); 
+  }
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -44,6 +48,7 @@ const File = ({ tenderid }) => {
   const handleFileUpload = async () => {
     if (!selectedFile) {
       setMessage("No file selected!");
+      console.log("No file selected!");
       return;
     }
 
@@ -62,6 +67,7 @@ const File = ({ tenderid }) => {
 
       setMessage("File uploaded successfully!");
       setSelectedFile(null);
+      Swal.fire("Done!", "File uploaded", "success");
       fetchData();
       sethide(!hide);
       document.getElementById("fileInput").value = "";

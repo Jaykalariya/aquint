@@ -53,7 +53,7 @@ import axiosInstance from "config/https";
 import PagesBodyCell from "layouts/applications/analytics/components/PagesBodyCell";
 import PagesHeaderCell from "layouts/applications/analytics/components/PagesHeaderCell";
 import SoftButton from "components/SoftButton";
-
+import DefaultInfoCard from "examples/Cards/InfoCards/DefaultInfoCard";
 
 function Tender() {
   const { values } = breakpoints;
@@ -96,7 +96,7 @@ function Tender() {
       backgroundColors: ["primary", "info", "warning", "success", "dark"],
       data: projectValueByTenderType?.map((entry) => {
         const percentage = (entry.projectvalue / totalProjectValueByType) * 100;
-        return percentage.toFixed(1); 
+        return percentage.toFixed(1);
       }),
     },
   };
@@ -158,7 +158,6 @@ function Tender() {
           },
         });
 
-      
         setTotalWinValue(result.data["valueByStage"]?.[0].projectvalue);
         setTotalLossValue(result.data["valueByStage"][2].projectvalue);
         setTotalOngoingValue(result.data["valueByStage"][1].projectvalue);
@@ -173,7 +172,7 @@ function Tender() {
     };
 
     fetchData();
-  }, []); 
+  }, []);
 
   return (
     <DashboardLayout>
@@ -242,62 +241,62 @@ function Tender() {
                   <SoftTypography variant="h6" fontWeight="medium">
                     EMD amount
                   </SoftTypography>
-                  <SoftTypography variant="button" color="text" fontWeight="medium">
+                  {/* <SoftTypography variant="button" color="text" fontWeight="medium">
                     Project value
-                  </SoftTypography>
+                  </SoftTypography> */}
                 </SoftBox>
-                {emdAndFeesData &&
-                  emdAndFeesData.map((data, index) => (
-                    <SoftBox p={2} display="flex" alignItems="center" key={index}>
-                      <DefaultItem
-                        icon={getIconAndTitleForStage(data.stagevalue).icon}
-                        title={
-                          <SoftTypography variant="body2" fontWeight="bold">
-                            {getIconAndTitleForStage(data.stagevalue).title} ({data.projectcount})
-                          </SoftTypography>
-                        }
-                        // description={`No. of projects  ${data.projectcount}`}
-                        color={getIconAndTitleForStage(data.stagevalue).color}
-                      />
-                      <SoftBox ml="auto" mr={5}>
-                        <SoftTypography variant="body2" fontWeight="bold" color="text">
-                          ₹ {data.emdamount}
-                        </SoftTypography>
-                      </SoftBox>
-                    </SoftBox>
-                  ))}
+                <SoftBox p={2} display="flex" alignItems="center">
+                  <Grid container spacing={2}>
+                  {emdAndFeesData &&
+                      emdAndFeesData.map((data, index) => (
+                        <Grid item xs={12} sm={3} lg={4} key={index}>
+                          <DefaultInfoCard
+                            icon={getIconAndTitleForStage(data.stagevalue).icon}
+                            title={<SoftTypography variant="body2" fontWeight="bold">
+                            {getIconAndTitleForStage(data.stagevalue).title}
+                          </SoftTypography>}
+                            description={`Project: ${data.projectcount}`} 
+                            value={<SoftTypography variant="body2" fontWeight="bold" color="black">
+                            ₹ {data.tenderfee}
+                          </SoftTypography>}
+                            color={getIconAndTitleForStage(data.stagevalue).color}
+                          />
+                        </Grid>
+                      ))}
+                  </Grid>
+                </SoftBox>
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} lg={6}>
               <Card sx={{ height: "100%" }}>
                 <SoftBox pt={2} px={2} lineHeight={1}>
-                  <SoftTypography variant="h6" fontWeight="medium">
+                  <SoftTypography ml={1} variant="h6" fontWeight="medium">
                     Tender Fees
                   </SoftTypography>
-                  <SoftTypography variant="button" color="text" fontWeight="medium">
+                  {/* <SoftTypography variant="button" color="text" fontWeight="medium">
                     Project value
-                  </SoftTypography>
+                  </SoftTypography> */}
                 </SoftBox>
-                {emdAndFeesData &&
-                  emdAndFeesData.map((data, index) => (
-                    <SoftBox p={2} display="flex" alignItems="center" key={index}>
-                      <DefaultItem
-                        icon={getIconAndTitleForStage(data.stagevalue).icon}
-                        title={
-                          <SoftTypography variant="body2" fontWeight="bold">
-                            {getIconAndTitleForStage(data.stagevalue).title}
-                          </SoftTypography>
-                        }
-                        description={`${data.projectcount}`}
-                        color={getIconAndTitleForStage(data.stagevalue).color}
-                      />
-                      <SoftBox ml="auto" mr={5}>
-                        <SoftTypography variant="body2" fontWeight="bold" color="text">
-                          ₹ {data.tenderfee}
-                        </SoftTypography>
-                      </SoftBox>
-                    </SoftBox>
-                  ))}
+                <SoftBox p={2} display="flex" alignItems="center">
+                  <Grid container spacing={2}>
+                    {emdAndFeesData &&
+                      emdAndFeesData.map((data, index) => (
+                        <Grid item xs={12} sm={3} lg={4} key={index}>
+                          <DefaultInfoCard
+                            icon={getIconAndTitleForStage(data.stagevalue).icon}
+                            title={<SoftTypography variant="body2" fontWeight="bold">
+                            {getIconAndTitleForStage(data.stagevalue).title} 
+                          </SoftTypography>}
+                            description={`Project: ${data.projectcount}`} 
+                            value={<SoftTypography variant="body2" fontWeight="bold" color="black">
+                            ₹ {data.emdamount}
+                          </SoftTypography>}
+                            color={getIconAndTitleForStage(data.stagevalue).color}
+                          />
+                        </Grid>
+                      ))}
+                  </Grid>
+                </SoftBox>
               </Card>
             </Grid>
           </Grid>
@@ -366,7 +365,7 @@ function Tender() {
                     </SoftButton>
                   </Tooltip>
                 </SoftBox>
-                <SoftBox py={2} px={2} sx={{ width: '100%'}}>
+                <SoftBox py={2} px={2} sx={{ width: "100%" }}>
                   <TableContainer sx={{ boxShadow: "none" }}>
                     <Table>
                       <SoftBox component="thead">
@@ -381,13 +380,13 @@ function Tender() {
                         {lastFiveTenderHistory &&
                           lastFiveTenderHistory.map((historyItem, index) => (
                             <PagesBodyCell
-                              key={index} 
+                              key={index}
                               rows={[
-                                historyItem.name, 
-                                historyItem.fullname, 
-                                historyItem.project_name, 
+                                historyItem.name,
+                                historyItem.fullname,
+                                historyItem.project_name,
                               ]}
-                              noBorder={index === lastFiveTenderHistory.length - 1} 
+                              noBorder={index === lastFiveTenderHistory.length - 1}
                             />
                           ))}
                       </TableBody>

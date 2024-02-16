@@ -46,6 +46,7 @@ import { Box, Icon } from "@mui/material";
 import { useParams } from "react-router-dom";
 import axiosInstance from "config/https";
 import SoftButton from "components/SoftButton";
+import Swal from "sweetalert2";
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -102,7 +103,6 @@ function Header() {
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   const handleEditClick = () => {
-    // Trigger the click event of the hidden file input
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -121,7 +121,6 @@ function Header() {
     try {
     const file = event.target.files[0];
 
-    // Create a FormData object and append the file to it
     const formData = new FormData();
     formData.append("file", file);
 
@@ -154,20 +153,20 @@ function Header() {
     , {
         headers: {
           Authorization: `Bearer ${token}`,
-          // "Content-Type": "multipart/form-data",
         },
       });
 
       console.log("Photo uploaded");
+      Swal.fire("Good job!", "Profile picture updated", "success");
       fetchData();
     } catch (error) {
+      Swal.fire("Opps!", "Something went wrong", "error");
       console.error("Error uploading image:", error);
     }
   };
 
   const handleUpdateButtonClick = () => {
     if (editMode) {
-      // Upload the selected image
       handleImageUpload();
     } else {
       // Navigate to the update page
