@@ -14,7 +14,7 @@ function Tenderprofile({ tenderid }) {
   console.log(tenderid);
 
   return (
-    <SoftBox >
+    <SoftBox>
       <Grid container spacing={3}>
         <Grid item xs={12} lg={3}>
           <Sidenav />
@@ -23,19 +23,16 @@ function Tenderprofile({ tenderid }) {
           <SoftBox mb={3}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                {/* <Header /> */}
+                <Tenderinfo tenderid={tenderid} />
               </Grid>
               <Grid item xs={12}>
-              <Tenderinfo tenderid={tenderid} />
+                <Timeline tenderid={tenderid} />
               </Grid>
               <Grid item xs={12}>
-              <Timeline tenderid={tenderid} />
+                <Notes tenderid={tenderid} />
               </Grid>
               <Grid item xs={12}>
-              <Notes tenderid={tenderid} />
-              </Grid>
-              <Grid item xs={12}>
-              <File tenderid={tenderid} />
+                <File tenderid={tenderid} />
               </Grid>
             </Grid>
           </SoftBox>
