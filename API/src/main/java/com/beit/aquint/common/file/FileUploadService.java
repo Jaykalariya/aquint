@@ -53,6 +53,7 @@ public class FileUploadService {
             File file = convertMultiPartToFile(multipartFile);
             String fileName = path + "/" + generateFileName(multipartFile);
             uploadFileTos3bucket(fileName, file);
+
             String fileUrl = END_POINT_URL + "/" + BUCKET_NAME + "/" + fileName;
             return fileUrl;
         } catch (Exception ex) {
@@ -90,4 +91,25 @@ public class FileUploadService {
         String extension = mimeType.split("/")[1];
         return extension;
     }
+
+    public String deleteFile(String fileUrl) {
+        try {
+            initializeAmazon();
+            String fileName = extractFileName(fileUrl);
+            s3client.deleteObject(BUCKET_NAME,fileName);
+            System.out.println("File deleted");
+            return fileName;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Error deleting file from S3: " + ex.getMessage());
+        }
+    }
+
+    private static String extractFileName(String fileUrl) {
+        String[] parts = fileUrl.split("/");
+        String fileName = parts[parts.length - 3]+"/"+parts[parts.length - 2]+"/"+parts[parts.length - 1];
+        System.out.println(fileName);
+        return fileName;
+    }
+
 }

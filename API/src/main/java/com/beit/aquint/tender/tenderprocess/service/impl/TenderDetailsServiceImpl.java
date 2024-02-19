@@ -205,6 +205,15 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
     }
 
     @Override
+    @Transactional
+    public ResponseMessage deleteTenderFile(Long documentId){
+        String url = tenderDocumentsRepository.findById(documentId).get().getDocumentUrl();
+        System.out.println(url);
+        String response = fileUploadService.deleteFile(url);
+        return new ResponseMessage( "File successfully deleted and tender history saved",response);
+    }
+
+    @Override
     public List<TenderDocumentDto> getAllDocumentByTenderId(Long tenderId){
             return tenderDocumentsRepository.getAllDocumentByTenderId(tenderId);
     }
