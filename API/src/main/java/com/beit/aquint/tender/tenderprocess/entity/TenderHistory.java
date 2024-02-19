@@ -26,4 +26,5 @@ public class TenderHistory extends EntityAuditInfo implements Serializable {
     private Long tenderId;
     private String name;
     private Long userId;
+    private String type;
 }

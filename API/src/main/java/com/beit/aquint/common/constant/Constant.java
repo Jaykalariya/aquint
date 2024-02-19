@@ -506,7 +506,11 @@ ORDER BY
         public static final String ADD_NEW_TENDER = "Tender Created By ";
         public static final String ADD_NEW_MEMBER = " Was added By ";
         public static final String STAGED_CHANGED = "Staged Changed to ";
-
+        public static final String TENDER_ADD = "TENDER ADD";
+        public static final String USER_ADD = "USER ADD";
+        public static final String DOCUMENT_ADD = "DOCUMENT ADD";
+        public static final String TENDER_STAGE_CHANGE = "TENDER STAGE CHANGE";
+        public static final String DOCUMENT_DELETE = "DOCUMENT DELETE";
         public static String UPLOADED_BY = "Uploaded By";
     }
 }

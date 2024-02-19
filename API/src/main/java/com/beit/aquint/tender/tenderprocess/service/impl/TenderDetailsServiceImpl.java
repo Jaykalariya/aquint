@@ -97,6 +97,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         tenderHistory.setTenderId(details.getId());
         tenderHistory.setName(Constant.TenderHistoryConstant.ADD_NEW_TENDER + currentUser.getFirstname() + " " + currentUser.getLastname());
         tenderHistory.setUserId(null);
+        tenderHistory.setType(Constant.TenderHistoryConstant.TENDER_ADD);
         tenderHistoryRepository.save(tenderHistory);
 
 
@@ -107,6 +108,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
             tenderMemberHistory.setTenderId(details.getId());
             tenderMemberHistory.setName(memberDetails.getFirstname() + " " + memberDetails.getLastname() + Constant.TenderHistoryConstant.ADD_NEW_MEMBER + currentUser.getFirstname() + " " + currentUser.getLastname());
             tenderMemberHistory.setUserId(null);
+            tenderMemberHistory.setType(Constant.TenderHistoryConstant.USER_ADD);
             tenderMemberHistorys.add(tenderMemberHistory);
         }
         tenderHistoryRepository.saveAll(tenderMemberHistorys);
@@ -154,6 +156,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         tenderMemberHistory.setTenderId(changeStageDto.getTenderId());
         tenderMemberHistory.setName(String.format("%s %s By %s", Constant.TenderHistoryConstant.STAGED_CHANGED, stage.getTenderStageName(), currentUser.getFirstname()+ " " +currentUser.getLastname()));
         tenderMemberHistory.setUserId(null);
+        tenderMemberHistory.setType(Constant.TenderHistoryConstant.TENDER_STAGE_CHANGE);
         tenderHistoryRepository.save(tenderMemberHistory);
 
         return new MessageResponse("Tender Staged changed and History added Successfully");
@@ -200,7 +203,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         String extension = fileUploadService.getExtension(multipartFile);
         TenderDocuments tenderDocument = new TenderDocuments(tenderId,documentName,documentUrl,extension);
         tenderDocumentsRepository.save(tenderDocument);
-        saveTenderHistory(tenderId,String.format("%s %s ",documentName, Constant.TenderHistoryConstant.UPLOADED_BY), null);
+        saveTenderHistory(tenderId,String.format("%s %s ",documentName, Constant.TenderHistoryConstant.UPLOADED_BY), null,Constant.TenderHistoryConstant.DOCUMENT_ADD);
         return new ResponseMessage("File successfully uploaded and tender history saved", tenderDocument);
     }
 
@@ -226,7 +229,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
             Optional<TenderDocuments> tenderDocuments =tenderDocumentsRepository.findById(documentId);
             tenderDocumentsRepository.deleteById(documentId);
-            saveTenderHistory(tenderDocuments.get().getTenderId(), String.format("%s %s ",tenderDocuments.get().getDocumentName(), Constant.TenderHistoryConstant.UPLOADED_BY), null);
+            saveTenderHistory(tenderDocuments.get().getTenderId(), String.format("%s %s ",tenderDocuments.get().getDocumentName(), Constant.TenderHistoryConstant.UPLOADED_BY), null, Constant.TenderHistoryConstant.DOCUMENT_DELETE);
             return new ResponseMessage( "File successfully deleted and tender history saved", tenderDocuments);
         } catch (Exception exception) {
             throw new AquintCommonException("Something went wrong");
@@ -261,12 +264,13 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
     }
 
 
-    private boolean saveTenderHistory(Long tenderId, String name, Long userId){
+    private boolean saveTenderHistory(Long tenderId, String name, Long userId, String type){
         UserDetail currentUser = userService.getCurrentUserDetails();
         TenderHistory tenderMemberHistory = new TenderHistory();
         tenderMemberHistory.setTenderId(tenderId);
         tenderMemberHistory.setName(name + currentUser.getFirstname()+ " " +currentUser.getLastname());
         tenderMemberHistory.setUserId(userId);
+        tenderMemberHistory.setType(type);
         tenderHistoryRepository.save(tenderMemberHistory);
         return true;
     }
