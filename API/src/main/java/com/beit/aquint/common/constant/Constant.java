@@ -389,6 +389,8 @@ ORDER BY
         END)
     GROUP BY
         ts.stage_value
+    ORDER BY
+        ts.stage_value
 """;
 
 
@@ -411,6 +413,8 @@ ORDER BY
         )
         GROUP BY
           ts.stage_value
+        ORDER BY
+        ts.stage_value
         """;
 
             public static final String PROJECT_VALUE_BY_EACH_TENDER_STAGE = """
@@ -430,6 +434,8 @@ ORDER BY
         END)
     GROUP BY
         ts.id
+            ORDER BY
+        ts.id
 """;
 
             public static final String PROJECT_VALUE_BY_EACH_TENDER_TYPE = """
@@ -448,6 +454,8 @@ ORDER BY
             true
         END)
     GROUP BY
+        tt.id
+            ORDER BY
         tt.id
 """;
 

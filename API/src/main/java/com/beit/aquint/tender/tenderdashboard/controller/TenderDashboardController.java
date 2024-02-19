@@ -26,8 +26,25 @@ public class TenderDashboardController {
     @Autowired
     TenderDashboardService tenderDashboardService;
 
-    @PostMapping(value = Constant.Mappping.TENDER_DASHBOARD)
-    public ResponseEntity<?> getTenderDashboard(@RequestBody DateFilterDto dateFilter) {
+    @GetMapping(value = Constant.Mappping.TENDER_DASHBOARD)
+    public ResponseEntity<?> getTenderDashboard() {
+        /**
+         * <h1> TO BE USED LATER AFTER THE COMPLETE DASHBOARD </h1>
+         * <p>
+         * @RequestBody DateFilterDto dateFilter
+         * To be used later to GET START AND END DATE FROM USER
+         * For now the value is null and user gets all data from day 1
+         * Also change to post mapping after the new changes from get mapping
+         * </p>
+         *
+         * @author - Sahil
+         * @since - 19/02/24  13:45 pm
+         */
+
+//        @RequestBody DateFilterDto dateFilter
+        DateFilterDto dateFilter = new DateFilterDto();
+        dateFilter.setStartDate(null);
+        dateFilter.setEndDate(null);
         try {
             if (!(Objects.equals(dateFilter.getEndDate() == null, dateFilter.getStartDate() == null))) {
                 return ResponseEntity.badRequest().body(new MessageResponse("One of the dates is null"));
