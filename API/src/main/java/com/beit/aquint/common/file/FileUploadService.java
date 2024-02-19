@@ -108,7 +108,6 @@ public class FileUploadService {
     private static String extractFileName(String fileUrl) {
         String[] parts = fileUrl.split("/");
         String fileName = parts[parts.length - 3]+"/"+parts[parts.length - 2]+"/"+parts[parts.length - 1];
-        System.out.println(fileName);
         return fileName;
     }
 

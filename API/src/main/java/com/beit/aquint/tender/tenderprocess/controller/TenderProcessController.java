@@ -135,7 +135,7 @@ public class TenderProcessController {
     }
 
     @DeleteMapping(value = Constant.Mappping.DELETE_FILE + "/{documentId}")
-    public ResponseEntity<?> deleteTenderFile(@PathVariable("documentId") Long documentId) {
+    public ResponseEntity<?> deleteTenderFile(@PathVariable("documentId") Long documentId){
         try {
             return ResponseEntity.ok().body(tenderDetailsService.deleteTenderFile(documentId));
         } catch (Exception exception) {

@@ -206,12 +206,33 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
     @Override
     @Transactional
-    public ResponseMessage deleteTenderFile(Long documentId){
-        String url = tenderDocumentsRepository.findById(documentId).get().getDocumentUrl();
-        System.out.println(url);
-        String response = fileUploadService.deleteFile(url);
-        return new ResponseMessage( "File successfully deleted and tender history saved",response);
+    public ResponseMessage deleteTenderFile(Long documentId) throws AquintCommonException{
+
+        try {
+            /**
+             * <h1> TO BE USED LATER AFTER THE S3 DELETE ACCESS </h1>
+             * <p>
+             * String response = fileUploadService.deleteFile(url);
+             * To be used later to delete file from s3 bucket
+             * For now the file data is deleted from the tenderDocument table only
+             * </p>
+             *
+             * @author - Sahil
+             * @since - 19/02/24  13:45 pm
+             */
+//        String url = tenderDocumentsRepository.findById(documentId).get().getDocumentUrl();
+//        String response = fileUploadService.deleteFile(url);
+//        return new ResponseMessage( "File successfully deleted and tender history saved",response);
+
+            Optional<TenderDocuments> tenderDocuments =tenderDocumentsRepository.findById(documentId);
+            tenderDocumentsRepository.deleteById(documentId);
+            saveTenderHistory(tenderDocuments.get().getTenderId(), String.format("%s %s ",tenderDocuments.get().getDocumentName(), Constant.TenderHistoryConstant.UPLOADED_BY), null);
+            return new ResponseMessage( "File successfully deleted and tender history saved", tenderDocuments);
+        } catch (Exception exception) {
+            throw new AquintCommonException("Something went wrong");
+        }
     }
+
 
     @Override
     public List<TenderDocumentDto> getAllDocumentByTenderId(Long tenderId){
