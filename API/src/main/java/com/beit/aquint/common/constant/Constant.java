@@ -60,6 +60,7 @@ public class Constant {
         public static final String ACTIVE_TENDER_STAGE_GET_ALL = "/getAllActiveTenderStage";
         public static final String TENDER_STAGE_GET_PAGE = "/getTenderStageByPage";
         public static final String CHANGE_STAGE = "/changeStage";
+        public static final String CHANGE_TENDER_STAGE_STATUS = "/changeTenderStageStatus";
         public static final String TIMELINE = "/timeline";
 
         public static final String ALL_TENDER_DETAILS = "/tenderDetails";

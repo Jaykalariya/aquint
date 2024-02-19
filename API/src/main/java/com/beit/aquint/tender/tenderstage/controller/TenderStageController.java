@@ -3,8 +3,10 @@ package com.beit.aquint.tender.tenderstage.controller;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.tender.tenderstage.dto.TenderStageDto;
 import com.beit.aquint.tender.tenderstage.entity.TenderStage;
 import com.beit.aquint.tender.tenderstage.service.TenderStageService;
+import com.beit.aquint.user.dto.UserFullDetailsDto;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +84,16 @@ public class TenderStageController {
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Tender Stage Has Some Issue"));
+        }
+    }
+
+    @PostMapping(value = Constant.Mappping.CHANGE_TENDER_STAGE_STATUS)
+    public ResponseEntity<?> changeUserStatus(@RequestBody TenderStageDto tenderStageDto) {
+        try {
+            return ResponseEntity.ok().body(tenderStageService.changeTenderStageStatus(tenderStageDto));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Some issue occurred"));
         }
     }
 }

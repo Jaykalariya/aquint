@@ -34,7 +34,7 @@ public class TenderDashboardController {
          * @RequestBody DateFilterDto dateFilter
          * To be used later to GET START AND END DATE FROM USER
          * For now the value is null and user gets all data from day 1
-         * Also change to post mapping after the new changes from get mapping
+         * Also change it to post mapping from get mapping after the new changes
          * </p>
          *
          * @author - Sahil
