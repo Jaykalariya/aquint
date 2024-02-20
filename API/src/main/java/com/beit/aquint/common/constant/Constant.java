@@ -324,6 +324,7 @@ public class Constant {
 SELECT
     th.created_on AS createdOn,
     th.name AS stage,
+    th.type AS type,
     COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
     ud.image_url as profileUrl
 FROM
