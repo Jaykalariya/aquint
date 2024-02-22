@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+import NotesIcon from "@mui/icons-material/Notes";
 
 function Notes({ tenderid }) {
   const token = localStorage.getItem("token");
@@ -64,8 +65,8 @@ function Notes({ tenderid }) {
   return (
     <Card id="notes" sx={{ overflow: "visible" }}>
       <SoftBox mb={2} mt={2} pl={4} className="border-b">
-        <SoftTypography fontWeight="large" textTransform="capitalize">
-          Notes
+        <SoftTypography fontWeight="bold" textTransform="capitalize">
+          Notes <NotesIcon fontSize="medium" />
         </SoftTypography>
       </SoftBox>
       <div className="flex flex-col  overflow-y-auto" style={{ maxHeight: "550px"}}>

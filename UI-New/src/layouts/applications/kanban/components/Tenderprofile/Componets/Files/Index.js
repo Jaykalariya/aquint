@@ -13,6 +13,7 @@ import png from "../../../../../../../Image/png.png";
 import txt from "../../../../../../../Image/txt.png";
 import Default from "../../../../../../../Image/documents.png";
 import Nodata from "components/Nodata";
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
 const File = ({ tenderid }) => {
   const token = localStorage.getItem("token");
@@ -111,8 +112,8 @@ const File = ({ tenderid }) => {
     <Card id="file" sx={{ overflow: "visible" }}>
       <div className="flex justify-between">
         <SoftBox mt={2} pl={4} className="border-b">
-          <SoftTypography fontWeight="large" textTransform="capitalize">
-            File
+          <SoftTypography fontWeight="bold" textTransform="capitalize">
+            File <InsertDriveFileIcon fontSize="medium"/>
           </SoftTypography>
         </SoftBox>
         {hide ? (

@@ -8,6 +8,7 @@ import BirthdateFormatter from "examples/BirthdateFormatter";
 import TimelineItem from "examples/Timeline/TimelineItem";
 import TimelineList from "examples/Timeline/TimelineList";
 import { useEffect, useState } from "react";
+import TimelineIcon from "@mui/icons-material/Timeline";
 
 // eslint-disable-next-line react/prop-types
 function Timeline({ tenderid }) {
@@ -48,8 +49,8 @@ function Timeline({ tenderid }) {
   return (
     <Card id="timeline" className="flex flex-col overflow-y-auto" style={{ maxHeight: "550px" }}>
       <SoftBox mt={2} pl={4} className="border-b">
-        <SoftTypography fontWeight="large" textTransform="capitalize">
-          Timeline
+        <SoftTypography fontWeight="bold" textTransform="capitalize">
+          Timeline <TimelineIcon  fontSize="medium"/>
         </SoftTypography>
       </SoftBox>
       <div className="overflow-auto" style={{}}>

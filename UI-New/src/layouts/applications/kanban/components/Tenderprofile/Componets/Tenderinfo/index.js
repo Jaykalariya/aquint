@@ -5,6 +5,7 @@ import axiosInstance from "config/https";
 import DefaultProfileCard from "examples/Cards/ProfileCards/DefaultProfileCard";
 import IndianCurrency from "examples/IndianCurrencyFormatter";
 import { useEffect, useState } from "react";
+import InfoIcon from '@mui/icons-material/Info';
 
 /* eslint-disable react/prop-types */
 function Tenderinfo({ tenderid }) {
@@ -80,9 +81,9 @@ function Tenderinfo({ tenderid }) {
 
   return (
     <Card id="tender-info" sx={{ overflow: "visible" }}>
-      <SoftBox mt={2} pl={4} className="border-b">
-        <SoftTypography fontWeight="large" textTransform="capitalize">
-          Tender Information
+      <SoftBox mt={2} pl={4} pb={1} className="border-b">
+        <SoftTypography fontWeight="bold" textTransform="capitalize">
+          Tender Information <InfoIcon  fontSize="medium" />
         </SoftTypography>
       </SoftBox>
       <SoftBox
