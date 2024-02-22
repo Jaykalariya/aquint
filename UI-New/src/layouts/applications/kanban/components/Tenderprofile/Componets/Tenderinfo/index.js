@@ -37,14 +37,14 @@ function Tenderinfo({ tenderid }) {
       return (
         <div style={{ color: "Red" }} className="text-base">
           {formatDate(submissionDate) || "N/A"} 
-          <div style={{ color: "#ff2525", fontStyle: "italic", fontSize: "0.8rem" }}>!Today is the last date to submit</div>
+          <div style={{ color: "#ff2525", fontStyle: "italic", fontSize: "0.8rem" }}>Today is the last date to submit</div>
         </div>
       );
     } else if (differenceInDays < 5) {
       return (
         <div style={{ color: "Orange" }} className="text-base">
           {formatDate(submissionDate) || "N/A"}
-          <div style={{ color: "#ff2525", fontStyle: "italic", fontSize: "0.8rem" }}>!Only {differenceInDays} days left</div>     
+          <div style={{ color: "#ff2525", fontStyle: "italic", fontSize: "0.8rem" }}>Only {differenceInDays} days left</div>     
         </div>
       );
     } else {
