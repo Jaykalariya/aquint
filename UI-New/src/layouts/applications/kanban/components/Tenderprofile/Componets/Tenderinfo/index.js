@@ -10,6 +10,54 @@ import { useEffect, useState } from "react";
 function Tenderinfo({ tenderid }) {
   const token = localStorage.getItem("token");
   const [tender, settendetdata] = useState({});
+ 
+  const customStyles = {
+    fontSize: '0.9rem',
+    color: '#0463b5',
+  };
+
+  
+  const currentDate = new Date();
+
+  const formatSubmissionDate = (submissionDate) => {
+    return new Date(submissionDate);
+  };
+  
+  const getSubmissionDate = (submissionDate) => {
+    const differenceInDays = Math.floor((formatSubmissionDate(submissionDate) - new Date(currentDate)) / (24 * 60 * 60 * 1000));
+  
+    if (differenceInDays < 0) {
+      return (
+        <div style={{ color: "Red" }} className="text-base">
+          {formatDate(submissionDate) || "N/A"}{" "}
+          <div style={{    color: "#ff2525", fontStyle: "italic", fontSize: "0.8rem" }}>!Tender has passed the submission date, We missed it</div>
+        </div>
+      );
+    } else if (differenceInDays == 0) {
+      return (
+        <div style={{ color: "Red" }} className="text-base">
+          {formatDate(submissionDate) || "N/A"} 
+          <div style={{ color: "#ff2525", fontStyle: "italic", fontSize: "0.8rem" }}>!Today is the last date to submit</div>
+        </div>
+      );
+    } else if (differenceInDays < 5) {
+      return (
+        <div style={{ color: "Orange" }} className="text-base">
+          {formatDate(submissionDate) || "N/A"}
+          <div style={{ color: "#ff2525", fontStyle: "italic", fontSize: "0.8rem" }}>!Only {differenceInDays} days left</div>     
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ color: "Green" }} className="text-base">
+          {formatDate(submissionDate) || "N/A"}
+        </div>
+      );
+    }
+  };
+  
+
+          
 
   useEffect(() => {
     fetchData();
@@ -34,7 +82,7 @@ function Tenderinfo({ tenderid }) {
     <Card id="tender-info" sx={{ overflow: "visible" }}>
       <SoftBox mt={2} pl={4} className="border-b">
         <SoftTypography fontWeight="large" textTransform="capitalize">
-          Tender info
+          Tender Information
         </SoftTypography>
       </SoftBox>
       <SoftBox
@@ -54,18 +102,25 @@ function Tenderinfo({ tenderid }) {
           flexDirection="column"
           lineHeight={1}
         >
-          <SoftBox className="border-b mb-2 p-4">
+          <SoftBox  className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+            style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
-              color="text"
               className="block mb-1 text-sm text-gray-500"
             >
               Project Name:
             </SoftTypography>
             <div className="text-base">{tender.projectName || "N/A"}</div>
           </SoftBox>
-          <SoftBox className="border-b mb-2 p-4">
+
+          <div className="grid grid-cols-2">
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
@@ -74,8 +129,11 @@ function Tenderinfo({ tenderid }) {
             </SoftTypography>
             <div className="text-base">{tender.tenderType || "N/A"}</div>
           </SoftBox>
-          <SoftBox className="border-b mb-2 p-4">
+
+          <SoftBox style={customStyles}
+           className="border-b mb-2 p-4">
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
@@ -84,9 +142,13 @@ function Tenderinfo({ tenderid }) {
             </SoftTypography>
             <div className="text-base">{tender.tenderStage || "N/A"}</div>
           </SoftBox>
-          <div className="grid grid-cols-3">
-          <SoftBox className="border-b mb-2 p-4">
+</div>
+          <div className="grid grid-cols-2">
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
@@ -95,61 +157,81 @@ function Tenderinfo({ tenderid }) {
             </SoftTypography>
             <div className="text-base">{IndianCurrency(tender.projectValue)|| "N/A"}</div>
           </SoftBox>
-          <SoftBox className="border-b mb-2 p-4">
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
             >
              Submission Date :
-            </SoftTypography>
-            <div className="text-base">{formatDate(tender.submissionDate) || "N/A"}</div>
-          </SoftBox>
-          <SoftBox className="border-b mb-2 p-4">
-            <SoftTypography
-              variant="caption"
-              color="text"
-              className="block mb-1 text-sm text-gray-500"
-            >
-             Emd Amount :
-            </SoftTypography>
-            <div className="text-base">{tender.emdAmount || "N/A"}</div>
+            </SoftTypography><div>
+{getSubmissionDate(tender.submissionDate)}</div>
           </SoftBox>
           </div>
-          <div className="grid grid-cols-3">
-          <SoftBox className="border-b mb-2 p-4">
+
+          <div className="grid grid-cols-4">   
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
             >
              Emd Exemption :
             </SoftTypography>
-            <div className="text-base">{tender.tenderFeeExemption || "N/A"}</div>
+            <div className="text-base">{tender.emdExemption || "N/A"}</div>
           </SoftBox>
-          <SoftBox className="border-b mb-2 p-4">
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
+              variant="caption"
+              color="text"
+              className="block mb-1 text-sm text-gray-500"
+            >
+             Emd Amount :
+            </SoftTypography>
+            <div className="text-base">{tender.emdAmount || "0.00"}</div>
+          </SoftBox>
+
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
+            <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
             >
             TenderFee :
             </SoftTypography>
-            <div className="text-base"> {tender.tenderFee || "N/A"}</div>
+            <div className="text-base"> {tender.tenderFee || "0.00"}</div>
           </SoftBox>
-          <SoftBox className="border-b mb-2 p-4">
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
             >
            TenderFee Exemption :
             </SoftTypography>
-            <div className="text-base"> {tender.tenderFee || "N/A"}</div>
+            <div className="text-base"> {tender.tenderFeeExemption || "N/A"}</div>
           </SoftBox>
           </div>
-          <SoftBox className="border-b mb-2 p-4">
+          <SoftBox className="border-b mb-2 p-4"
+          style={customStyles}
+          >
             <SoftTypography
+             style={{fontWeight:"500", color: "#122d48",fontSize: "0.9rem"}}
               variant="caption"
               color="text"
               className="block mb-1 text-sm text-gray-500"
