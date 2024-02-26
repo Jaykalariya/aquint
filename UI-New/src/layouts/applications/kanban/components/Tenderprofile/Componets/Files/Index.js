@@ -17,7 +17,7 @@ import Nodata from "components/Nodata";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import Swal from "sweetalert2";
 
-const File = ({ tenderid }) => {
+const File = ({ tenderid,onFileChange }) => {
   const token = localStorage.getItem("token");
   const [message, setMessage] = useState("");
   const [Filelist, setfilelist] = useState([]);
@@ -102,6 +102,7 @@ const handleDeletedFile=(deletedFile)=>{
       console.log("Upload response:", response.data);
 
       setMessage("File uploaded successfully!");
+      onFileChange();
       setSelectedFile(null);
       Swal.fire("Done!", "File uploaded", "success");
       document.getElementById("fileInput").value = "";
@@ -155,6 +156,7 @@ const handleDeletedFile=(deletedFile)=>{
       console.log("Delete response:", response.data);
       setDeletedFile(null);
       Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      onFileChange();
       setMessage("File deleted successfully!");
     } catch (error) {
       console.error("Error deleting file:", error);

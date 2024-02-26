@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import TimelineIcon from "@mui/icons-material/Timeline";
 
 // eslint-disable-next-line react/prop-types
-function Timeline({ tenderid }) {
+function Timeline({ tenderid,fileChangeFlag }) {
   const token = localStorage.getItem("token");
   const [tenderdata, settendetdata] = useState([]);
   const getIcon = (type) => {
@@ -34,7 +34,7 @@ function Timeline({ tenderid }) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fileChangeFlag]);
   const fetchData = async () => {
     const result = await axiosInstance.get(`/_v1/tender/timeline/${tenderid}`, {
       headers: {
