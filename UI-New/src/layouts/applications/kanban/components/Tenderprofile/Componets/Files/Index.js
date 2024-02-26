@@ -22,6 +22,7 @@ const File = ({ tenderid }) => {
   const [message, setMessage] = useState("");
   const [Filelist, setfilelist] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [deletedFile, setDeletedFile] = useState(null);
   const [hide, sethide] = useState(true);
   const fileInputRef = useRef(null);
 
@@ -36,7 +37,9 @@ const File = ({ tenderid }) => {
     setSelectedFile(file);
     console.log(e.target.files);
   };
-
+const handleDeletedFile=(deletedFile)=>{
+  setDeletedFile(deletedFile)
+}
   const onView = (file) => {
     openFileInNewTab(file);
   };
@@ -47,7 +50,6 @@ const File = ({ tenderid }) => {
     if (fileUrl) {
       window.open(fileUrl, "_blank");
     } else {
-      // Handle unsupported file type or error
       console.error("Unsupported file type or error in opening file.");
     }
   };
@@ -62,8 +64,9 @@ const File = ({ tenderid }) => {
 
   useEffect(() => {
     handleFileUpload();
+    handleFileDelete();
     fetchData();
-  }, [selectedFile]);
+  }, [selectedFile, deletedFile]);
 
   const fetchData = async () => {
     try {
@@ -105,6 +108,57 @@ const File = ({ tenderid }) => {
     } catch (error) {
       console.error("Error uploading file:", error);
       setMessage("Failed to upload file. Please try again.");
+    }
+  };
+
+  const showAlert = (deletedFile) => {
+    const newSwal = Swal.mixin({
+      customClass: {
+        confirmButton: "button button-success",
+        cancelButton: "button button-error",
+      },
+      buttonsStyling: false,
+    });
+
+    newSwal
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          handleDeletedFile(deletedFile)
+          handleFileDelete();
+        }
+      });
+  };
+
+
+
+  const handleFileDelete = async () => {
+     if (!deletedFile) {
+      setMessage("No file selected!");
+      console.log("No file selected!");
+      return;
+    }
+  
+    try {
+      const response = await axiosInstance.delete(`/_v1/tender/delete/file/${deletedFile}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      console.log("Delete response:", response.data);
+      setDeletedFile(null);
+      Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      setMessage("File deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      setMessage("Failed to delete file. Please try again.");
     }
   };
 
@@ -200,7 +254,7 @@ const File = ({ tenderid }) => {
                         <GetApp />
                       </button>
                       <button
-                        onClick={() => onDelete(file)}
+                          onClick={() => showAlert(file.documentId)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Delete />
@@ -250,7 +304,7 @@ const File = ({ tenderid }) => {
                             <GetApp />
                           </button>
                           <button
-                            onClick={() => onDelete(file)}
+                            onClick={() => showAlert(file.documentId)}
                             className="text-red-500 hover:text-red-700"
                           >
                             <Delete />

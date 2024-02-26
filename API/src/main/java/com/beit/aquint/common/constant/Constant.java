@@ -356,6 +356,7 @@ ORDER BY
         public static final String DOCUMENTS_BY_TENDER_ID = """
     SELECT
         td.created_on AS createdOn,
+        td.id AS documentId,
         td.document_name AS documentName,
         td.document_url AS documentUrl,
         td.extension AS extension,
