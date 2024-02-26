@@ -1,7 +1,9 @@
 package com.beit.aquint.tender.tenderstage.service;
 
+import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.tender.tenderstage.dto.TenderStageDto;
 import com.beit.aquint.tender.tenderstage.entity.TenderStage;
 import org.springframework.data.domain.Page;
 
@@ -31,4 +33,6 @@ public interface TenderStageService {
     public Page<TenderStage> getTenderStagePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
 
     public List<Map<String,Object>> getAllTenderByStageId(Long stageId) throws AquintCommonException;
+
+    public MessageResponse changeTenderStageStatus(TenderStageDto tenderStageDto);
 }

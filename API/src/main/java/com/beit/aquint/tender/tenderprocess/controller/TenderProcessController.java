@@ -134,7 +134,19 @@ public class TenderProcessController {
         }
     }
 
-    @GetMapping(value = Constant.Mappping.ALL_DOCUMENTS + "/{tenderId}")
+    @DeleteMapping(value = Constant.Mappping.DELETE_FILE + "/{documentId}")
+    public ResponseEntity<?> deleteTenderFile(@PathVariable("documentId") Long documentId){
+        try {
+            return ResponseEntity.ok().body(tenderDetailsService.deleteTenderFile(documentId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "Data Not Saved Properly",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+        @GetMapping(value = Constant.Mappping.ALL_DOCUMENTS + "/{tenderId}")
     public ResponseEntity<?> getAllDocumentByTenderId(@PathVariable("tenderId") Long tenderId) {
         try {
             return ResponseEntity.ok().body(tenderDetailsService.getAllDocumentByTenderId(tenderId));

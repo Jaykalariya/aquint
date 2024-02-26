@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
+import NotesIcon from "@mui/icons-material/Notes";
 
 function Notes({ tenderid }) {
   const token = localStorage.getItem("token");
@@ -64,28 +65,32 @@ function Notes({ tenderid }) {
   return (
     <Card id="notes" sx={{ overflow: "visible" }}>
       <SoftBox mb={2} mt={2} pl={4} className="border-b">
-        <SoftTypography fontWeight="large" textTransform="capitalize">
-          Notes
+        <SoftTypography fontWeight="bold" textTransform="capitalize">
+          Notes <NotesIcon fontSize="medium" />
         </SoftTypography>
       </SoftBox>
-      <div className="flex flex-col  overflow-y-auto" style={{ maxHeight: "550px" }}>
+      <div className="flex flex-col  overflow-y-auto" style={{ maxHeight: "550px"}}>
         <div className="flex-1 overflow-y-auto">
-          <div className="p-4">
+          <div className="p-10" 
+          // style={{backgroundColor:"#1272d542"}}
+          >
             <div>
               {messages.map((item) =>
                 item.userId == id ? (
                   <div key={item.id} className="flex items-center justify-end mb-2">
                     <div className="flex items-start">
-                      <div className="bg-white shadow-lg border rounded-lg py-1 px-2 max-w-md mt-3">
+                      <div
+                      style={{borderRadius:"5px 22px 22px 22px", background:"#139dff57"}}
+                      className="bg-white shadow-lg border rounded-lg py-1 px-2 max-w-md mt-3">
                         <div className="flex items-center ">
-                          <p className="text-xs" style={{ fontSize: "8px", marginRight: "5px" }}>
-                            {item.createdBy}
+                          <p className="text-xs" style={{fontSize: "13px",fontWeight: "bold",padding: "6px 5px 5px 0px",marginRight: "5px" }}>
+                           ~ {item.createdBy} 
                           </p>
                         </div>
                         <div>
                           <p className="text-sm">
                             {item.note}
-                            <span style={{ fontSize: "8px" }} className="text-end flex justify-end">
+                            <span style={{ fontSize: "10px", fontWeight:"bold",fontStyle:"italic",padding:"5px 5px 0px 5px" }} className="text-end flex justify-end">
                               {new Date(BirthdateFormatter(item.createdOn)).toLocaleDateString(
                                 undefined,
                                 { day: "numeric", month: "short" }
@@ -97,7 +102,7 @@ function Notes({ tenderid }) {
                       <img
                         src={item.profileUrl}
                         alt="User Profile"
-                        className="rounded-full w-8 h-8 ml-2.5"
+                        className="rounded-full w-10 h-10 ml-2.5"
                       />
                     </div>
                   </div>
@@ -107,21 +112,23 @@ function Notes({ tenderid }) {
                       <img
                         src={item.profileUrl}
                         alt="User Profile"
-                        className="rounded-full w-8 h-8 mr-2.5"
+                        className="rounded-full w-10 h-10 mr-2.5"
                       />
-                      <div className="bg-white shadow-lg border rounded-lg py-1 px-2 max-w-md mt-3">
+                      <div
+                      style={{borderRadius:"5px 22px 22px 22px", background:"#e7ceff"}}
+                      className="bg-white shadow-lg border rounded-lg py-1 px-2 max-w-md mt-3">
                         <div className="flex items-center ">
-                          <p className="text-xs" style={{ fontSize: "8px", marginRight: "5px" }}>
-                            {item.createdBy}
+                          <p className="text-xs" style={{fontSize: "13px",fontWeight: "bold",padding: "6px 5px 5px 0px",marginRight: "5px" }}>
+                            ~ {item.createdBy}
                           </p>
                         </div>
                         <p className="text-sm">
                           {item.note}
-                          <span style={{ fontSize: "8px" }} className="text-end flex justify-end">
-                            {/* <div className="flex justify-end"> */}
+                          <span style={{ fontSize: "10px", fontWeight:"bold",fontStyle:"italic",padding:"5px 5px 0px 5px"}} className="text-end flex justify-end">
+                              {/* <div className="flex justify-end"> */}
                               {new Date(BirthdateFormatter(item.createdOn)).toLocaleDateString(
                                 undefined,
-                                { day: "numeric", month: "short" }
+                               { day: "numeric", month: "short"}
                               )}
                             {/* </div> */}
                           </span>
@@ -134,17 +141,21 @@ function Notes({ tenderid }) {
             </div>
           </div>
         </div>
-        <div className="p-4">
+        <div
+        className="p-7 bg-light-500">
           <div className="flex">
             <input
+            style={{borderRadius:"30px 30px 30px 30px"}}
               type="text"
               placeholder="Type your message here..."
-              className="flex-1 border border-gray-300 rounded-l-lg py-2 px-4 focus:outline-none focus:border-blue-500"
+              className="flex-1 border border-blue-300 rounded-l-lg py-2 px-4 focus:outline-none focus:border-blue-500"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
             />
-            <button onClick={sendMessage} className="bg-blue-500 text-white py-2 px-4 rounded-r-lg">
-              <SendIcon />
+            <button style={{
+              borderRadius:"30px 30px 30px 30px", marginLeft:"8px",marginRight:"18px", display:"flex", justifyContent:"center", alignItems:"center", alignContent:"center"
+            }} onClick={sendMessage} className="bg-blue-500 text-white py-2 px-4 rounded-r-lg">
+              <SendIcon color="white" />
             </button>
           </div>
         </div>

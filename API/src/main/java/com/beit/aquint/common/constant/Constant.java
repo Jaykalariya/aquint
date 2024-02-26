@@ -60,6 +60,7 @@ public class Constant {
         public static final String ACTIVE_TENDER_STAGE_GET_ALL = "/getAllActiveTenderStage";
         public static final String TENDER_STAGE_GET_PAGE = "/getTenderStageByPage";
         public static final String CHANGE_STAGE = "/changeStage";
+        public static final String CHANGE_TENDER_STAGE_STATUS = "/changeTenderStageStatus";
         public static final String TIMELINE = "/timeline";
 
         public static final String ALL_TENDER_DETAILS = "/tenderDetails";
@@ -72,6 +73,7 @@ public class Constant {
         public static final String TENDER_GET_ALL_WITH_PAGINATION = "/page";
 
         public static final String UPLOAD_FILE = "/upload/file";
+        public static final String DELETE_FILE = "/delete/file";
         public static final String ALL_DOCUMENTS = "/allDocuments";
 
 
@@ -322,6 +324,7 @@ public class Constant {
 SELECT
     th.created_on AS createdOn,
     th.name AS stage,
+    th.type AS type,
     COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
     ud.image_url as profileUrl
 FROM
@@ -350,40 +353,48 @@ WHERE
 ORDER BY
     tn.created_on
 """;
-        public static final String  DOCUMENTS_BY_TENDER_ID = """
-SELECT
-    td.created_on AS createdOn,
-	td.document_name AS documentName,
-    td.document_url AS documentUrl,
-	td.extension AS extension,
-    COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
-    ud.image_url as profileUrl
-FROM
-    tender_documents td
-LEFT JOIN
-    user_detail ud ON td.created_by = ud.user_id
-WHERE
-    td.tender_id = :tenderId
-ORDER BY
-    td.created_on
-""";
+        public static final String DOCUMENTS_BY_TENDER_ID = """
+    SELECT
+        td.created_on AS createdOn,
+        td.document_name AS documentName,
+        td.document_url AS documentUrl,
+        td.extension AS extension,
+        COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
+        ud.image_url as profileUrl
+    FROM
+        tender_documents td
+    LEFT JOIN
+        user_detail ud ON td.created_by = ud.user_id
+    WHERE
+        td.tender_id = :tenderId
+    ORDER BY
+        td.created_on
+    """;
 
     }
 
         public class TenderDashboardQuery {
             public static final String PROJECT_VALUE_BY_TENDER_STAGE_VALUE = """
-        SELECT
-          sum(project_value) AS projectValue,
-          count(td.tender_stage) AS projectCount,
-          ts.stage_value AS stageValue
-        FROM
-          tender_details td
-          FULL JOIN tender_stage ts ON td.tender_stage = ts.id
-        WHERE
-          ts.status = true
-        GROUP BY
-          ts.stage_value
-        """;
+    SELECT
+        SUM(td.project_value) AS projectValue,
+        COUNT(td.tender_stage) AS projectCount,
+        ts.stage_value AS stageValue
+    FROM
+        tender_details td
+        LEFT JOIN tender_stage ts ON td.tender_stage = ts.id
+    WHERE
+        ts.status = true
+        AND (CASE WHEN CAST(:startDate AS Date) IS NOT null AND CAST(:endDate AS Date) IS NOT null THEN
+            CAST(td.created_on AS Date) >= :startDate AND CAST(td.created_on AS Date) <= :endDate
+        ELSE
+            true
+        END)
+    GROUP BY
+        ts.stage_value
+    ORDER BY
+        ts.stage_value
+""";
+
 
             public static final String EMD_AMOUNT_AND_TENDER_FEE_BY_TENDER_STAGE_VALUE = """
         SELECT
@@ -396,37 +407,61 @@ ORDER BY
           FULL JOIN tender_stage ts ON td.tender_stage = ts.id
         WHERE
           ts.status = true
+       AND (CASE WHEN CAST(:startDate AS Date) IS NOT null AND CAST(:endDate AS Date) IS NOT null THEN
+        CAST(td.created_on AS Date)>= :startDate AND CAST(td.created_on AS Date ) <=  :endDate
+             ELSE
+                 true
+        END
+        )
         GROUP BY
           ts.stage_value
+        ORDER BY
+        ts.stage_value
         """;
 
             public static final String PROJECT_VALUE_BY_EACH_TENDER_STAGE = """
-        SELECT
-          sum(project_value) AS projectValue,
-          count(td.tender_stage) AS projectCount,
-          ts.tender_stage_name AS tenderStageName
-        FROM
-          tender_details td
-          LEFT JOIN tender_stage ts ON td.tender_stage = ts.id
-        WHERE
-          ts.status = true
-        GROUP BY
-          ts.id
-        """;
+    SELECT
+        SUM(project_value) AS projectValue,
+        COUNT(td.tender_stage) AS projectCount,
+        ts.tender_stage_name AS tenderStageName
+    FROM
+        tender_details td
+        LEFT JOIN tender_stage ts ON td.tender_stage = ts.id
+    WHERE
+        ts.status = true
+        AND (CASE WHEN CAST(:startDate AS Date) IS NOT null AND CAST(:endDate AS Date) IS NOT null THEN
+            CAST(td.created_on AS Date) >= :startDate AND CAST(td.created_on AS Date) <= :endDate
+        ELSE
+            true
+        END)
+    GROUP BY
+        ts.id
+            ORDER BY
+        ts.id
+""";
 
             public static final String PROJECT_VALUE_BY_EACH_TENDER_TYPE = """
-        SELECT
-          sum(project_value) AS projectValue,
-          count(td.tender_type) AS projectCount,
-          tt.tender_type_name AS tenderStageType
-        FROM
-          tender_details td
-          LEFT JOIN tender_type tt ON td.tender_type = tt.id
-        WHERE
-          tt.status = true
-        GROUP BY
-          tt.id
-        """;
+    SELECT
+        sum(project_value) AS projectValue,
+        count(td.tender_type) AS projectCount,
+        tt.tender_type_name AS tenderStageType
+    FROM
+        tender_details td
+        LEFT JOIN tender_type tt ON td.tender_type = tt.id
+    WHERE
+        tt.status = true
+        AND (CASE WHEN CAST(:startDate AS Date) IS NOT null AND CAST(:endDate AS Date) IS NOT null THEN
+            CAST(td.created_on AS Date) >= :startDate AND CAST(td.created_on AS Date) <= :endDate
+        ELSE
+            true
+        END)
+    GROUP BY
+        tt.id
+            ORDER BY
+        tt.id
+""";
+
+
 
             public static final String PROJECT_VALUE_AND_PROJECT_COUNTS_BY_MONTH = """
         SELECT
@@ -472,7 +507,11 @@ ORDER BY
         public static final String ADD_NEW_TENDER = "Tender Created By ";
         public static final String ADD_NEW_MEMBER = " Was added By ";
         public static final String STAGED_CHANGED = "Staged Changed to ";
-
+        public static final String TENDER_ADD = "TENDER ADD";
+        public static final String USER_ADD = "USER ADD";
+        public static final String DOCUMENT_ADD = "DOCUMENT ADD";
+        public static final String TENDER_STAGE_CHANGE = "TENDER STAGE CHANGE";
+        public static final String DOCUMENT_DELETE = "DOCUMENT DELETE";
         public static String UPLOADED_BY = "Uploaded By";
     }
 }

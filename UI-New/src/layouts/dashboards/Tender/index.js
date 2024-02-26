@@ -158,9 +158,9 @@ function Tender() {
           },
         });
 
-        setTotalWinValue(result.data["valueByStage"]?.[0].projectvalue);
-        setTotalLossValue(result.data["valueByStage"][2].projectvalue);
-        setTotalOngoingValue(result.data["valueByStage"][1].projectvalue);
+        setTotalWinValue(result.data.valueByStage.find(entry => entry.stagevalue === 1)?.projectvalue || "0.00");
+        setTotalLossValue(result.data.valueByStage.find(entry => entry.stagevalue === 2)?.projectvalue || "0.00");
+        setTotalOngoingValue(result.data.valueByStage.find(entry => entry.stagevalue === 3)?.projectvalue || "0.00");
         setLastFiveTenderHistory(result.data["dashboardHistory"]);
         setEmdAndFeesData(result.data["amountAndFeeByStage"]);
         setProjectValueByTenderType(result.data["pieChartForType"]);
@@ -257,7 +257,10 @@ function Tender() {
                           </SoftTypography>}
                             description={`Project: ${data.projectcount}`} 
                             value={<SoftTypography variant="body2" fontWeight="bold" color="black">
-                            ₹ {data.tenderfee}
+                            ₹ {(data.emdamount &&
+                            data.emdamount.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00" 
+                            
+                            }
                           </SoftTypography>}
                             color={getIconAndTitleForStage(data.stagevalue).color}
                           />
@@ -289,7 +292,8 @@ function Tender() {
                           </SoftTypography>}
                             description={`Project: ${data.projectcount}`} 
                             value={<SoftTypography variant="body2" fontWeight="bold" color="black">
-                            ₹ {data.emdamount}
+                            ₹ {(data.tenderfee &&
+                            data.tenderfee.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00"}
                           </SoftTypography>}
                             color={getIconAndTitleForStage(data.stagevalue).color}
                           />

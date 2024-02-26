@@ -47,4 +47,6 @@ public interface TenderDetailsService {
     public List<TenderNotesDto> getTenderNotes(Long tenderId) throws AquintCommonException ;
 
     public List<TenderDocumentDto> getAllDocumentByTenderId(Long tenderId);
+
+    public ResponseMessage deleteTenderFile(Long documentId) throws AquintCommonException;
 }
