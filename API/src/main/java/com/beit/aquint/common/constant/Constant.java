@@ -513,5 +513,6 @@ ORDER BY
         public static final String TENDER_STAGE_CHANGE = "TENDER STAGE CHANGE";
         public static final String DOCUMENT_DELETE = "DOCUMENT DELETE";
         public static String UPLOADED_BY = "Uploaded By";
+        public static String DELETED_BY = "Deleted By";
     }
 }

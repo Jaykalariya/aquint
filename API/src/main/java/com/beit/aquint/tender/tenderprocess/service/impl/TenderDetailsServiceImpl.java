@@ -229,7 +229,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
 
             Optional<TenderDocuments> tenderDocuments =tenderDocumentsRepository.findById(documentId);
             tenderDocumentsRepository.deleteById(documentId);
-            saveTenderHistory(tenderDocuments.get().getTenderId(), String.format("%s %s ",tenderDocuments.get().getDocumentName(), Constant.TenderHistoryConstant.UPLOADED_BY), null, Constant.TenderHistoryConstant.DOCUMENT_DELETE);
+            saveTenderHistory(tenderDocuments.get().getTenderId(), String.format("%s %s ",tenderDocuments.get().getDocumentName(), Constant.TenderHistoryConstant.DELETED_BY), null, Constant.TenderHistoryConstant.DOCUMENT_DELETE);
             return new ResponseMessage( "File successfully deleted and tender history saved", tenderDocuments);
         } catch (Exception exception) {
             throw new AquintCommonException("Something went wrong");
