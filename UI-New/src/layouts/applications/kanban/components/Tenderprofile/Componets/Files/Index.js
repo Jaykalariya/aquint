@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
+import {saveAs} from 'file-saver';
 import axiosInstance from "config/https";
 import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
@@ -22,17 +23,45 @@ const File = ({ tenderid }) => {
   const [hide, sethide] = useState(true);
   const fileInputRef = useRef(null);
 
-
   console.log("tenderid", tenderid);
 
-  const handleEverything = async(e) =>{
+  const handleEverything = async (e) => {
     handleFileChange(e);
-   await handleFileUpload(); 
-  }
+    await handleFileUpload();
+  };
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
     console.log(e.target.files);
+  };
+
+  const onView = (file) => {
+    openFileInNewTab(file);
+  };
+
+  const openFileInNewTab = (file) => {
+    const fileUrl = getFileUrl(file);
+
+    if (fileUrl) {
+      window.open(fileUrl, "_blank");
+    } else {
+      // Handle unsupported file type or error
+      console.error("Unsupported file type or error in opening file.");
+    }
+  };
+
+  const getFileUrl = (file) => {
+    // Add logic to determine the file URL based on file type
+    // For example, return the URL of the uploaded file
+    // For simplicity, assuming the file is uploaded to a specific location
+    return `${file.documentUrl}`;
+  };
+
+  // Function to handle file download
+
+  // Function to download the file
+  const onDownload = (file) => {
+    saveAs(file.documentUrl,file.documentName);
   };
 
   useEffect(() => {
@@ -116,17 +145,21 @@ const File = ({ tenderid }) => {
       </SoftBox>
       {hide ? (
         <SoftBox className="flex justify-end mt-2 mb-2.5 mr-5">
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          onChange={(e) => handleFileChange(e)}
-          ref={fileInputRef}
-        />
-        <SoftButton color="info" onClick={() => fileInputRef.current.click()}>Upload</SoftButton>
-      </SoftBox>
+          <input
+            type="file"
+            style={{ display: "none" }}
+            onChange={(e) => handleFileChange(e)}
+            ref={fileInputRef}
+          />
+          <SoftButton color="info" onClick={() => fileInputRef.current.click()}>
+            Upload
+          </SoftButton>
+        </SoftBox>
       ) : (
         <SoftBox className="flex justify-end mt-2 mb-2.5 mr-5">
-          <SoftButton color="info" onClick={()=>sethide(!hide)}>Back</SoftButton>
+          <SoftButton color="info" onClick={() => sethide(!hide)}>
+            Back
+          </SoftButton>
         </SoftBox>
       )}
       <div style={{ maxHeight: "500px" }}>
@@ -147,7 +180,7 @@ const File = ({ tenderid }) => {
                       <div>
                         <span className="text-lg font-semibold">{file.documentName}</span>
                         <p className="text-sm text-gray-500">
-                          {file.createdBy} -  {BirthdateFormatter(file.createdOn)}
+                          {file.createdBy} - {BirthdateFormatter(file.createdOn)}
                         </p>
                       </div>
                     </div>
@@ -158,12 +191,18 @@ const File = ({ tenderid }) => {
                       >
                         <Visibility />
                       </button>
+                      {/* <a
+                        href={`${file.documentUrl}`}
+                        download={`${file.documentName}`}
+                        rel="noreferrer"
+                      > */}
                       <button
                         onClick={() => onDownload(file)}
                         className="text-green-500 hover:text-green-700 mr-2"
                       >
                         <GetApp />
                       </button>
+                      {/* </a> */}
                       <button
                         onClick={() => onDelete(file)}
                         className="text-red-500 hover:text-red-700"
@@ -197,7 +236,7 @@ const File = ({ tenderid }) => {
                 />
               </svg> */}
               <span>Choose File</span>
-              <input type="file" id="fileInput"  className="hidden" onChange={handleFileChange} />
+              <input type="file" id="fileInput" className="hidden" onChange={handleFileChange} />
             </label>
             <SoftButton p={2.5} color="info" onClick={handleFileUpload}>
               Upload
