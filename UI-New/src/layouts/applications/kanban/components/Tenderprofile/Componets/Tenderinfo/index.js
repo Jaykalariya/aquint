@@ -210,9 +210,9 @@ function Tenderinfo({ tenderid }) {
               color="text"
               className="block mb-1 text-sm text-gray-500"
             >
-            TenderFee :
+           TenderFee Exemption :
             </SoftTypography>
-            <div className="text-base"> {tender.tenderFee || "0.00"}</div>
+            <div className="text-base"> {tender.tenderFeeExemption || "N/A"}</div>
           </SoftBox>
           <SoftBox className="border-b mb-2 p-4"
           style={customStyles}
@@ -223,9 +223,9 @@ function Tenderinfo({ tenderid }) {
               color="text"
               className="block mb-1 text-sm text-gray-500"
             >
-           TenderFee Exemption :
+            TenderFee :
             </SoftTypography>
-            <div className="text-base"> {tender.tenderFeeExemption || "N/A"}</div>
+            <div className="text-base"> {tender.tenderFee || "0.00"}</div>
           </SoftBox>
           </div>
           <SoftBox className="border-b mb-2 p-4"
