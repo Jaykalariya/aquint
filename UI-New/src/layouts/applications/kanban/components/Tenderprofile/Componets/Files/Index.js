@@ -70,7 +70,6 @@ const File = ({ tenderid, onFileChange }) => {
   }, [selectedFile, deletedFile]);
 
   const fetchData = async () => {
-    console.log("loading");
     try {
       const result = await axiosInstance.get(`/_v1/tender/allDocuments/${tenderid}`, {
         headers: {

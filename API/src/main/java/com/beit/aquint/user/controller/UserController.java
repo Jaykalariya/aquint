@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author - jaykalariya
  * @since - 09/10/23  9:28 pm
  */
-@CrossOrigin(origins = "**", maxAge = 3600)
+@CrossOrigin(origins = "**")
 @RestController
 @RequestMapping("/_v1/user")
 @Slf4j
