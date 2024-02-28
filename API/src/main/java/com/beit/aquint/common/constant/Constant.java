@@ -52,9 +52,15 @@ public class Constant {
         public static final String CHANGE_USER_STATUS = "/changeUserStatus";
         public static final String CHANGE_PROFILE_IMAGE = "/changeProfileImage";
 
+
+        public static final String GET_PERSONAL_ACCOUNT_DETAILS = "/getPersonalAccountDetails";
+        public static final String ADD_PERSONAL_ACCOUNT_DETAILS = "/addPersonalAccountDetails";
+
+
         public static final String TENDER_DASHBOARD = "/tenderDashboard";
         public static final String ADD_TENDER_NOTE = "/addTenderNote";
         public static final String TENDER_NOTES = "/tenderNotes";
+
         public static final String TENDER_STAGE_ADD = "/addTenderStage";
         public static final String TENDER_STAGE_GET_ALL = "/getAllTenderStage";
         public static final String ACTIVE_TENDER_STAGE_GET_ALL = "/getAllActiveTenderStage";
@@ -77,6 +83,30 @@ public class Constant {
         public static final String ALL_DOCUMENTS = "/allDocuments";
 
 
+//        //companyDepartment
+//        public static final String ADD_COMPANY_DEPARTMENT = "/addCompanyDepartment";
+//        public static final String GET_ALL_COMPANY_DEPARTMENT = "/getAllCompanyDepartment";
+//        public static final String GET_ALL_ACTIVE_COMPANY_DEPARTMENT = "/getAllActiveCompanyDepartment";
+//        public static final String GET_COMPANY_DEPARTMENT_PAGE = "/getCompanyDepartmentByPage";
+//        public static final String CHANGE_COMPANY_DEPARTMENT_STATUS = "/changeCompanyDepartmentStatus";
+//
+//        //companyDesignation
+//        public static final String ADD_COMPANY_DESIGNATION = "/addCompanyDesignation";
+//        public static final String GET_ALL_COMPANY_DESIGNATION = "/getAllCompanyDesignation";
+//        public static final String GET_ALL_ACTIVE_COMPANY_DESIGNATION = "/getAllActiveCompanyDesignation";
+//        public static final String GET_COMPANY_DESIGNATION_PAGE = "/getCompanyDesignationByPage";
+//        public static final String CHANGE_COMPANY_DESIGNATION_STATUS = "/changeCompanyDesignationStatus";
+
+        //companyDepartment && companyDesignation
+        public static final String ADD = "/add";
+        public static final String GET_ALL = "/getAll";
+        public static final String GET_ALL_ACTIVE = "/getAllActive";
+        public static final String PAGE = "/page";
+        public static final String CHANGE_STATUS = "/changeStatus";
+        public static final String UPDATE = "/update";
+        public static final String GET_DETAILS = "/getDetails";
+
+
     }
 
     public class File {
@@ -85,6 +115,9 @@ public class Constant {
         public static final String ROLE_GET_ALL_WITH_PAGINATION = "/page";
 
         public static final String FILE_FOLDER_PATH_FOR_TENDER_FILES = "tenderDocuments";
+        public static final String FILE_FOLDER_PATH_FOR_USER_FILES = "userDocuments";
+        public static final String PERSONAL_ACCOUNT_DETAILS = "personalAccountDetails";
+
     }
 
     public class Status {

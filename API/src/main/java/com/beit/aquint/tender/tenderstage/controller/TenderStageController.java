@@ -88,7 +88,7 @@ public class TenderStageController {
     }
 
     @PostMapping(value = Constant.Mappping.CHANGE_TENDER_STAGE_STATUS)
-    public ResponseEntity<?> changeUserStatus(@RequestBody TenderStageDto tenderStageDto) {
+    public ResponseEntity<?> changeTenderStageStatus(@RequestBody TenderStageDto tenderStageDto) {
         try {
             return ResponseEntity.ok().body(tenderStageService.changeTenderStageStatus(tenderStageDto));
         } catch (Exception exception) {
