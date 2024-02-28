@@ -55,6 +55,8 @@ public class TrainingDetailsServiceImpl implements TrainingDetailsService {
                     .userId(existingTrainingDetails.getUserId())
                     .trainingName(trainingDetails.getTrainingName())
                     .trainingDescription(trainingDetails.getTrainingDescription())
+                    .startDate(trainingDetails.getStartDate())
+                    .endDate(trainingDetails.getEndDate())
                     .trainingUrl(trainingDetails.getTrainingUrl())
                     .build();
 
