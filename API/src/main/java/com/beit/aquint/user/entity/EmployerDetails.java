@@ -33,7 +33,7 @@ public class EmployerDetails extends EntityAuditInfo {
     @NotNull
     private Long ctc;
 
-    @NotEmpty
+    @NotNull
     private Date dateOfJoining;
 
     @NotBlank

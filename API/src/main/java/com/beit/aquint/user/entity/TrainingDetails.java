@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Data
 @Builder
@@ -30,6 +32,12 @@ public class TrainingDetails extends EntityAuditInfo {
     @NotBlank
     @Column(name="training_description")
     private String trainingDescription;
+
+    @NotNull
+    private Date startDate;
+
+    @NotNull
+    private Date endDate;
 
     @NotBlank
     @Column(name="training_url")
