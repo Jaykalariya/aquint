@@ -3,8 +3,8 @@ package com.beit.aquint.user.controller;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.responses.ErrorResponse;
 import com.beit.aquint.common.constant.Constant;
-import com.beit.aquint.user.entity.EmployerDetails;
-import com.beit.aquint.user.service.EmployerDetailsService;
+import com.beit.aquint.user.entity.HealthIssue;
+import com.beit.aquint.user.service.HealthIssueService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "**")
 @RestController
 @Slf4j
-@RequestMapping("/_v1/user/employerDetails")
-public class EmployerDetailsController {
+@RequestMapping("/_v1/user/healthIssue")
+public class HealthIssueController {
 
     @Autowired
-    EmployerDetailsService employerDetailsService;
+    HealthIssueService healthIssueService;
 
     @GetMapping(value = Constant.Mappping.GET_DETAILS + "/{userId}")
-    public ResponseEntity<?> getEmployerDetails(@PathVariable("userId") Long userId) {
+    public ResponseEntity<?> getHealthIssue(@PathVariable("userId") Long userId) {
         try {
-            log.debug("Getting employer details detail Based On User");
-            return ResponseEntity.ok().body(employerDetailsService.getEmployerDetails(userId));
+            log.debug("Getting health issue detail Based On User");
+            return ResponseEntity.ok().body(healthIssueService.getHealthIssue(userId));
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Error"));
@@ -32,10 +32,10 @@ public class EmployerDetailsController {
     }
 
     @PostMapping(value = Constant.Mappping.ADD)
-    public ResponseEntity<?> addEmployerDetails(@RequestBody EmployerDetails personalAccountDetails) {
+    public ResponseEntity<?> addHealthIssue(@RequestBody HealthIssue healthIssue) {
         try {
             log.debug("Adding Details");
-            return ResponseEntity.ok().body(employerDetailsService.addEmployerDetails(personalAccountDetails));
+            return ResponseEntity.ok().body(healthIssueService.addHealthIssue(healthIssue));
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Details Not Saved Properly"));
@@ -43,9 +43,9 @@ public class EmployerDetailsController {
     }
 
     @PutMapping(value = Constant.Mappping.UPDATE  + "/{userId}")
-    public ResponseEntity<?> updateEmployerDetails(@PathVariable(value = "userId") Long userId, @RequestBody EmployerDetails personalAccountDetails) {
+    public ResponseEntity<?> updateHealthIssue(@PathVariable(value = "userId") Long userId, @RequestBody HealthIssue healthIssue) {
         try {
-            return ResponseEntity.ok().body(employerDetailsService.updateEmployerDetails(userId,personalAccountDetails));
+            return ResponseEntity.ok().body(healthIssueService.updateHealthIssue(userId,healthIssue));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(

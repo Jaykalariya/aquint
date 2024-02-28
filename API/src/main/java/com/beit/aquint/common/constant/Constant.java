@@ -116,6 +116,7 @@ public class Constant {
 
         public static final String FILE_FOLDER_PATH_FOR_TENDER_FILES = "tenderDocuments";
         public static final String FILE_FOLDER_PATH_FOR_USER_FILES = "userDocuments";
+        public static final String ACHIEVEMENT = "achievement";
         public static final String PERSONAL_ACCOUNT_DETAILS = "personalAccountDetails";
 
     }

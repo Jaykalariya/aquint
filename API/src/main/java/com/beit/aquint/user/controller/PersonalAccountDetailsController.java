@@ -45,7 +45,7 @@ public class PersonalAccountDetailsController {
     }
 
     @PutMapping(value = Constant.Mappping.UPDATE  + "/{userId}")
-    public ResponseEntity<?> updateUserDetails(@PathVariable(value = "userId") Long userId, @RequestBody @Valid PersonalAccountDetails personalAccountDetails) {
+    public ResponseEntity<?> updatePersonalAccountDetails(@PathVariable(value = "userId") Long userId, @RequestBody @Valid PersonalAccountDetails personalAccountDetails) {
         try {
             return ResponseEntity.ok().body(personalAccountDetailsService.updatePersonalAccountDetails(userId,personalAccountDetails));
         } catch (Exception exception) {
@@ -57,7 +57,7 @@ public class PersonalAccountDetailsController {
     }
 
     @PostMapping(value = Constant.Mappping.UPLOAD_FILE + "/{userId}")
-    public ResponseEntity<?> uploadTenderFile(@RequestPart("file") MultipartFile file,@PathVariable("userId") Long userId) {
+    public ResponseEntity<?> uploadPersonalAccountDetailsFile(@RequestPart("file") MultipartFile file,@PathVariable("userId") Long userId) {
         try {
             return ResponseEntity.ok().body(personalAccountDetailsService.uploadDocument(file, userId));
         } catch (Exception exception) {
