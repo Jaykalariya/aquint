@@ -20,4 +20,7 @@ import org.springframework.http.HttpStatus;
 public class ErrorResponse {
     private String errorMessage;
     private HttpStatus errorCode;
+
+    public ErrorResponse(String error) {
+    }
 }
