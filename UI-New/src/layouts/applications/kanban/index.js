@@ -55,8 +55,9 @@ import BirthdateFormatter from "examples/BirthdateFormatter";
 import List from "./components/List";
 import { Tooltip } from "chart.js";
 import Tenderprofile from "./components/Tenderprofile";
-import './data/index.css'
+import "./data/index.css";
 import SoftAvatar from "components/SoftAvatar";
+import { useNavigate } from "react-router-dom";
 
 function Kanban() {
   const [newCardForm, setNewCardForm] = useState(false);
@@ -69,7 +70,7 @@ function Kanban() {
   const [tenderid, settenderid] = useState();
   const [buttonhide, setbuttonhide] = useState(true);
   const [shows, setshows] = useState(true);
-
+  const navigate = useNavigate();
   const openNewCardForm = (event, id) => setNewCardForm(id);
   const closeNewCardForm = () => setNewCardForm(false);
   const handeSetFormValue = ({ currentTarget }) => setFormValue(currentTarget.value);
@@ -109,15 +110,15 @@ function Kanban() {
 
   function handelclick(id) {
     settenderid(id);
-    setclose(!closed);
-    setbuttonhide(false);
+    navigate(`/Tender/${id}`);
+
   }
 
   const transformData = (data, tenderdata) => {
     const columns = data.map((item) => ({
       id: item.id,
       title: item.tenderStageName,
-      titleColor :item.color,
+      titleColor: item.color,
       titleValue: item.stageValue,
       cards: tenderdata
         .filter((tender) => tender.tenderStage === item.id)
@@ -132,20 +133,17 @@ function Kanban() {
             />
           ),
         })),
-        
     }));
     return { columns };
   };
 
-
-  
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox py={1} className="h-screen">
         <SoftBox display="flex" justifyContent="flex-end">
           <Header
-           setbuttonhide={ setbuttonhide}
+            setbuttonhide={setbuttonhide}
             buttonhide={buttonhide}
             setclose={setclose}
             sethide={sethide}
@@ -162,7 +160,7 @@ function Kanban() {
                   position="relative"
                   my={4}
                   sx={({
-                    palette: {light},
+                    palette: { light },
                     functions: { pxToRem },
                     borders: { borderRadius },
                   }) => ({
@@ -171,17 +169,16 @@ function Kanban() {
                       margin: `0 ${pxToRem(10)}`,
                       padding: pxToRem(20),
                       borderRadius: borderRadius.lg,
-                
                     },
                   })}
                 >
                   {boardse.columns.length > 0 && (
-                    <Board 
+                    <Board
                       initialBoard={boardse}
                       onCardDragEnd={handelchangecard}
                       allowAddCard
                       allowAddColumn
-                      renderColumnHeader={({ id, title ,titleColor,titleValue}, { addCard }) => (
+                      renderColumnHeader={({ id, title, titleColor, titleValue }, { addCard }) => (
                         <>
                           {/* <SoftBox
                           display="flex"
@@ -189,8 +186,8 @@ function Kanban() {
                           alignItems="center"
                           mb={3}
                         > */}
-                    <div style={{display:"inline-flex"}}>
-                                                      {/* {titleValue === 1 ? (
+                          <div style={{ display: "inline-flex" }}>
+                            {/* {titleValue === 1 ? (
     <>
       <Icon fontSize="xl"
       style={{marginTop:"2px",  margin: "5px 8px 0px 5px", color: titleColor }}>thumb_up</Icon>
@@ -204,15 +201,18 @@ function Kanban() {
       <Icon fontSize="lg" style={{marginTop:"2px", margin: "7px 5px 0px 5px", color: titleColor }}>directions_run</Icon>
     </>
   )} */}
-                          <SoftTypography style={{
-                          color:"white",
-                            fontSize:"18px",
-                            marginBottom:"5px",
-                            padding:"0px 5px 5px 2px"
-                            }} variant="h6">
+                            <SoftTypography
+                              style={{
+                                color: "white",
+                                fontSize: "18px",
+                                marginBottom: "5px",
+                                padding: "0px 5px 5px 2px",
+                              }}
+                              variant="h6"
+                            >
                               {title}
                             </SoftTypography>
-                            </div>
+                          </div>
                           {/* <SoftButton size="small" onClick={(event) => openNewCardForm(event, id)}>
                             <Icon
                               sx={{
@@ -232,7 +232,7 @@ function Kanban() {
                                 onChange={handeSetFormValue}
                                 multiline
                               />
-                              <SoftBox display="flex" mt={2}> 
+                              <SoftBox display="flex" mt={2}>
                                 <SoftButton
                                   variant="gradient"
                                   color="success"
@@ -244,8 +244,8 @@ function Kanban() {
                                 >
                                   add
                                 </SoftButton>
-                                <SoftBox ml={1} >
-                                  <SoftButton 
+                                <SoftBox ml={1}>
+                                  <SoftButton
                                     variant="gradient"
                                     color="light"
                                     size="small"
@@ -289,7 +289,7 @@ function Kanban() {
                 <Tenderprofile tenderid={tenderid} />
               )
             ) : (
-              <List show= {shows} setshow={setshows}  setbuttonhide={setbuttonhide}/>
+              <List show={shows} setshow={setshows} setbuttonhide={setbuttonhide} />
             )
           ) : (
             <Addtenderform sethide={sethide} fetchData={fetchData} />

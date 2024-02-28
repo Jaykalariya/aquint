@@ -7,6 +7,7 @@ import SoftTypography from "components/SoftTypography";
 import { Chip, Icon, Tooltip } from "@mui/material";
 import Tenderprofile from "../Tenderprofile";
 import IndianCurrency from "examples/IndianCurrencyFormatter";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 function List({setbuttonhide,show, setshow}) {
@@ -14,6 +15,8 @@ function List({setbuttonhide,show, setshow}) {
   const token = localStorage.getItem("token");
   // const [show, setshow] = useState(true);
   const [tenderid, settenderid] = useState();
+  const navigate = useNavigate();
+
   const tableData = {
     columns: [
       {
@@ -57,9 +60,7 @@ function List({setbuttonhide,show, setshow}) {
   };
 
   const handleaction = (id) => {
-    settenderid(id);
-    setshow(!show);
-    setbuttonhide(false);
+    navigate(`/Tender/${id}`);
   };
 
   useEffect(() => {

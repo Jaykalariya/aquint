@@ -45,7 +45,7 @@ function Illustration() {
   useEffect(()=>{
     let login = localStorage.getItem('token',true)
     if(login){
-      navigate('/dashboard/tender')
+      navigate('/dashboard/default')
     }
   })
 
@@ -65,7 +65,7 @@ function Illustration() {
           },
         });
         localStorage.setItem("userProfile", JSON.stringify(users.data));
-        navigate("/dashboard/tender");
+        navigate("/dashboard/default");
       }
     } catch (error) {
       addToast("Login failed. Please try again.", { appearance: "error" });

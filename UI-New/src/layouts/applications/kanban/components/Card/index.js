@@ -61,10 +61,15 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
   return (
     <div className="h-32">
       {image && <SoftBox component="img" src={image} width="100%" borderRadius="sm" mb={1} />}
-      <SoftBadge size="xs" color={badge.color} badgeContent={badge.label} container />
+      <SoftBadge
+        size="xs"
+        color={badge.color}
+        badgeContent={content}
+        container
+      />
       <SoftBox mt={1} mb={2} height="60px">
         <SoftTypography variant="body2" color="text">
-          {content}
+        {badge.label.length > 25 ? `${badge.label.substring(0, 25)}...` : badge.label}
         </SoftTypography>
         {progress > 0 && (
           <SoftBox mt={0.25}>
@@ -90,9 +95,9 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
           {renderMembers}
           {remainingMembers > 0 && (
             <div className="text-center">
-            <SoftTypography variant="button" fontWeight="regular" color="text">
-              &nbsp;{remainingMembers}+
-            </SoftTypography>
+              <SoftTypography variant="button" fontWeight="regular" color="text">
+                &nbsp;{remainingMembers}+
+              </SoftTypography>
             </div>
           )}
         </SoftBox>

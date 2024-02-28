@@ -111,6 +111,9 @@ import Protected from "layouts/authentication/sign-in/Protected";
 import UserProfile from "layouts/pages/profile/User-profile";
 import { Dashboard } from "@mui/icons-material";
 import Tender from "layouts/dashboards/Tender";
+import Forms from "layouts/pages/users/new-user/components/Form";
+import Tenderprofile from "layouts/applications/kanban/components/Tenderprofile";
+import List from "layouts/applications/kanban/components/List";
 
 const routes = [
   {
@@ -123,14 +126,14 @@ const routes = [
         name: "Default",
         key: "default",
         route: "/dashboard/default",
-        component: <CRM />,
-      },
-      {
-        name: "Tender",
-        key: "tenderDashboard",
-        route: "/dashboard/tender",
         component: <Tender />,
       },
+      // {
+      //   name: "Tender",
+      //   key: "tenderDashboard",
+      //   route: "/dashboard/tender",
+      //   component: <Tender />,
+      // },
     ],
   },
   {
@@ -142,11 +145,12 @@ const routes = [
       {
         name: "New User",
         key: "new-user",
-        route: "/pages/users/new-user",
+        route: "/pages/users",
         component: <NewUser />,
       },
     ],
   },
+
   {
     type: "collapse",
     name: "Tender",
@@ -158,6 +162,7 @@ const routes = [
         key: "kanban",
         route: "/Tender",
         component: <Kanban />,
+        
       },
     ],
   },
@@ -767,7 +772,12 @@ const routes = [
     route: "/Home/profile/:id",
     component: <ProfileOverview />,
   },
-
+  {
+    name: "TenderProfile",
+    key: "tender-profile",
+    route: "/Tender/:id",
+    component: <Tenderprofile />,
+  },
   {
     name: "Settings",
     key: "settings",

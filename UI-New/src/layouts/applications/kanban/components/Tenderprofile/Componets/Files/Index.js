@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 import axiosInstance from "config/https";
 import SoftButton from "components/SoftButton";
 import SoftBox from "components/SoftBox";
@@ -14,10 +14,10 @@ import png from "../../../../../../../Image/png.png";
 import txt from "../../../../../../../Image/txt.png";
 import Default from "../../../../../../../Image/documents.png";
 import Nodata from "components/Nodata";
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import Swal from "sweetalert2";
 
-const File = ({ tenderid,onFileChange }) => {
+const File = ({ tenderid, onFileChange }) => {
   const token = localStorage.getItem("token");
   const [message, setMessage] = useState("");
   const [Filelist, setfilelist] = useState([]);
@@ -28,18 +28,19 @@ const File = ({ tenderid,onFileChange }) => {
 
   console.log("tenderid", tenderid);
 
-  const handleEverything = async (e) => {
-    handleFileChange(e);
-    await handleFileUpload();
-  };
+  // const handleEverything = async (e) => {
+  //   handleFileChange(e);
+  //   await handleFileUpload();
+  // };
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    console.log(e.target.files);
+    console.log("Selected File:", file);
   };
-const handleDeletedFile=(deletedFile)=>{
-  setDeletedFile(deletedFile)
-}
+
+  const handleDeletedFile = (deletedFile) => {
+    setDeletedFile(deletedFile);
+  };
   const onView = (file) => {
     openFileInNewTab(file);
   };
@@ -69,6 +70,7 @@ const handleDeletedFile=(deletedFile)=>{
   }, [selectedFile, deletedFile]);
 
   const fetchData = async () => {
+    console.log("loading");
     try {
       const result = await axiosInstance.get(`/_v1/tender/allDocuments/${tenderid}`, {
         headers: {
@@ -102,9 +104,9 @@ const handleDeletedFile=(deletedFile)=>{
       console.log("Upload response:", response.data);
 
       setMessage("File uploaded successfully!");
-      onFileChange();
       setSelectedFile(null);
       Swal.fire("Done!", "File uploaded", "success");
+      onFileChange();
       document.getElementById("fileInput").value = "";
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -131,28 +133,26 @@ const handleDeletedFile=(deletedFile)=>{
       })
       .then((result) => {
         if (result.isConfirmed) {
-          handleDeletedFile(deletedFile)
+          handleDeletedFile(deletedFile);
           handleFileDelete();
         }
       });
   };
 
-
-
   const handleFileDelete = async () => {
-     if (!deletedFile) {
+    if (!deletedFile) {
       setMessage("No file selected!");
       console.log("No file selected!");
       return;
     }
-  
+
     try {
-      const response = await axiosInstance.delete(`/_v1/tender/delete/file/${deletedFile}`,{
+      const response = await axiosInstance.delete(`/_v1/tender/delete/file/${deletedFile}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       console.log("Delete response:", response.data);
       setDeletedFile(null);
       Swal.fire("Deleted!", "Your file has been deleted.", "success");
@@ -192,16 +192,15 @@ const handleDeletedFile=(deletedFile)=>{
   };
 
   return (
-    <Card id="file" sx={{ overflow: "visible" }}>
+    <Card style={{ marginBottom: "20px" }} id="file" sx={{ overflow: "visible" }}>
       <div className="flex justify-between">
         <SoftBox mt={2} pl={4} className="border-b">
           <SoftTypography fontWeight="bold" mt={2} textTransform="capitalize">
             File <InsertDriveFileIcon fontSize="medium" />
           </SoftTypography>
         </SoftBox>
-        
       </div>
-      
+
       {hide ? (
         <SoftBox className="flex justify-end mr-5">
           <input
@@ -256,7 +255,7 @@ const handleDeletedFile=(deletedFile)=>{
                         <GetApp />
                       </button>
                       <button
-                          onClick={() => showAlert(file.documentId)}
+                        onClick={() => showAlert(file.documentId)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Delete />
