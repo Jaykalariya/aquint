@@ -82,6 +82,7 @@ public class WebSecurityConfig {
                     .requestMatchers("/existedCredential/**").permitAll()
                     .requestMatchers("/_v1/role/**").permitAll()
                 .requestMatchers("/_v1/user/**").authenticated()
+                    .requestMatchers("/_v1/project/**").authenticated()
                 .requestMatchers("/_v1/productType/**").authenticated()
                 .requestMatchers("/_v1/department/**").authenticated()
                 .requestMatchers("/_v1/division/**").authenticated()

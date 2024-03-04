@@ -16,9 +16,9 @@ import java.io.Serializable;
  * @since - 16/11/23  6:19 pm
  */
 @Entity
-@Table(name = "product_type")
+@Table(name = "product_types")
 @Data
-public class ProductType extends EntityAuditInfo implements Serializable {
+public class ProductTypes extends EntityAuditInfo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

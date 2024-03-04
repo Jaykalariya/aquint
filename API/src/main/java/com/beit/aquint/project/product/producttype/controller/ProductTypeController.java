@@ -1,35 +1,27 @@
-package com.beit.aquint.producttype.controller;
+package com.beit.aquint.project.product.producttype.controller;
 
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
-import com.beit.aquint.producttype.entity.ProductType;
-import com.beit.aquint.producttype.service.ProductTypeService;
+import com.beit.aquint.project.product.producttype.entity.ProductType;
+import com.beit.aquint.project.product.producttype.service.ProductTypeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * <h1> Add heading here </h1>
- * <p>
- * Add Description here.
- * </p>
- *
- * @author - jaykalariya
- * @since - 16/11/23  6:17 pm
- */
+
 @CrossOrigin("**")
 @RestController
-@RequestMapping("/_v1/productType")
+@RequestMapping("/_v1/project/productType")
 @Slf4j
 public class ProductTypeController {
 
     @Autowired
     ProductTypeService productTypeService;
 
-    @PostMapping(value = Constant.Mappping.PRODUCT_TYPE_ADD)
+    @PostMapping(value = Constant.Mappping.ADD)
     public ResponseEntity<?> addProductType(@Valid @RequestBody ProductType productType) {
         try {
             log.debug("Creating Product Type");
@@ -40,7 +32,7 @@ public class ProductTypeController {
         }
     }
 
-    @GetMapping(value = Constant.Mappping.PRODUCT_TYPE_GET_ALL)
+    @GetMapping(value = Constant.Mappping.GET_ALL)
     public ResponseEntity<?> getAllProductType() {
         try {
             log.debug("Getting all product type");
@@ -51,7 +43,7 @@ public class ProductTypeController {
         }
     }
 
-    @PostMapping(value = Constant.Mappping.PRODUCT_TYPE_GET_WITH_PAGE)
+    @PostMapping(value = Constant.Mappping.PAGE)
     public ResponseEntity<?> getProductTypePage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {
             log.debug("Getting all product type");

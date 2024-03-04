@@ -1,6 +1,6 @@
 package com.beit.aquint.producttype.repository;
 
-import com.beit.aquint.producttype.entity.ProductType;
+import com.beit.aquint.producttype.entity.ProductTypes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,14 +20,14 @@ import java.util.List;
  * @since - 16/11/23  6:18 pm
  */
 @Repository
-public interface ProductTypeRepository extends JpaRepository<ProductType, Long> {
+public interface ProductTypesRepository extends JpaRepository<ProductTypes, Long> {
 
-    List<ProductType> findByStatus(Boolean status);
+    List<ProductTypes> findByStatus(Boolean status);
 
-    @Query(value = "from ProductType pt WHERE Lower(pt.name) LIKE Lower(CONCAT( '%', :search, '%'))")
-    Page<ProductType> findProductTypePageWithSearch(Pageable pageable,
+    @Query(value = "from ProductTypes pt WHERE Lower(pt.name) LIKE Lower(CONCAT( '%', :search, '%'))")
+    Page<ProductTypes> findProductTypesPageWithSearch(Pageable pageable,
                                                     @Param("search") String search);
 
-    @Query(value = "from ProductType pt")
-    Page<ProductType> findProductTypePageWithoutSearch(Pageable pageable);
+    @Query(value = "from ProductTypes pt")
+    Page<ProductTypes> findProductTypesPageWithoutSearch(Pageable pageable);
 }

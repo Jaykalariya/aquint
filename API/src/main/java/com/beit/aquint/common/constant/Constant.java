@@ -121,7 +121,8 @@ public class Constant {
         public static final String WORK_EXPERIENCE = "workExperience";
         public static final String QUALIFICATION = "qualification";
         public static final String PERSONAL_ACCOUNT_DETAILS = "personalAccountDetails";
-        public static final String TRAINING = "/training";
+        public static final String TRAINING = "training";
+        public static final String PROJECT_DOCUMENTS = "projectDocuments";
 
     }
 
@@ -539,6 +540,49 @@ ORDER BY
           th.created_on DESC
         LIMIT 5
         """;
+        }
+
+        public class ProjectQuery{
+            public static final String DOCUMENTS_BY_PROJECT_ID = """
+                    SELECT
+                        pd.created_on AS createdOn,
+                        pd.id AS documentId,
+                        pd.document_name AS documentName,
+                        pd.document_url AS documentUrl,
+                        pd.extension AS extension,
+                        COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
+                        ud.image_url as profileUrl
+                    FROM
+                        project_documents pd
+                    LEFT JOIN
+                        user_detail ud ON pd.created_by = ud.user_id
+                    WHERE
+                        pd.project_id = :projectId
+                    ORDER BY
+                        pd.created_on;
+        
+    """;
+
+            public static final String DOCUMENTS_BY_PROJECT_ID_AND_STEP_ID = """
+                    SELECT
+                        pd.created_on AS createdOn,
+                        pd.id AS documentId,
+                        pd.document_name AS documentName,
+                        pd.document_url AS documentUrl,
+                        pd.extension AS extension,
+                        COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
+                        ud.image_url as profileUrl
+                    FROM
+                        project_documents pd
+                    LEFT JOIN
+                        user_detail ud ON pd.created_by = ud.user_id
+                    WHERE
+                        pd.project_id = :projectId AND pd.step_id = :stepId
+                    ORDER BY
+                        pd.created_on;
+        
+    """;
+
         }
 
 

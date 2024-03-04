@@ -3,9 +3,9 @@ package com.beit.aquint.producttype.service.impl;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.service.PageUtilService;
-import com.beit.aquint.producttype.entity.ProductType;
-import com.beit.aquint.producttype.repository.ProductTypeRepository;
-import com.beit.aquint.producttype.service.ProductTypeService;
+import com.beit.aquint.producttype.entity.ProductTypes;
+import com.beit.aquint.producttype.repository.ProductTypesRepository;
+import com.beit.aquint.producttype.service.ProductTypesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,43 +26,43 @@ import java.util.Objects;
  */
 @Service
 @Slf4j
-public class ProductTypeServiceImpl implements ProductTypeService {
+public class ProductTypesServiceImpl implements ProductTypesService {
 
     @Autowired
-    ProductTypeRepository productTypeRepository;
+    ProductTypesRepository productTypesRepository;
 
     @Autowired
     PageUtilService pageUtilService;
 
     @Override
-    public ProductType addNewProductType(ProductType productType) throws AquintCommonException {
+    public ProductTypes addNewProductTypes(ProductTypes productTypes) throws AquintCommonException {
         try {
             log.debug("Product Type Saving");
-            return productTypeRepository.save(productType);
+            return productTypesRepository.save(productTypes);
         } catch (Exception exception) {
             throw new AquintCommonException("Product Type Not Saved Properly");
         }
     }
 
     @Override
-    public List<ProductType> getAllProductType() throws AquintCommonException {
+    public List<ProductTypes> getAllProductTypes() throws AquintCommonException {
         try {
             log.debug("Product Type Getting");
-            return productTypeRepository.findByStatus(Boolean.TRUE);
+            return productTypesRepository.findByStatus(Boolean.TRUE);
         } catch (Exception exception) {
             throw new AquintCommonException("Product Type Not Saved Properly");
         }
     }
 
     @Override
-    public Page<ProductType> getProductTypePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
+    public Page<ProductTypes> getProductTypesPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
         try {
             log.debug("Page Data Creating");
             Pageable pageable = pageUtilService.getPageable(paginationRequestDto);
             if (Objects.nonNull(paginationRequestDto.getSearchBy())) {
-                return productTypeRepository.findProductTypePageWithSearch(pageable, paginationRequestDto.getSearchBy());
+                return productTypesRepository.findProductTypesPageWithSearch(pageable, paginationRequestDto.getSearchBy());
             } else {
-                return productTypeRepository.findProductTypePageWithoutSearch(pageable);
+                return productTypesRepository.findProductTypesPageWithoutSearch(pageable);
             }
         } catch (Exception ex) {
             throw new AquintCommonException("Product Type Not fetch Properly");
