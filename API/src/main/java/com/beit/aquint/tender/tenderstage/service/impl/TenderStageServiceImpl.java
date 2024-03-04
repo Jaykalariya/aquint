@@ -42,6 +42,9 @@ public class TenderStageServiceImpl implements TenderStageService {
     public TenderStage addNewTenderStage(TenderStage tenderStage) throws AquintCommonException {
         try {
             log.debug("Tender Stage Saving");
+            if(tenderStage.getStageValue()!=3 && Boolean.TRUE.equals(tenderStageRepository.existsByStageValue(tenderStage.getStageValue()))){
+                throw new AquintCommonException("Tender Stage already exists for FINAL WIN or FINAL LOSS");
+            }
             return tenderStageRepository.save(tenderStage);
         } catch (Exception exception) {
             throw new AquintCommonException("Tender Stage Not Saved Properly");
