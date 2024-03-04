@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.user.entity. FamilyMemberDetails;
@@ -63,7 +64,7 @@ public class FamilyMemberDetailsServiceImpl implements  FamilyMemberDetailsServi
     @Override
     public FamilyMemberDetails updateFamilyMemberDetails(Long familyMemberId, FamilyMemberDetails familyMemberDetails) {
         try {
-            FamilyMemberDetails existingFamilyMemberDetails = familyMemberDetailsRepository.findById(familyMemberId).orElseThrow();
+            FamilyMemberDetails existingFamilyMemberDetails = familyMemberDetailsRepository.findById(familyMemberId).orElseThrow(() -> new NotFoundException("family member id Not found"));
             FamilyMemberDetails updatedFamilyMemberDetails = existingFamilyMemberDetails.builder()
                     .id(existingFamilyMemberDetails.getId())
                     .userId(existingFamilyMemberDetails.getUserId())

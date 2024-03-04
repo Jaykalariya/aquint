@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.file.FileUploadService;
@@ -46,7 +47,7 @@ public class TrainingDetailsServiceImpl implements TrainingDetailsService {
     @Override
     public TrainingDetails updateTrainingDetails(Long trainingId, TrainingDetails trainingDetails) {
         try {
-            TrainingDetails existingTrainingDetails = trainingDetailsRepository.findById(trainingId).orElseThrow();
+            TrainingDetails existingTrainingDetails = trainingDetailsRepository.findById(trainingId).orElseThrow(() -> new NotFoundException("training id Not found"));
             TrainingDetails updatedTrainingDetails = existingTrainingDetails.builder()
                     .id(existingTrainingDetails.getId())
                     .userId(existingTrainingDetails.getUserId())

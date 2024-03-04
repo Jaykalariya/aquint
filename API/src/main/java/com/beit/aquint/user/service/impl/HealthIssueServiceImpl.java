@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.user.entity.HealthIssue;
 import com.beit.aquint.user.repository.HealthIssueRepository;
@@ -40,7 +41,7 @@ public class HealthIssueServiceImpl implements HealthIssueService {
     @Override
     public HealthIssue updateHealthIssue(Long healthIssueId, HealthIssue healthIssue) {
         try {
-            HealthIssue existingHealthIssue = healthIssueRepository.findById(healthIssueId).orElseThrow();
+            HealthIssue existingHealthIssue = healthIssueRepository.findById(healthIssueId).orElseThrow(() -> new NotFoundException("health issue id Not found"));
             HealthIssue updatedHealthIssue = existingHealthIssue.builder()
                     .id(existingHealthIssue.getId())
                     .userId(existingHealthIssue.getUserId())

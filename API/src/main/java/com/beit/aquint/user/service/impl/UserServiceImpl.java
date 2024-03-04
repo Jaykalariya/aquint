@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service.impl;
 
+import com.amazonaws.services.shield.model.TimeRange;
 import com.beit.aquint.auth.models.Role;
 import com.beit.aquint.auth.models.User;
 import com.beit.aquint.auth.payload.request.SignupRequest;
@@ -17,9 +18,13 @@ import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.file.FileUploadService;
 import com.beit.aquint.user.dto.UserBasicInfoDTO;
+import com.beit.aquint.user.entity.FamilyMemberDetails;
+import com.beit.aquint.user.entity.TrainingDetails;
 import com.beit.aquint.user.entity.UserDetail;
+import com.beit.aquint.user.repository.EmployerDetailsRepository;
+import com.beit.aquint.user.repository.PersonalAccountDetailsRepository;
 import com.beit.aquint.user.repository.UserDetailRepository;
-import com.beit.aquint.user.service.UserService;
+import com.beit.aquint.user.service.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.security.Key;
 import java.util.*;
 
 /**
@@ -62,6 +68,26 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     @Autowired
     PageUtilService pageUtilService;
+
+    //UserProfile
+    @Autowired
+    PersonalAccountDetailsRepository personalAccountDetailsRepository;
+    @Autowired
+    EmployerDetailsRepository employerDetailsRepository;
+    @Autowired
+    HealthIssueService healthIssueService;
+    @Autowired
+    WorkExperienceService workExperienceService;
+
+    @Autowired
+    FamilyMemberDetailsService familyMemberDetailsService;
+    @Autowired
+    TrainingDetailsService trainingDetailsService;
+    @Autowired
+    AchievementService achievementService;
+    @Autowired
+    QualificationDetailsService qualificationDetailsService;
+
 
     @Override
     public boolean existsByUsername(String username) {
@@ -166,6 +192,30 @@ public class UserServiceImpl implements UserService {
                 return userDetailRepository.findUserPageWithoutSearch(pageable);
             }
         } catch (Exception ex) {
+            throw new AquintCommonException("Users throws exception");
+        }
+    }
+
+
+
+
+    @Override
+    public Map<String,Object> getUserProfile(Long userId) throws AquintCommonException{
+        try {
+            Map<String,Object> userProfile = new HashMap<>();
+            userProfile.put("userBasicDetails", userDetailRepository.findByUserId(userId));
+            userProfile.put("qualification", qualificationDetailsService.getUserQualificationDetail(userId));
+            userProfile.put("personalAccountDetails", personalAccountDetailsRepository.findByUserId(userId));
+            userProfile.put("employerDetails", employerDetailsRepository.findByUserId(userId));
+            userProfile.put("workExperience", workExperienceService.getUserWorkExperienceDetail(userId));
+            userProfile.put("training", trainingDetailsService.getTrainingDetails(userId));
+            userProfile.put("achievement", achievementService.getAchievement(userId));
+            userProfile.put("healthIssue", healthIssueService.getHealthIssue(userId));
+            userProfile.put("familyMembers", familyMemberDetailsService.getFamilyMemberDetails(userId));
+
+            return userProfile;
+            }
+         catch (Exception ex) {
             throw new AquintCommonException("Users throws exception");
         }
     }

@@ -44,6 +44,7 @@ public class Constant {
         public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
 
         public static final String USER_BASIC_INFO = "/userBasicInfo";
+        public static final String USER_PROFILE = "/userProfile";
         public static final String ADD_USER = "/addUser";
         public static final String UPDATE_USER = "/updateUser";
         public static final String ALL_USER_DETAILS = "/allUserDetails";
@@ -117,6 +118,8 @@ public class Constant {
         public static final String FILE_FOLDER_PATH_FOR_TENDER_FILES = "tenderDocuments";
         public static final String FILE_FOLDER_PATH_FOR_USER_FILES = "userDocuments";
         public static final String ACHIEVEMENT = "achievement";
+        public static final String WORK_EXPERIENCE = "workExperience";
+        public static final String QUALIFICATION = "qualification";
         public static final String PERSONAL_ACCOUNT_DETAILS = "personalAccountDetails";
         public static final String TRAINING = "/training";
 

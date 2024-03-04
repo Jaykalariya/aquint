@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.user.entity.EmployerDetails;
 import com.beit.aquint.user.repository.EmployerDetailsRepository;
@@ -43,7 +44,7 @@ public class EmployerDetailsServiceImpl implements EmployerDetailsService {
     @Override
     public EmployerDetails updateEmployerDetails(Long userId, EmployerDetails employerDetails) {
         try {
-            EmployerDetails existingEmployerDetails = employerDetailsRepository.findByUserId(userId).orElseThrow();
+            EmployerDetails existingEmployerDetails = employerDetailsRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("user id Not found"));;
             EmployerDetails updatedEmployerDetails = existingEmployerDetails.builder()
                     .id(existingEmployerDetails.getId())
                     .userId(existingEmployerDetails.getUserId())

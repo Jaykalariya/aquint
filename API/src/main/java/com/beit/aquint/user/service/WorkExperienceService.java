@@ -14,13 +14,13 @@ public interface WorkExperienceService {
 
     public WorkExperience addWorkExperience(WorkExperience workExperience);
 
-    public Optional<WorkExperience> getUserWorkExperienceDetail(Long userId);
+    public List<WorkExperience> getUserWorkExperienceDetail(Long userId);
 
     public List<WorkExperience> getAllUserExperienceDetails();
 
-    public WorkExperience updateWorkExperience(Long userId, WorkExperience workExperience);
+    public WorkExperience updateWorkExperience(Long workExperienceId, WorkExperience workExperience);
 
-    public String uploadDocument(MultipartFile multipartFile) throws IOException;
+    public String uploadDocument(MultipartFile multipartFile, Long userId) throws IOException;
 
 
 }

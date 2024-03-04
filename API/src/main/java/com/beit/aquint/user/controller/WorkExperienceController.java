@@ -32,7 +32,6 @@ public class WorkExperienceController {
             List<WorkExperience> allWorkExperience = workExperienceService.getAllUserExperienceDetails();
             return ResponseEntity.ok().body(allWorkExperience);
         } catch (Exception exception) {
-            // Handle exceptions and return an error response
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -59,10 +58,10 @@ public class WorkExperienceController {
                             HttpStatus.INTERNAL_SERVER_ERROR));
         }
     }
-    @PutMapping(value = Constant.Mappping.UPDATE + "/{userId}")
-    public ResponseEntity<?> updateExperienceDetail(@PathVariable(value = "userId") Long userId, @RequestBody WorkExperience workExperience){
+    @PutMapping(value = Constant.Mappping.UPDATE + "/{workExperienceId}")
+    public ResponseEntity<?> updateExperienceDetail(@PathVariable(value = "workExperienceId") Long workExperienceId, @RequestBody WorkExperience workExperience){
         try{
-            return ResponseEntity.ok().body(workExperienceService.updateWorkExperience(userId,workExperience));
+            return ResponseEntity.ok().body(workExperienceService.updateWorkExperience(workExperienceId,workExperience));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(
@@ -71,10 +70,10 @@ public class WorkExperienceController {
         }
     }
 
-    @PostMapping(value = Constant.Mappping.UPLOAD_FILE)
-    public ResponseEntity<?> uploadSupportingDocument(@RequestPart("file") MultipartFile file) {
+    @PostMapping(value = Constant.Mappping.UPLOAD_FILE + "/{userId}")
+    public ResponseEntity<?> uploadSupportingDocument(@RequestPart("file") MultipartFile file, @PathVariable("userId") Long userId) {
         try {
-            return ResponseEntity.ok().body(workExperienceService.uploadDocument(file));
+            return ResponseEntity.ok().body(workExperienceService.uploadDocument(file, userId));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(

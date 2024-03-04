@@ -30,12 +30,12 @@ public class QualificationDetailsServiceImpl implements QualificationDetailsServ
     }
 
     @Override
-    public Optional<QualificationDetails> getUserQualificationDetail(Long userId) {
+    public List<QualificationDetails> getUserQualificationDetail(Long userId) {
         try {
-            return qualificationDetailsRepository.findByUserId(userId);
+            return qualificationDetailsRepository.findAllByUserId(userId);
         }
         catch (Exception exception) {
-            throw new RuntimeException("Error retrieving users personal account details", exception);
+            throw new RuntimeException("Error retrieving users qualification details", exception);
         }
     }
 
@@ -45,26 +45,23 @@ public class QualificationDetailsServiceImpl implements QualificationDetailsServ
     }
 
     @Override
-    public QualificationDetails updateQualificationDetails(Long userId, QualificationDetails updatedQualificationDetails) {
-        QualificationDetails existingQualificationDetails = qualificationDetailsRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Qualification details not found with id: " + userId));
-        // Update the existing qualification details with the new data
+    public QualificationDetails updateQualificationDetails(Long qualificationId, QualificationDetails updatedQualificationDetails) {
+        QualificationDetails existingQualificationDetails = qualificationDetailsRepository.findById(qualificationId)
+                .orElseThrow(() -> new NotFoundException("Qualification details not found with id: " + qualificationId));
+
         existingQualificationDetails.setQualificationName(updatedQualificationDetails.getQualificationName());
         existingQualificationDetails.setUniversityName(updatedQualificationDetails.getUniversityName());
         existingQualificationDetails.setSubject(updatedQualificationDetails.getSubject());
         existingQualificationDetails.setPassingYear(updatedQualificationDetails.getPassingYear());
         existingQualificationDetails.setPercentage(updatedQualificationDetails.getPercentage());
         existingQualificationDetails.setQualificationDocumentUrl(updatedQualificationDetails.getQualificationDocumentUrl());
-        // Update other fields as needed
         return qualificationDetailsRepository.save(existingQualificationDetails);
     }
 
     @Override
-    public String uploadQualificationDocument(MultipartFile multipartFile) throws IOException {
-        String userFolderPath = Constant.File.FILE_FOLDER_PATH_FOR_USER_IMAGE;
-        return fileUploadService.uploadFile(multipartFile, userFolderPath);    }
+    public String uploadQualificationDocument(MultipartFile multipartFile, Long userId) throws IOException {
+        String userFolderPath = Constant.File.FILE_FOLDER_PATH_FOR_USER_FILES + "/" + userId + "/" + Constant.File.QUALIFICATION;
+        return fileUploadService.uploadFile(multipartFile, userFolderPath);
+    }
 
-
-
-    // Implement other methods if needed
 }

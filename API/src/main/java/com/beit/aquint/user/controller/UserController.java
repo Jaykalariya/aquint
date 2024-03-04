@@ -77,6 +77,18 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.USER_PROFILE + "/{userId}")
+    public ResponseEntity<?> getUserProfile(@PathVariable(value = "userId") Long userId) {
+        try {
+            return ResponseEntity.ok().body(userService.getUserProfile(userId));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "No Data",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
     @GetMapping(value = Constant.Mappping.USER_BASIC_INFO)
     public ResponseEntity<?> getUserBasicInfo() {
         try {

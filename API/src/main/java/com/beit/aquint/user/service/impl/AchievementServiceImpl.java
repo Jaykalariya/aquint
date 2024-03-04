@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.file.FileUploadService;
@@ -46,7 +47,7 @@ public class AchievementServiceImpl implements AchievementService {
     @Override
     public Achievement updateAchievement(Long achievementId, Achievement achievement) {
         try {
-            Achievement existingAchievement = achievementRepository.findById(achievementId).orElseThrow();
+            Achievement existingAchievement = achievementRepository.findById(achievementId).orElseThrow(() -> new NotFoundException("Achievement id Not found"));
             Achievement updatedAchievement = existingAchievement.builder()
                     .id(existingAchievement.getId())
                     .userId(existingAchievement.getUserId())

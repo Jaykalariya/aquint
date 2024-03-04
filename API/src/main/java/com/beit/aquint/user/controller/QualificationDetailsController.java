@@ -57,12 +57,12 @@ public class QualificationDetailsController {
         }
     }
 
-    @PutMapping(value = Constant.Mappping.UPDATE + "/{userId}")
+    @PutMapping(value = Constant.Mappping.UPDATE + "/{qualificationId}")
     public ResponseEntity<?> updateQualificationDetails(
-            @PathVariable(value = "userId") Long userId,
+            @PathVariable(value = "qualificationId") Long qualificationId,
             @RequestBody QualificationDetails updatedQualificationDetails) {
         try {
-            QualificationDetails result = qualificationDetailsService.updateQualificationDetails(userId, updatedQualificationDetails);
+            QualificationDetails result = qualificationDetailsService.updateQualificationDetails(qualificationId, updatedQualificationDetails);
             return ResponseEntity.ok().body(result);
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
@@ -73,10 +73,10 @@ public class QualificationDetailsController {
     }
 
 
-    @PostMapping(value = Constant.Mappping.UPLOAD_FILE)
-    public ResponseEntity<?> uploadQUALIFICATIONDocument(@RequestPart("file") MultipartFile file) {
+    @PostMapping(value = Constant.Mappping.UPLOAD_FILE + "/{userId}")
+    public ResponseEntity<?> uploadQUALIFICATIONDocument(@RequestPart("file") MultipartFile file, @PathVariable("userId") Long userId) {
         try {
-            return ResponseEntity.ok().body(qualificationDetailsService.uploadQualificationDocument(file));
+            return ResponseEntity.ok().body(qualificationDetailsService.uploadQualificationDocument(file, userId));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(
@@ -84,6 +84,4 @@ public class QualificationDetailsController {
                             HttpStatus.INTERNAL_SERVER_ERROR));
         }
     }
-
-    // Add other endpoints if needed
 }

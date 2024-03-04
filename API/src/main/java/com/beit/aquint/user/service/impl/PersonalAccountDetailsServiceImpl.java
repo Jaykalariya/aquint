@@ -1,5 +1,6 @@
 package com.beit.aquint.user.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.file.FileUploadService;
@@ -49,7 +50,7 @@ public class PersonalAccountDetailsServiceImpl implements PersonalAccountDetails
     @Override
     public PersonalAccountDetails updatePersonalAccountDetails(Long userId, PersonalAccountDetails personalAccountDetails) {
         try {
-            PersonalAccountDetails existingPersonalAccountDetails = personalAccountDetailsRepository.findByUserId(userId).orElseThrow();
+            PersonalAccountDetails existingPersonalAccountDetails = personalAccountDetailsRepository.findByUserId(userId).orElseThrow(() -> new NotFoundException("user id Not found"));
             PersonalAccountDetails updatedPersonalAccountDetails = existingPersonalAccountDetails.builder()
                     .id(existingPersonalAccountDetails.getId())
                     .userId(existingPersonalAccountDetails.getUserId())

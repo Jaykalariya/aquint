@@ -15,7 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Key;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * <h1> Add heading here </h1>
@@ -44,6 +47,8 @@ public interface UserService {
     public UserFullDetail getUserFullDetail(Long userId);
 
     public List<UserFullDetail> getAllUserFullDetail();
+
+    public Map<String,Object>  getUserProfile(Long userId) throws AquintCommonException;
 
     public Page<UserFullDetail> getUserPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
     public List<UserBasicInfoDTO> getAllUserDetails();

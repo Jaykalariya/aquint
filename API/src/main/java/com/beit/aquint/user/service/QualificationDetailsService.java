@@ -12,13 +12,13 @@ public interface QualificationDetailsService {
 
     QualificationDetails addQualificationDetails(QualificationDetails qualificationDetails);
 
-    public Optional<QualificationDetails> getUserQualificationDetail(Long userId);
+    public List<QualificationDetails> getUserQualificationDetail(Long userId);
 
 
     public List<QualificationDetails> getAllUserQualificationDetails();
 
-    QualificationDetails updateQualificationDetails(Long userId, QualificationDetails updatedQualificationDetails);
+    QualificationDetails updateQualificationDetails(Long qualificationId, QualificationDetails updatedQualificationDetails);
 
-    public String uploadQualificationDocument(MultipartFile multipartFile) throws IOException;
+    public String uploadQualificationDocument(MultipartFile multipartFile, Long userId) throws IOException;
 
 }

@@ -36,12 +36,12 @@ public class WorkexperienceServiceImpl implements WorkExperienceService {
     }
 
     @Override
-    public Optional<WorkExperience> getUserWorkExperienceDetail(Long userId) {
+    public List<WorkExperience> getUserWorkExperienceDetail(Long userId) {
         try {
-            return workExperienceRepository.findByUserId(userId);
+            return workExperienceRepository.findAllByUserId(userId);
         }
         catch (Exception exception) {
-            throw new RuntimeException("Error retrieving users personal account details", exception);
+            throw new RuntimeException("Error retrieving users work experience details", exception);
         }
     }
 
@@ -51,11 +51,9 @@ public class WorkexperienceServiceImpl implements WorkExperienceService {
     }
 
     @Override
-    public WorkExperience updateWorkExperience(Long userId, WorkExperience workExperience){
-        WorkExperience existingWorkExperience = workExperienceRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Qualification details not found with id: " + userId));
-
-        if(existingWorkExperience!=null){
+    public WorkExperience updateWorkExperience(Long workExperienceId, WorkExperience workExperience){
+        WorkExperience existingWorkExperience = workExperienceRepository.findById(workExperienceId)
+                .orElseThrow(() -> new NotFoundException("Work experience details not found with id: " + workExperienceId));
             existingWorkExperience.setCompanyName(workExperience.getCompanyName());
             existingWorkExperience.setDesignation(workExperience.getDesignation());
             existingWorkExperience.setStartDate(workExperience.getStartDate());
@@ -63,17 +61,12 @@ public class WorkexperienceServiceImpl implements WorkExperienceService {
             existingWorkExperience.setGrossSalary(workExperience.getGrossSalary());
             existingWorkExperience.setSupporitngDocumentUrl(workExperience.getSupporitngDocumentUrl());
             return workExperienceRepository.save(existingWorkExperience);
-        }
-       else {
-            throw new NotFoundException("Work experience not found for user with id: " + userId);
-
-        }
 
     }
 
     @Override
-    public String uploadDocument(MultipartFile multipartFile) throws IOException {
-        String userFolderPath = Constant.File.FILE_FOLDER_PATH_FOR_USER_IMAGE;
+    public String uploadDocument(MultipartFile multipartFile, Long userId) throws IOException {
+        String userFolderPath = Constant.File.FILE_FOLDER_PATH_FOR_USER_FILES + "/" + userId + "/" + Constant.File.WORK_EXPERIENCE;
         return fileUploadService.uploadFile(multipartFile, userFolderPath);
     }
 }
