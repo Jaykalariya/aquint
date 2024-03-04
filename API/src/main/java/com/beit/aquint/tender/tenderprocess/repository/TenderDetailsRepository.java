@@ -28,7 +28,7 @@ import java.util.Map;
 @Repository
 public interface TenderDetailsRepository extends JpaRepository<TenderDetails, Long> {
 
-    @Query(value = "select td.id, td.created_on as \"createdOn\", td.project_display_name as \"projectDisplayName\",\n" +
+    @Query(value = "select td.id, td.created_on as \"createdOn\", td.project_display_name as \"projectDisplayName\",td.project_name as \"projectName\",\n" +
             "td.modified_on  as \"lastUpdatedOn\", td.tender_stage as \"tenderStage\", tt.tender_type_name  as \"tenderType\", cast((\n" +
             "        SELECT \n" +
             "            jsonb_agg(json_build_object(\n" +

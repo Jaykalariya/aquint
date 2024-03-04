@@ -67,9 +67,9 @@ function Card({ image, badge, content, progress, attachedFiles, members }) {
         badgeContent={content}
         container
       />
-      <SoftBox mt={1} mb={2} height="60px">
-        <SoftTypography variant="body2" color="text">
-        {badge.label.length > 25 ? `${badge.label.substring(0, 25)}...` : badge.label}
+      <SoftBox mt={1} mb={3} height="60px">
+        <SoftTypography variant="body2" color="text" style={{ fontSize: '14px' , textTransform: 'none'}}>
+        {badge.label.length >68 ? `${badge.label.substring(0, 72)} ...` : badge.label}
         </SoftTypography>
         {progress > 0 && (
           <SoftBox mt={0.25}>

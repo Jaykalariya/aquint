@@ -158,7 +158,7 @@ function Addtenderform({ sethide, fetchData }) {
   async function submit() {
     let hasError = false;
     const newFormErrors = { ...formErrors };
-console.log(formData);
+    console.log(formData);
     Object.keys(formData).forEach((key) => {
       if (!formData[key] || formData[key] === undefined) {
         newFormErrors[key] = true;
@@ -199,7 +199,7 @@ console.log(formData);
   }
 
   return (
-    <Card className="md:mx-36 ">
+    <Card className="md:mx-36 " style={{ overflow: "visible" }}>
       <SoftBox p={2}>
         <div className="m-0">
           <label className="text-xs font-bold p-1">Project Name</label>
@@ -282,18 +282,19 @@ console.log(formData);
         <div className="grid grid-cols-2 gap-5">
           <div>
             <label className="text-xs font-bold p-1">EMD Exemption</label>
-<SoftSelect  
-placeholder="Select"
-options={[
-     {value: "None", label: "None"},
-     {value: "MSME", label: "MSME" },
-     {value: "Startup (Dipp)", label: "Startup (Dipp)"}
-    ]}
-     onChange={(selected) => handleInputChange("emdExemption", selected.value)}
-     error={formErrors.emdExemption}
+            <SoftSelect
+              placeholder="Select"
+              options={[
+                { value: "None", label: "None" },
+                { value: "MSME", label: "MSME" },
+                { value: "Startup (Dipp)", label: "Startup (Dipp)" },
+              ]}
+              onChange={(selected) => handleInputChange("emdExemption", selected.value)}
+              error={formErrors.emdExemption}
             />
-{formErrors.emdExemption && (
-              <span className="text-xs text-red-500">Please Select EMD Exemption </span>)}
+            {formErrors.emdExemption && (
+              <span className="text-xs text-red-500">Please Select EMD Exemption </span>
+            )}
           </div>
           <div>
             <label className="text-xs font-bold p-1">EMD Amount</label>
@@ -305,25 +306,28 @@ options={[
               error={formErrors.emdAmount}
               type="number"
             />
-            {formErrors.emdAmount && <span className="text-xs text-red-500">Please Enter the EMD Amount</span >} 
+            {formErrors.emdAmount && (
+              <span className="text-xs text-red-500">Please Enter the EMD Amount</span>
+            )}
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-5">
           <div>
             <label className="text-xs font-bold p-1">Tender Fee Exemption</label>
-            <SoftSelect 
-placeholder="Select"
-options={[
-     {value: "None", label: "None"},
-     {value: "MSME", label: "MSME" },
-     {value: "Startup (Dipp)", label: "Startup (Dipp)"}
-    ]}
-     onChange={(selected) => handleInputChange("tenderFeeExemption", selected.value)}
-     error={formErrors.tenderFeeExemption}
+            <SoftSelect
+              placeholder="Select"
+              options={[
+                { value: "None", label: "None" },
+                { value: "MSME", label: "MSME" },
+                { value: "Startup (Dipp)", label: "Startup (Dipp)" },
+              ]}
+              onChange={(selected) => handleInputChange("tenderFeeExemption", selected.value)}
+              error={formErrors.tenderFeeExemption}
             />
-{formErrors.tenderFeeExemption && (
-              <span className="text-xs text-red-500">Please Select Ter Fee Exemption </span>)}
+            {formErrors.tenderFeeExemption && (
+              <span className="text-xs text-red-500">Please Select Ter Fee Exemption </span>
+            )}
           </div>
           <div>
             <label className="text-xs font-bold p-1">Tender Fee</label>
@@ -335,7 +339,9 @@ options={[
               error={formErrors.tenderFee}
               type="number"
             />
-            {formErrors.tenderFee && <span className="text-xs text-red-500">Please Enter the Tender Fee</span >} 
+            {formErrors.tenderFee && (
+              <span className="text-xs text-red-500">Please Enter the Tender Fee</span>
+            )}
           </div>
         </div>
 

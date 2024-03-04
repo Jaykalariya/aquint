@@ -126,7 +126,7 @@ function Kanban() {
           id: tender.id,
           template: (
             <Card
-              badge={{ color: "info", label: tender.projectDisplayName }}
+              badge={{ color: "info", label: tender.projectName }}
               content={tender.tenderType}
               attachedFiles={BirthdateFormatter(tender.createdOn)}
               members={tender.assignedUser}

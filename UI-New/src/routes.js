@@ -110,10 +110,10 @@ import Roles from "layouts/pages/roles";
 import Protected from "layouts/authentication/sign-in/Protected";
 import UserProfile from "layouts/pages/profile/User-profile";
 import { Dashboard } from "@mui/icons-material";
-import Tender from "layouts/dashboards/Tender";
 import Forms from "layouts/pages/users/new-user/components/Form";
 import Tenderprofile from "layouts/applications/kanban/components/Tenderprofile";
 import List from "layouts/applications/kanban/components/List";
+import Tender from "layouts/dashboards/tender";
 
 const routes = [
   {
@@ -123,9 +123,9 @@ const routes = [
     icon: <Shop size="12px" />,
     collapse: [
       {
-        name: "Default",
-        key: "default",
-        route: "/dashboard/default",
+        name: "Tender",
+        key: "tender",
+        route: "/dashboard/tender",
         component: <Tender />,
       },
       // {
@@ -144,7 +144,7 @@ const routes = [
     collapse: [
       {
         name: "New User",
-        key: "new-user",
+        key: "users",
         route: "/pages/users",
         component: <NewUser />,
       },

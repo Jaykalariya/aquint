@@ -30,7 +30,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const { miniSidenav, transparentSidenav } = controller;
   const location = useLocation();
   const { pathname } = location;
-  const collapseName = pathname.split("/").slice(1)[0];
+  const abc = pathname.split("/");
+  const collapseName = pathname.split("/")[abc.length -1];
   const itemName = pathname.split("/").slice(1)[1];
   const navigate = useNavigate();
   const closeSidenav = () => setMiniSidenav(dispatch, true);
@@ -158,6 +159,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           );
         }
         else if (name === "Users") {
+          {{console.log(key)}}
+          {{console.log(collapseName)}}
           returnValue = (
             <SidenavCollapse
               key={key}

@@ -37,7 +37,6 @@ import breakpoints from "assets/theme/base/breakpoints";
 import salesTableData from "./data/salesTableData";
 
 // Data
-import gradientLineChartData from "layouts/dashboards/Tender/data/gradientLineChartData";
 import reportsBarChartData from "./data/reportsBarChartData";
 import UpcomingEvents from "layouts/pages/widgets/components/UpcomingEvents";
 import ComplexReportsDoughnutChart from "examples/Charts/DoughnutCharts/ComplexReportsDoughnutChart";
