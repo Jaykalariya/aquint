@@ -26,10 +26,14 @@ public class Projects extends EntityAuditInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
     @Column(name = "project_custom_id")
     private String projectCustomId;
 
+    @NotBlank
     @Column(name = "project_name",columnDefinition = "TEXT")
     private String projectName;
+
+    public Projects(String projectName) {
+        this.projectName = projectName;
+    }
 }

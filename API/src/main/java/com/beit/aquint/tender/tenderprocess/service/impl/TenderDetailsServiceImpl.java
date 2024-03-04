@@ -10,6 +10,9 @@ import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.file.FileUploadService;
 import com.beit.aquint.common.service.PageUtilService;
+import com.beit.aquint.project.product.productprocess.repository.ProductsRepository;
+import com.beit.aquint.project.projectprocess.entity.Projects;
+import com.beit.aquint.project.projectprocess.repository.ProjectsRepository;
 import com.beit.aquint.tender.tenderprocess.dto.*;
 import com.beit.aquint.tender.tenderprocess.entity.*;
 import com.beit.aquint.tender.tenderprocess.mapper.TenderMapper;
@@ -78,7 +81,8 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
     @Autowired
     TenderNotesRepository tenderNotesRepository;
 
-
+    @Autowired
+    ProjectsRepository projectsRepository;
 
     @Override
     @Transactional
@@ -158,6 +162,11 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         tenderMemberHistory.setUserId(null);
         tenderMemberHistory.setType(Constant.TenderHistoryConstant.TENDER_STAGE_CHANGE);
         tenderHistoryRepository.save(tenderMemberHistory);
+
+        if(stage.getStageValue()==1 && Boolean.FALSE.equals(projectsRepository.existsByProjectName(tender.getProjectName()))){
+            Projects projects = new Projects(tender.getProjectName());
+            projectsRepository.save(projects);
+        }
 
         return new MessageResponse("Tender Staged changed and History added Successfully");
     }
