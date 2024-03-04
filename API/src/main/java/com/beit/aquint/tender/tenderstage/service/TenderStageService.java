@@ -2,6 +2,7 @@ package com.beit.aquint.tender.tenderstage.service;
 
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
+import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.tender.tenderstage.dto.TenderStageDto;
 import com.beit.aquint.tender.tenderstage.entity.TenderStage;
@@ -22,7 +23,7 @@ import java.util.Optional;
  */
 public interface TenderStageService {
 
-    public TenderStage addNewTenderStage(TenderStage tenderStage) throws AquintCommonException;
+    public ResponseMessage addNewTenderStage(TenderStage tenderStage) throws AquintCommonException;
 
     public List<TenderStage> getAllTenderStage() throws AquintCommonException;
 

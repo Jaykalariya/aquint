@@ -3,6 +3,7 @@ package com.beit.aquint.tender.tenderstage.service.impl;
 import com.beit.aquint.auth.models.User;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
+import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.service.PageUtilService;
 import com.beit.aquint.tender.tenderstage.dto.TenderStageDto;
@@ -39,13 +40,13 @@ public class TenderStageServiceImpl implements TenderStageService {
     PageUtilService pageUtilService;
 
     @Override
-    public TenderStage addNewTenderStage(TenderStage tenderStage) throws AquintCommonException {
+    public ResponseMessage addNewTenderStage(TenderStage tenderStage) throws AquintCommonException {
         try {
             log.debug("Tender Stage Saving");
             if(tenderStage.getStageValue()!=3 && Boolean.TRUE.equals(tenderStageRepository.existsByStageValue(tenderStage.getStageValue()))){
-                throw new AquintCommonException("Tender Stage already exists for FINAL WIN or FINAL LOSS");
+                return new ResponseMessage("Tender Stage already exists for FINAL WIN or FINAL LOSS", tenderStageRepository.save(tenderStage));
             }
-            return tenderStageRepository.save(tenderStage);
+            return new ResponseMessage("Tender stage saved/updated successfully", tenderStageRepository.save(tenderStage));
         } catch (Exception exception) {
             throw new AquintCommonException("Tender Stage Not Saved Properly");
         }
