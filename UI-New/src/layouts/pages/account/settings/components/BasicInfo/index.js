@@ -68,6 +68,8 @@ function BasicInfo() {
   const [lastnameError, setLastnameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setemailErrorMessage] = useState(false);
+  
+
 
   const navigate = useNavigate();
   const { addToast } = useToasts();
@@ -181,14 +183,12 @@ function BasicInfo() {
 
   const handleMobileNumber = (event) => {
     setModified();
-    setMobileNumberError(false);
     setMobileNumber(event.target.value);
     console.log(mobileNumber);
   };
 
   const handleGender = (event) => {
     setModified();
-    setGenderError(false);
     setGender(event.target.value);
   };
 
@@ -209,44 +209,37 @@ function BasicInfo() {
   const handleBirthDateChange = (date) => {
     setModified();
     setBirthDate(date);
-    setBirthDateError(false);
     console.log(date);
     console.log(birthDate);
   };
 
   const handleAnniversaryDateChange = (date) => {
     setModified();
-    setAnniversaryDateError(false);
     setAnniversaryDate(date);
   };
 
   const handleBloodGroupChange = (event) => {
     setModified();
-    setBloodGroupError(false);
     setBloodGroup(event.target.value);
   };
 
   const handleAddressChange = (event) => {
     setModified();
-    setAddressError(false);
     setAddress(event.target.value);
   };
 
   const handleMaritalStatusChange = (event) => {
     setModified();
-    setMaritalStatusError(false);
     setmaritalStatus(event.target.value);
   };
 
   const handleReligionChange = (event) => {
     setModified();
-    setReligionError(false);
     setReligion(event.target.value);
   };
 
   const handleNationalityChange = (event) => {
     setModified();
-    setNationalityError(false);
     setNationality(event.target.value);
   };
 

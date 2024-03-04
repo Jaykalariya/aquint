@@ -91,7 +91,9 @@ function Kanban() {
           Authorization: `Bearer ${token}`,
         },
       });
-      const transformedData = transformData(result.data, tenderList.data);
+      const filteredStages = result.data.filter((stage) => stage.status === true);
+
+      const transformedData = transformData(filteredStages, tenderList.data);
       setboards(transformedData);
     } catch (error) {
       console.log(error);
@@ -111,7 +113,6 @@ function Kanban() {
   function handelclick(id) {
     settenderid(id);
     navigate(`/Tender/${id}`);
-
   }
 
   const transformData = (data, tenderdata) => {

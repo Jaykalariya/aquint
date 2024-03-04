@@ -68,13 +68,20 @@ function Tender() {
   const [monthlyProjectValueGraph, setMonthlyProjectValueGraph] = useState(null);
 
   const getIconAndTitleForStage = (stage) => {
+    const emdAndFeesEntry = emdAndFeesData?.find(entry => entry.stagevalue === stage);
+    console.log(emdAndFeesEntry);
+    const emdamount = emdAndFeesEntry ? emdAndFeesEntry.emdamount : "0.00"; 
+    const tenderfee = emdAndFeesEntry ? emdAndFeesEntry.tenderfee : "0.00"; 
+
+    const projectCount=emdAndFeesEntry ? emdAndFeesEntry.projectCount : "0";
+  
     switch (stage) {
       case 1:
-        return { icon: "thumb_up", title: "Win", color: "success" };
+        return { icon: "thumb_up", title: "Win", color: "success", emdamount,tenderfee, projectCount };
       case 2:
-        return { icon: "thumb_down", title: "Loss", color: "error" };
+        return { icon: "thumb_down", title: "Loss", color: "error", emdamount,tenderfee, projectCount };
       default:
-        return { icon: "directions_run", title: "Others", color: "warning" };
+        return { icon: "directions_run", title: "Others", color: "warning", emdamount, tenderfee,projectCount };
     }
   };
 
@@ -246,7 +253,7 @@ function Tender() {
                 </SoftBox>
                 <SoftBox p={2} display="flex" alignItems="center">
                   <Grid container spacing={2}>
-                  {emdAndFeesData &&
+                  {/* {emdAndFeesData &&
                       emdAndFeesData.map((data, index) => (
                         <Grid item xs={12} sm={3} lg={4} key={index}>
                           <DefaultInfoCard
@@ -264,7 +271,58 @@ function Tender() {
                             color={getIconAndTitleForStage(data.stagevalue).color}
                           />
                         </Grid>
-                      ))}
+                      ))} */}
+                  
+                        <Grid item xs={12} sm={3} lg={4} >
+                          <DefaultInfoCard
+                            icon={getIconAndTitleForStage(1)?.icon}
+                            title={<SoftTypography variant="body2" fontWeight="bold">
+                            {getIconAndTitleForStage(1)?.title}
+                          </SoftTypography>}
+                            // description={`Project: ${getIconAndTitleForStage(1).projectCount}`} 
+                            value={<SoftTypography variant="body2" fontWeight="bold" color="black">
+                            ₹ {(getIconAndTitleForStage(1)?.emdamount &&
+                            getIconAndTitleForStage(1)?.emdamount?.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00" 
+                            
+                            }
+                          </SoftTypography>}
+                            color={getIconAndTitleForStage(1)?.color}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3} lg={4} >
+                          <DefaultInfoCard
+                            icon={getIconAndTitleForStage(2)?.icon}
+                            title={<SoftTypography variant="body2" fontWeight="bold">
+                            {getIconAndTitleForStage(2)?.title}
+                          </SoftTypography>}
+                            // description={`Project: ${getIconAndTitleForStage(2).projectCount}`} 
+                            value={<SoftTypography variant="body2" fontWeight="bold" color="black">
+                            ₹ {(getIconAndTitleForStage(2)?.emdamount &&
+                            getIconAndTitleForStage(2)?.emdamount?.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00" 
+                            
+                            }
+                          </SoftTypography>}
+                            color={getIconAndTitleForStage(2)?.color}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3} lg={4} >
+                          <DefaultInfoCard
+                            icon={getIconAndTitleForStage(3)?.icon}
+                            title={<SoftTypography variant="body2" fontWeight="bold">
+                            {getIconAndTitleForStage(3)?.title}
+                          </SoftTypography>}
+                            // description={`Project: ${getIconAndTitleForStage(3).projectCount}`} 
+                            value={<SoftTypography variant="body2" fontWeight="bold" color="black">
+                            ₹ {(getIconAndTitleForStage(1)?.emdamount &&
+                            getIconAndTitleForStage(3)?.emdamount?.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00" 
+                            
+                            }
+                          </SoftTypography>}
+                            color={getIconAndTitleForStage(3)?.color}
+                          />
+                        </Grid>
+                       
+                          
                   </Grid>
                 </SoftBox>
               </Card>
@@ -281,23 +339,54 @@ function Tender() {
                 </SoftBox>
                 <SoftBox p={2} display="flex" alignItems="center">
                   <Grid container spacing={2}>
-                    {emdAndFeesData &&
-                      emdAndFeesData.map((data, index) => (
-                        <Grid item xs={12} sm={3} lg={4} key={index}>
+                  <Grid item xs={12} sm={3} lg={4} >
                           <DefaultInfoCard
-                            icon={getIconAndTitleForStage(data.stagevalue).icon}
+                            icon={getIconAndTitleForStage(1)?.icon}
                             title={<SoftTypography variant="body2" fontWeight="bold">
-                            {getIconAndTitleForStage(data.stagevalue).title} 
+                            {getIconAndTitleForStage(1)?.title}
                           </SoftTypography>}
-                            description={`Project: ${data.projectcount}`} 
+                            // description={`Project: ${getIconAndTitleForStage(1).projectCount}`} 
                             value={<SoftTypography variant="body2" fontWeight="bold" color="black">
-                            ₹ {(data.tenderfee &&
-                            data.tenderfee.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00"}
+                            ₹ {(getIconAndTitleForStage(1)?.tenderfee &&
+                            getIconAndTitleForStage(1)?.tenderfee?.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00" 
+                            
+                            }
                           </SoftTypography>}
-                            color={getIconAndTitleForStage(data.stagevalue).color}
+                            color={getIconAndTitleForStage(1)?.color}
                           />
                         </Grid>
-                      ))}
+                        <Grid item xs={12} sm={3} lg={4} >
+                          <DefaultInfoCard
+                            icon={getIconAndTitleForStage(2)?.icon}
+                            title={<SoftTypography variant="body2" fontWeight="bold">
+                            {getIconAndTitleForStage(2)?.title}
+                          </SoftTypography>}
+                            // description={`Project: ${getIconAndTitleForStage(2).projectCount}`} 
+                            value={<SoftTypography variant="body2" fontWeight="bold" color="black">
+                            ₹ {(getIconAndTitleForStage(2)?.tenderfee &&
+                            getIconAndTitleForStage(2)?.tenderfee?.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00" 
+                            
+                            }
+                          </SoftTypography>}
+                            color={getIconAndTitleForStage(2)?.color}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={3} lg={4} >
+                          <DefaultInfoCard
+                            icon={getIconAndTitleForStage(3)?.icon}
+                            title={<SoftTypography variant="body2" fontWeight="bold">
+                            {getIconAndTitleForStage(3)?.title}
+                          </SoftTypography>}
+                            // description={`Project: ${getIconAndTitleForStage(3).projectCount}`} 
+                            value={<SoftTypography variant="body2" fontWeight="bold" color="black">
+                            ₹ {(getIconAndTitleForStage(1)?.tenderfee &&
+                            getIconAndTitleForStage(3)?.tenderfee?.toLocaleString("en-IN", { maximumFractionDigits: 0.00 })) || "0.00" 
+                            
+                            }
+                          </SoftTypography>}
+                            color={getIconAndTitleForStage(3)?.color}
+                          />
+                        </Grid>
                   </Grid>
                 </SoftBox>
               </Card>
