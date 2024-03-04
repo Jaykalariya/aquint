@@ -44,7 +44,7 @@ public class TenderStageServiceImpl implements TenderStageService {
         try {
             log.debug("Tender Stage Saving");
             if(tenderStage.getStageValue()!=3 && Boolean.TRUE.equals(tenderStageRepository.existsByStageValue(tenderStage.getStageValue()))){
-                return new ResponseMessage("Tender Stage already exists for FINAL WIN or FINAL LOSS", tenderStageRepository.save(tenderStage));
+                return new ResponseMessage("Tender Stage already exists for FINAL WIN or FINAL LOSS", tenderStage);
             }
             return new ResponseMessage("Tender stage saved/updated successfully", tenderStageRepository.save(tenderStage));
         } catch (Exception exception) {
