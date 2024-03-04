@@ -43,10 +43,10 @@ public class TrainingDetailsController {
         }
     }
 
-    @PutMapping(value = Constant.Mappping.UPDATE  + "/{userId}")
-    public ResponseEntity<?> updateTrainingDetails(@PathVariable(value = "userId") Long userId, @RequestBody TrainingDetails trainingDetails) {
+    @PutMapping(value = Constant.Mappping.UPDATE  + "/{trainingId}")
+    public ResponseEntity<?> updateTrainingDetails(@PathVariable(value = "trainingId") Long trainingId, @RequestBody TrainingDetails trainingDetails) {
         try {
-            return ResponseEntity.ok().body(trainingDetailsService.updateTrainingDetails(userId,trainingDetails));
+            return ResponseEntity.ok().body(trainingDetailsService.updateTrainingDetails(trainingId,trainingDetails));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(

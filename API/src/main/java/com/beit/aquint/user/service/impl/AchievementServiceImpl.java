@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,9 +25,9 @@ public class AchievementServiceImpl implements AchievementService {
     AchievementRepository achievementRepository;
 
     @Override
-    public Optional<Achievement> getAchievement(Long userId){
+    public List<Achievement> getAchievement(Long userId){
         try {
-            return achievementRepository.findByUserId(userId);
+            return achievementRepository.findAllByUserId(userId);
         }
         catch (Exception exception) {
             throw new RuntimeException("Error retrieving users achievement", exception);
@@ -36,20 +37,16 @@ public class AchievementServiceImpl implements AchievementService {
     @Override
     public Achievement addAchievement(Achievement achievement) throws AquintCommonException{
         try {
-            if(Boolean.FALSE.equals(achievementRepository.existsByUserId(achievement.getUserId()))){
             return achievementRepository.save(achievement);
-            }
-            throw new AquintCommonException("UserId exists");
-
         } catch (Exception e) {
             throw new AquintCommonException("Error - "+e);
         }
     }
 
     @Override
-    public Achievement updateAchievement(Long userId, Achievement achievement) {
+    public Achievement updateAchievement(Long achievementId, Achievement achievement) {
         try {
-            Achievement existingAchievement = achievementRepository.findByUserId(userId).orElseThrow();
+            Achievement existingAchievement = achievementRepository.findById(achievementId).orElseThrow();
             Achievement updatedAchievement = existingAchievement.builder()
                     .id(existingAchievement.getId())
                     .userId(existingAchievement.getUserId())

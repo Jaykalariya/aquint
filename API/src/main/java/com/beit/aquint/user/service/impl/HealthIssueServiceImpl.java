@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,9 +19,9 @@ public class HealthIssueServiceImpl implements HealthIssueService {
     HealthIssueRepository healthIssueRepository;
 
     @Override
-    public Optional<HealthIssue> getHealthIssue(Long userId){
+    public List<HealthIssue> getHealthIssue(Long userId){
         try {
-            return healthIssueRepository.findByUserId(userId);
+            return healthIssueRepository.findAllByUserId(userId);
         }
         catch (Exception exception) {
             throw new RuntimeException("Error retrieving users health issue", exception);
@@ -30,20 +31,16 @@ public class HealthIssueServiceImpl implements HealthIssueService {
     @Override
     public HealthIssue addHealthIssue(HealthIssue healthIssue) throws AquintCommonException {
         try {
-            if(Boolean.FALSE.equals(healthIssueRepository.existsByUserId(healthIssue.getUserId()))){
                 return healthIssueRepository.save(healthIssue);
-            }
-            throw new AquintCommonException("UserId exists");
-
         } catch (Exception e) {
             throw new AquintCommonException("Error - "+e);
         }
     }
 
     @Override
-    public HealthIssue updateHealthIssue(Long userId, HealthIssue healthIssue) {
+    public HealthIssue updateHealthIssue(Long healthIssueId, HealthIssue healthIssue) {
         try {
-            HealthIssue existingHealthIssue = healthIssueRepository.findByUserId(userId).orElseThrow();
+            HealthIssue existingHealthIssue = healthIssueRepository.findById(healthIssueId).orElseThrow();
             HealthIssue updatedHealthIssue = existingHealthIssue.builder()
                     .id(existingHealthIssue.getId())
                     .userId(existingHealthIssue.getUserId())

@@ -43,10 +43,10 @@ public class AchievementController {
         }
     }
 
-    @PutMapping(value = Constant.Mappping.UPDATE  + "/{userId}")
-    public ResponseEntity<?> updateAchievement(@PathVariable(value = "userId") Long userId, @RequestBody Achievement achievement) {
+    @PutMapping(value = Constant.Mappping.UPDATE  + "/{achievementId}")
+    public ResponseEntity<?> updateAchievement(@PathVariable(value = "achievementId") Long achievementId, @RequestBody Achievement achievement) {
         try {
-            return ResponseEntity.ok().body(achievementService.updateAchievement(userId,achievement));
+            return ResponseEntity.ok().body(achievementService.updateAchievement(achievementId,achievement));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(

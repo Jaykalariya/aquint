@@ -5,13 +5,14 @@ import com.beit.aquint.user.entity.TrainingDetails;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 public interface TrainingDetailsService {
 
     public TrainingDetails addTrainingDetails(TrainingDetails trainingDetails) throws AquintCommonException;
 
-    public Optional<TrainingDetails> getTrainingDetails(Long userId);
+    public List<TrainingDetails> getTrainingDetails(Long userId);
 
     public TrainingDetails updateTrainingDetails(Long userId, TrainingDetails trainingDetails);
     public String uploadDocument(MultipartFile multipartFile, Long userId) throws IOException;

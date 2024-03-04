@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,9 +25,9 @@ public class TrainingDetailsServiceImpl implements TrainingDetailsService {
     TrainingDetailsRepository trainingDetailsRepository;
 
     @Override
-    public Optional<TrainingDetails> getTrainingDetails(Long userId){
+    public List<TrainingDetails> getTrainingDetails(Long userId){
         try {
-            return trainingDetailsRepository.findByUserId(userId);
+            return trainingDetailsRepository.findAllByUserId(userId);
         }
         catch (Exception exception) {
             throw new RuntimeException("Error retrieving users training details", exception);
@@ -36,20 +37,16 @@ public class TrainingDetailsServiceImpl implements TrainingDetailsService {
     @Override
     public TrainingDetails addTrainingDetails(TrainingDetails trainingDetails) throws AquintCommonException{
         try {
-            if(Boolean.FALSE.equals(trainingDetailsRepository.existsByUserId(trainingDetails.getUserId()))){
             return trainingDetailsRepository.save(trainingDetails);
-            }
-            throw new AquintCommonException("UserId exists");
-
         } catch (Exception e) {
             throw new AquintCommonException("Error - "+e);
         }
     }
 
     @Override
-    public TrainingDetails updateTrainingDetails(Long userId, TrainingDetails trainingDetails) {
+    public TrainingDetails updateTrainingDetails(Long trainingId, TrainingDetails trainingDetails) {
         try {
-            TrainingDetails existingTrainingDetails = trainingDetailsRepository.findByUserId(userId).orElseThrow();
+            TrainingDetails existingTrainingDetails = trainingDetailsRepository.findById(trainingId).orElseThrow();
             TrainingDetails updatedTrainingDetails = existingTrainingDetails.builder()
                     .id(existingTrainingDetails.getId())
                     .userId(existingTrainingDetails.getUserId())
