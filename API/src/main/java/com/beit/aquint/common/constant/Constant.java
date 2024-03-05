@@ -39,10 +39,14 @@ public class Constant {
         public static final String PLACE_OF_SUPPLY_GET_ALL = "/getAllPlaceOfSupply";
         public static final String PLACE_OF_SUPPLY_GET_PAGE = "/getPlaceOfSupplyByPage";
 
+
+        //existedCredential
         public static  final  String EMAIL ="/email";
         public static  final  String USERNAME ="/username";
-        public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
+        public static  final  String PROJECT_CUSTOM_ID = "/projectCustomId";
 
+
+        public static final String GET_USER_BASIC_DETAILS = "/getUserDetails";
         public static final String USER_BASIC_INFO = "/userBasicInfo";
         public static final String USER_PROFILE = "/userProfile";
         public static final String ADD_USER = "/addUser";

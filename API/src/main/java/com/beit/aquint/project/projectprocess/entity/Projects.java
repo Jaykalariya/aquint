@@ -3,6 +3,7 @@ package com.beit.aquint.project.projectprocess.entity;
 import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,11 +30,19 @@ public class Projects extends EntityAuditInfo implements Serializable {
     @Column(name = "project_custom_id")
     private String projectCustomId;
 
-    @NotBlank
-    @Column(name = "project_name",columnDefinition = "TEXT")
-    private String projectName;
+    @NotNull
+    @Column(name = "tender_id")
+    private Long tenderId;
 
-    public Projects(String projectName) {
-        this.projectName = projectName;
+    @NotBlank
+    @Column(name = "project_display_name",columnDefinition = "TEXT")
+    private String projectDisplayName;
+
+    @Column(name = "initialStepsStatus")
+    private Long initialStepsStatus;
+
+    public Projects(Long tenderId,String projectDisplayName) {
+        this.projectDisplayName = projectDisplayName;
+        this.tenderId = tenderId;
     }
 }

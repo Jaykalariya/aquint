@@ -6,6 +6,7 @@ import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.project.projectprocess.dto.ProjectIdAndStepIdDto;
 import com.beit.aquint.project.projectprocess.entity.Projects;
 import com.beit.aquint.project.projectprocess.service.ProjectProcessService;
+import com.beit.aquint.user.entity.Achievement;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,17 @@ public class ProjectProcessController {
         }
     }
 
+    @PutMapping(value = Constant.Mappping.UPDATE  + "/{projectId}")
+    public ResponseEntity<?> updateProject(@PathVariable(value = "projectId") Long projectId, @RequestBody Projects project) {
+        try {
+            return ResponseEntity.ok().body(projectProcessService.updateProject(projectId,project));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "Data Not Updated Properly",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
 
     //Doucments API
     @PostMapping(value = Constant.Mappping.UPLOAD_FILE)

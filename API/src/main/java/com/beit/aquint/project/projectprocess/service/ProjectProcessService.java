@@ -27,4 +27,7 @@ public interface ProjectProcessService {
     public List<Map<String,Object>> getAllDocumentByProjectId(Long projectId);
     public List<Map<String,Object>> getAllDocumentByProjectIdAndStepId(ProjectIdAndStepIdDto projectIdAndStepIdDto);
 
+    public Boolean existsByProjectCustomId(String projectCustomId);
+
+    public Projects updateProject(Long projectId, Projects project);
 }

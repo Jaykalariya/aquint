@@ -26,6 +26,10 @@ public class ProjectInitialSteps extends EntityAuditInfo implements Serializable
     private Integer step_order;
 
     @NotNull
+    @Column(name = "is_compulsory")
+    private Boolean isCompulsory;
+
+    @NotNull
     @Column(name = "is_able_to_add_product")
     private Boolean isAbleToAddProduct;
 

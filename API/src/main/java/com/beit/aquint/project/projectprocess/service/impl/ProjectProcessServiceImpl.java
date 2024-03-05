@@ -1,5 +1,6 @@
 package com.beit.aquint.project.projectprocess.service.impl;
 
+import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
@@ -13,9 +14,6 @@ import com.beit.aquint.project.projectprocess.repository.ProjectsRepository;
 import com.beit.aquint.project.projectprocess.service.ProjectProcessService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +45,24 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
     }
 
     @Override
+    public Projects updateProject(Long projectId, Projects project){
+        try {
+            Projects existingProject = projectsRepository.findById(projectId).orElseThrow(() -> new NotFoundException("Project id Not found"));
+            Projects updatedProject = existingProject.builder()
+                    .id(existingProject.getId())
+                    .projectCustomId(existingProject.getProjectCustomId())
+                    .projectDisplayName(existingProject.getProjectDisplayName())
+                    .tenderId(existingProject.getTenderId())
+                    .build();
+
+            return projectsRepository.save(updatedProject);
+        }
+        catch (Exception exception) {
+            throw new RuntimeException("Error updating project", exception);
+        }
+    }
+
+    @Override
     public ResponseMessage uploadProjectFile(MultipartFile multipartFile, ProjectIdAndStepIdDto projectIdAndStepIdDto) throws IOException {
         Long projectId = projectIdAndStepIdDto.getProjectId();
         Long stepId = projectIdAndStepIdDto.getStepId();
@@ -71,6 +87,12 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
         Long stepId = projectIdAndStepIdDto.getStepId();
         return projectDocumentRepository.getAllDocumentsByProjectIdAndStepId(projectId, stepId);
     }
+
+    @Override
+    public Boolean existsByProjectCustomId(String projectCustomId){
+        return projectsRepository.existsByProjectCustomId(projectCustomId);
+    }
+
 
 
 }
