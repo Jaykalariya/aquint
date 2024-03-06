@@ -47,7 +47,29 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
 
     @Override
     public List<Projects> getAllProject() throws AquintCommonException {
+    try{
         return projectsRepository.findAll();
+    } catch (Exception exception) {
+        throw new AquintCommonException("Something went wrong");
+    }
+    }
+
+    @Override
+    public List<Projects> getAllIngoingProject() throws AquintCommonException {
+     try{
+            return projectsRepository.findAllByProgressLessThan(100);
+    } catch (Exception exception) {
+        throw new AquintCommonException("Something went wrong");
+        }
+    }
+
+    @Override
+    public List<Projects> getAllCompletedProject() throws AquintCommonException {
+    try{
+        return projectsRepository.findAllByProgress(100);
+    } catch (Exception exception) {
+        throw new AquintCommonException("Something went wrong");
+        }
     }
 
     @Override

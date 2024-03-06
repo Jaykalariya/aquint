@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 @Entity
@@ -41,8 +40,13 @@ public class Projects extends EntityAuditInfo implements Serializable {
     @Column(name = "initialStepsStatus")
     private Integer initialStepsStatus;
 
-    public Projects(Long tenderId,String projectDisplayName) {
+    @Column(name = "progress")
+    private Integer progress;
+
+    public Projects(Long tenderId,String projectDisplayName, Integer initialStepsStatus, Integer progress) {
         this.projectDisplayName = projectDisplayName;
         this.tenderId = tenderId;
+        this.initialStepsStatus = initialStepsStatus;
+        this.progress = progress;
     }
 }

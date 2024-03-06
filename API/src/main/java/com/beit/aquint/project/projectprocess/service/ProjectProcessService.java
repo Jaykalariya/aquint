@@ -21,6 +21,8 @@ public interface ProjectProcessService {
 
     public Projects addProject(Projects projects);
     public List<Projects> getAllProject() throws AquintCommonException;
+    public List<Projects> getAllIngoingProject() throws AquintCommonException;
+    public List<Projects> getAllCompletedProject() throws AquintCommonException;
 
     public ResponseMessage uploadProjectFile(MultipartFile multipartFile, ProjectIdAndStepIdDto projectIdAndStepIdDto) throws IOException;
 

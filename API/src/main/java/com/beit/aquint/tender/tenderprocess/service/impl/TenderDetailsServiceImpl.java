@@ -164,7 +164,7 @@ public class TenderDetailsServiceImpl implements TenderDetailsService {
         tenderHistoryRepository.save(tenderMemberHistory);
 
         if(stage.getStageValue()==1 && Boolean.FALSE.equals(projectsRepository.existsByTenderId(tender.getId()))){
-            Projects projects = new Projects(tender.getId(),tender.getProjectDisplayName());
+            Projects projects = new Projects(tender.getId(),tender.getProjectDisplayName(),0,0);
             projectsRepository.save(projects);
         }
 

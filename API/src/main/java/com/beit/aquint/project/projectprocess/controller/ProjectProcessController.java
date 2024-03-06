@@ -49,6 +49,28 @@ public class ProjectProcessController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.GET_ALL+ "Ingoing")
+    public ResponseEntity<?> getAllIngoingProject() {
+        try {
+            log.debug("Getting all Ingoing Project");
+            return ResponseEntity.ok().body(projectProcessService.getAllIngoingProject());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Error in Getting all Ingoing Project"));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.GET_ALL + "Completed")
+    public ResponseEntity<?> getAllCompletedProject() {
+        try {
+            log.debug("Getting all Completed Project");
+            return ResponseEntity.ok().body(projectProcessService.getAllCompletedProject());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Error in Getting all Completed Project"));
+        }
+    }
+
     @PutMapping(value = Constant.Mappping.UPDATE  + "/{projectId}")
     public ResponseEntity<?> updateProject(@PathVariable(value = "projectId") Long projectId, @RequestBody Projects project) {
         try {
