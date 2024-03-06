@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "project_initial_steps")
+
 @Data
 public class ProjectInitialSteps extends EntityAuditInfo implements Serializable {
 

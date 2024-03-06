@@ -4,6 +4,7 @@ import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.master.projectinitialsteps.entity.ProjectInitialSteps;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,7 @@ import java.util.List;
 @Repository
 public interface ProjectInitialStepsRepository extends JpaRepository<ProjectInitialSteps, Long> {
 
-    List<ProjectInitialSteps> findByStatus(Boolean status);
+    List<ProjectInitialSteps> findByStatus(Boolean status, Sort sort);
 
     @Query(value = "from ProjectInitialSteps pis WHERE Lower(pis.stepName) LIKE Lower(CONCAT( '%', :search, '%'))")
     Page<ProjectInitialSteps> findProjectInitialStepsPageWithSearch(Pageable pageable,
@@ -27,5 +28,5 @@ public interface ProjectInitialStepsRepository extends JpaRepository<ProjectInit
 
     @Modifying
     @Query(value = Constant.ProjectQuery.UPDATE_INITIAL_STEPS_ORDER, nativeQuery = true)
-    void updateAllStepOrder(@Param("stepOrder") Integer stepOrder);
+    void updateAllStepOrder(@Param("incrementOrDecrement") Integer incrementOrDecrement, @Param("stepOrder") Integer stepOrder);
 }

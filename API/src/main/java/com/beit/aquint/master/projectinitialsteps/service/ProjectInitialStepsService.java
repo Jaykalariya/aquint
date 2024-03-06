@@ -1,8 +1,10 @@
 package com.beit.aquint.master.projectinitialsteps.service;
 
+import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.master.projectinitialsteps.dto.ProjectInitialStepsDto;
 import com.beit.aquint.master.projectinitialsteps.entity.ProjectInitialSteps;
 import org.springframework.data.domain.Page;
 
@@ -19,5 +21,5 @@ public interface ProjectInitialStepsService {
 
     public Page<ProjectInitialSteps> getProjectInitialStepsPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
 
-//    public MessageResponse changeProjectInitialStepsStatus(ProjectInitialStepsDto projectInitialStepsDto);
+    public MessageResponse changeProjectInitialStepsStatus(ProjectInitialStepsDto projectInitialStepsDto) throws AquintCommonException;
 }

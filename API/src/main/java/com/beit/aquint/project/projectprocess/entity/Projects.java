@@ -39,7 +39,7 @@ public class Projects extends EntityAuditInfo implements Serializable {
     private String projectDisplayName;
 
     @Column(name = "initialStepsStatus")
-    private Long initialStepsStatus;
+    private Integer initialStepsStatus;
 
     public Projects(Long tenderId,String projectDisplayName) {
         this.projectDisplayName = projectDisplayName;

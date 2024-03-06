@@ -3,6 +3,7 @@ package com.beit.aquint.master.projectinitialsteps.controller;
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
+import com.beit.aquint.master.projectinitialsteps.dto.ProjectInitialStepsDto;
 import com.beit.aquint.master.projectinitialsteps.entity.ProjectInitialSteps;
 import com.beit.aquint.master.projectinitialsteps.service.ProjectInitialStepsService;
 import jakarta.validation.Valid;
@@ -66,13 +67,13 @@ public class ProjectInitialStepsController {
         }
     }
 
-//    @PostMapping(value = Constant.Mappping.CHANGE_TENDER_STAGE_STATUS)
-//    public ResponseEntity<?> changeProjectInitialStepsStatus(@RequestBody ProjectInitialStepsDto projectInitialStepsDto) {
-//        try {
-//            return ResponseEntity.ok().body(projectInitialStepsService.changeProjectInitialStepsStatus(projectInitialStepsDto));
-//        } catch (Exception exception) {
-//            log.error(exception.getMessage());
-//            return ResponseEntity.badRequest().body(new MessageResponse("Some issue occurred"));
-//        }
-//    }
+    @PostMapping(value = Constant.Mappping.CHANGE_STATUS)
+    public ResponseEntity<?> changeProjectInitialStepsStatus(@RequestBody ProjectInitialStepsDto projectInitialStepsStatusDto) {
+        try {
+            return ResponseEntity.ok().body(projectInitialStepsService.changeProjectInitialStepsStatus(projectInitialStepsStatusDto));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Some issue occurred"));
+        }
+    }
 }

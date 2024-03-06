@@ -12,6 +12,7 @@ import com.beit.aquint.project.projectprocess.entity.Projects;
 import com.beit.aquint.project.projectprocess.repository.ProjectDocumentsRepository;
 import com.beit.aquint.project.projectprocess.repository.ProjectsRepository;
 import com.beit.aquint.project.projectprocess.service.ProjectProcessService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,7 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
     }
 
     @Override
+    @Transactional
     public ResponseMessage uploadProjectFile(MultipartFile multipartFile, ProjectIdAndStepIdDto projectIdAndStepIdDto) throws IOException {
         Long projectId = projectIdAndStepIdDto.getProjectId();
         Long stepId = projectIdAndStepIdDto.getStepId();
@@ -72,6 +74,9 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
         String extension = fileUploadService.getExtension(multipartFile);
         ProjectDocuments projectDocuments = new ProjectDocuments(projectId,stepId,documentName,documentUrl,extension);
         projectDocumentRepository.save(projectDocuments);
+
+        //change project's stepStatus if required
+
 
         return new ResponseMessage("File successfully uploaded and tender history saved", projectDocuments);
     }

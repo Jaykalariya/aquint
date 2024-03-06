@@ -550,8 +550,8 @@ ORDER BY
 
             public static final String UPDATE_INITIAL_STEPS_ORDER = """
                     UPDATE project_initial_steps
-                    SET step_order = step_order + 1
-                    WHERE step_order >= :stepOrder
+                    SET step_order = step_order + :incrementOrDecrement
+                    WHERE step_order >= :stepOrder AND status=true
                     """;
 
             public static final String DOCUMENTS_BY_PROJECT_ID = """
