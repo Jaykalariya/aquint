@@ -6,6 +6,8 @@ import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.file.FileUploadService;
+import com.beit.aquint.master.projectinitialsteps.repository.ProjectInitialStepsRepository;
+import com.beit.aquint.master.projectinitialsteps.service.ProjectInitialStepsService;
 import com.beit.aquint.project.projectprocess.dto.ProjectIdAndStepIdDto;
 import com.beit.aquint.project.projectprocess.entity.ProjectDocuments;
 import com.beit.aquint.project.projectprocess.entity.Projects;
@@ -30,6 +32,9 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
     ProjectsRepository projectsRepository;
     @Autowired
     ProjectDocumentsRepository projectDocumentRepository;
+
+    @Autowired
+    ProjectInitialStepsRepository projectInitialStepsRepository;
 
     @Autowired
     FileUploadService fileUploadService;
@@ -68,6 +73,7 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
     public ResponseMessage uploadProjectFile(MultipartFile multipartFile, ProjectIdAndStepIdDto projectIdAndStepIdDto) throws IOException {
         Long projectId = projectIdAndStepIdDto.getProjectId();
         Long stepId = projectIdAndStepIdDto.getStepId();
+        Integer stepOrder = projectInitialStepsRepository.findById(stepId).orElseThrow(() -> new NotFoundException("Step id Not found")).getStepOrder();
         String userFolderPath = Constant.File.PROJECT_DOCUMENTS + "/" + projectId + "/" + stepId;
         String documentName = multipartFile.getOriginalFilename();
         String documentUrl = fileUploadService.uploadFile(multipartFile, userFolderPath);
@@ -76,8 +82,11 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
         projectDocumentRepository.save(projectDocuments);
 
         //change project's stepStatus if required
-
-
+        Projects projects = projectsRepository.findById(projectId).orElseThrow(() -> new NotFoundException("Project id Not found"));
+        if(projects.getInitialStepsStatus()<stepOrder){
+            projects.setInitialStepsStatus(stepOrder);
+            projectsRepository.save(projects);
+        }
         return new ResponseMessage("File successfully uploaded and tender history saved", projectDocuments);
     }
 
