@@ -1,5 +1,6 @@
 package com.beit.aquint.master.projectinitialsteps.service.impl;
 
+import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.dto.PaginationRequestDto;
@@ -7,10 +8,12 @@ import com.beit.aquint.common.service.PageUtilService;
 import com.beit.aquint.master.projectinitialsteps.entity.ProjectInitialSteps;
 import com.beit.aquint.master.projectinitialsteps.repository.ProjectInitialStepsRepository;
 import com.beit.aquint.master.projectinitialsteps.service.ProjectInitialStepsService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,12 +31,21 @@ public class ProjectInitialStepsServiceImpl implements ProjectInitialStepsServic
     PageUtilService pageUtilService;
 
     @Override
+    @Transactional
     public ResponseMessage addNewProjectInitialSteps(ProjectInitialSteps projectInitialSteps) throws AquintCommonException {
         try {
             log.debug("Project Initial Step Saving");
+            Integer stepOrder = projectInitialSteps.getStepOrder();
+            Integer finalStepOrderNumber = getAllProjectInitialSteps().get(getAllActiveProjectInitialSteps().size()-1).getStepOrder();
+            if (stepOrder <= finalStepOrderNumber) {
+               projectInitialStepsRepository.updateAllStepOrder(stepOrder);
+            }
+            else if(stepOrder > finalStepOrderNumber+1){
+                projectInitialSteps.setStepOrder(finalStepOrderNumber+1);
+            }
             return new ResponseMessage("Project Initial saved/updated successfully", projectInitialStepsRepository.save(projectInitialSteps));
         } catch (Exception exception) {
-            throw new AquintCommonException("Project Initial Step Not Saved Properly");
+            throw new AquintCommonException("Project Initial Step Not Saved Properly "+exception);
         }
     }
 
@@ -41,7 +53,8 @@ public class ProjectInitialStepsServiceImpl implements ProjectInitialStepsServic
     public List<ProjectInitialSteps> getAllProjectInitialSteps() throws AquintCommonException {
         try {
             log.debug("Project Initial Step Getting");
-            return projectInitialStepsRepository.findAll();
+            Sort sort = Sort.by(Sort.Order.asc("stepOrder"));
+            return projectInitialStepsRepository.findAll(sort);
         } catch (Exception exception) {
             throw new AquintCommonException("Project Initial Step Not Saved Properly");
         }

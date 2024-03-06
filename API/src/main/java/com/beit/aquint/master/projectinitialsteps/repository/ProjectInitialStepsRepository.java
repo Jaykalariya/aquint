@@ -1,9 +1,11 @@
 package com.beit.aquint.master.projectinitialsteps.repository;
 
+import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.master.projectinitialsteps.entity.ProjectInitialSteps;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +25,7 @@ public interface ProjectInitialStepsRepository extends JpaRepository<ProjectInit
     @Query(value = "from ProjectInitialSteps pis")
     Page<ProjectInitialSteps> findProjectInitialStepsPageWithoutSearch(Pageable pageable);
 
+    @Modifying
+    @Query(value = Constant.ProjectQuery.UPDATE_INITIAL_STEPS_ORDER, nativeQuery = true)
+    void updateAllStepOrder(@Param("stepOrder") Integer stepOrder);
 }
