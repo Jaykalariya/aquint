@@ -115,6 +115,7 @@ import Tenderprofile from "layouts/applications/kanban/components/Tenderprofile"
 import List from "layouts/applications/kanban/components/List";
 import Tender from "layouts/dashboards/tender";
 import Gstslab from "layouts/pages/projects/gst-slabs";
+import Unit from "layouts/pages/projects/unit";
 
 const routes = [
   {
@@ -209,6 +210,12 @@ const routes = [
         name: "Project Settings",
         key: "Project Settings",
         collapse: [
+          {
+            name: "Unit",
+            key: "unit",
+            route: "/configuration/System-Configuration/unit",
+            component: <Unit />,
+          },
           {
             name: "GST Slabs",
             key: "gst-slabs",
