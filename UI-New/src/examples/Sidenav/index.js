@@ -174,6 +174,22 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
             </SidenavCollapse>
           );
         }
+        else if (name === "Projects") {
+          {{console.log(key)}}
+          {{console.log(collapseName)}}
+          returnValue = (
+            <SidenavCollapse
+              key={key}
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+              open={openCollapse === key}
+              onClick={() => navigate(`${collapse[0].route}`)}
+            >
+              {collapse ? renderCollapse(collapse) : null}
+            </SidenavCollapse>
+          );
+        }
          else if (noCollapse && route) {
           returnValue = (
             <SidenavCollapse

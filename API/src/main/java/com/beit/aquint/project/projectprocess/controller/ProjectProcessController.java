@@ -109,7 +109,7 @@ public class ProjectProcessController {
         }
     }
 
-    @GetMapping(value = Constant.Mappping.ALL_DOCUMENTS)
+    @PostMapping(value = Constant.Mappping.ALL_DOCUMENTS)
     public ResponseEntity<?> getAllDocumentByProjectIdAndStepId(@RequestBody ProjectIdAndStepIdDto projectIdAndStepIdDto) {
         try {
             return ResponseEntity.ok().body(projectProcessService.getAllDocumentByProjectIdAndStepId(projectIdAndStepIdDto));

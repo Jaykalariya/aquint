@@ -221,50 +221,60 @@ const File = ({ tenderid, onFileChange }) => {
       )}
       <div style={{ maxHeight: "500px" }}>
         {hide ? (
-          <div className="flex overflow-y-auto">
-            <div
-              className=" p-4 rounded-md w-screen overflow-y-auto"
-              style={{ maxHeight: "400px" }}
-            >
-              <ul className="divide-y divide-gray-200">
-                {Filelist.map((file, index) => (
-                  <li key={index} className="py-2 flex justify-between items-center">
-                    <div className="flex items-center gap-1.5">
-                      <div className="my-auto">
-                        <FileListItem extension={file.extension} />
-                      </div>
-                      <div>
-                        <span className="text-lg font-semibold">{file.documentName}</span>
-                        <p className="text-sm text-gray-500">
-                          {file.createdBy} - {BirthdateFormatter(file.createdOn)}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      <button
-                        onClick={() => onView(file)}
-                        className="text-blue-500 hover:text-blue-700 mr-2"
-                      >
-                        <Visibility />
-                      </button>
-                      <button
-                        onClick={() => onDownload(file)}
-                        className="text-green-500 hover:text-green-700 mr-2"
-                      >
-                        <GetApp />
-                      </button>
-                      <button
-                        onClick={() => showAlert(file.documentId)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <Delete />
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <>
+            {Filelist.length === 0 ? (
+              <div className="flex justify-center items-center">
+                <div className="p-4 rounded-md" style={{ maxHeight: "400px", width: "100%" }}>
+                  <div style={{maxWidth:"450px"}}><Nodata /></div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex overflow-y-auto">
+                <div
+                  className=" p-4 rounded-md w-screen overflow-y-auto"
+                  style={{ maxHeight: "400px" }}
+                >
+                  <ul className="divide-y divide-gray-200">
+                    {Filelist.map((file, index) => (
+                      <li key={index} className="py-2 flex justify-between items-center">
+                        <div className="flex items-center gap-1.5">
+                          <div className="my-auto">
+                            <FileListItem extension={file.extension} />
+                          </div>
+                          <div>
+                            <span className="text-lg font-semibold">{file.documentName}</span>
+                            <p className="text-sm text-gray-500">
+                              {file.createdBy} -{BirthdateFormatter(file.createdOn)}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          <button
+                            onClick={() => onView(file)}
+                            className="text-blue-500 hover:text-blue-700 mr-2"
+                          >
+                            <Visibility />
+                          </button>
+                          <button
+                            onClick={() => onDownload(file)}
+                            className="text-green-500 hover:text-green-700 mr-2"
+                          >
+                            <GetApp />
+                          </button>
+                          <button
+                            onClick={() => showAlert(file.documentId)}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <Delete />
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <>
             {Filelist.length === 0 ? (

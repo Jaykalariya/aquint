@@ -116,6 +116,8 @@ import List from "layouts/applications/kanban/components/List";
 import Tender from "layouts/dashboards/tender";
 import Gstslab from "layouts/pages/projects/gst-slabs";
 import Unit from "layouts/pages/projects/unit";
+import Project from "layouts/pages/project";
+import FileUpload from "layouts/pages/project/components/FileUpload";
 
 const routes = [
   {
@@ -168,6 +170,23 @@ const routes = [
       },
     ],
   },
+  {
+    type: "collapse",
+    name: "Projects",
+    key: "Projects",
+    icon: <Document size="12px" />,
+    collapse: [
+      {
+        name: "projects",
+        key: "projects",
+        route: "/Projects",
+        component: <Project />,
+        
+      },
+      
+    ],
+  },
+
 
   { type: "title", title: "configuration", key: "configuration" },
   {
@@ -805,6 +824,12 @@ const routes = [
     route: "/pages/account/settings/:id",
     component: <Settings />,
   },
+  {
+    name: "FileUpload",
+    key: "Fileupload",
+    route: "/Projects/fileupload/:id/:stepOrder/:stepId",
+    component: <FileUpload />,
+  }
 ];
 
 export default routes;
