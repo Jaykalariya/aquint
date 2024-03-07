@@ -114,6 +114,7 @@ import Forms from "layouts/pages/users/new-user/components/Form";
 import Tenderprofile from "layouts/applications/kanban/components/Tenderprofile";
 import List from "layouts/applications/kanban/components/List";
 import Tender from "layouts/dashboards/tender";
+import Gstslab from "layouts/pages/projects/gst-slabs";
 
 const routes = [
   {
@@ -205,6 +206,18 @@ const routes = [
         ],
       },
       {
+        name: "Project Settings",
+        key: "Project Settings",
+        collapse: [
+          {
+            name: "GST Slabs",
+            key: "gst-slabs",
+            route: "/configuration/System-Configuration/gstslabs",
+            component: <Gstslab />,
+          }
+        ],
+      },
+      {
         name: "Client Settings",
         key: "Client Settings",
         collapse: [
@@ -228,6 +241,7 @@ const routes = [
           },
         ],
       },
+      
       {
         name: "Roles",
         key: "Roles",
