@@ -29,7 +29,20 @@ import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 
 // Custom styles for ComplexProjectCard
-function ComplexProjectCard({ id,stepOrder,stepId, color, image, title, dateTime, description, members, dropdown }) {
+function ComplexProjectCard({
+  id,
+  stepOrder,
+  stepId,
+  color,
+  image,
+  title,
+  dateTime,
+  description,
+  members,
+  dropdown,
+  length,
+  createdOn,
+}) {
   const navigate = useNavigate();
 
   const renderMembers = members.map((member, key) => {
@@ -63,46 +76,63 @@ function ComplexProjectCard({ id,stepOrder,stepId, color, image, title, dateTime
     navigate(`/Projects/fileupload/${id}/${stepOrder}/${stepId}`);
   };
 
-
+ 
+  
   return (
     <Card>
       <SoftBox p={2}>
         <SoftBox display="flex" alignItems="center">
-          {/* <SoftAvatar
+          <SoftAvatar
             src={image}
             alt={title}
             size="xl"
             variant="rounded"
             bgColor={color}
             sx={{ p: 1 }}
-          /> */}
+          />
           <SoftBox ml={2} lineHeight={0}>
             <SoftBox mb={1} lineHeight={0}>
               <SoftTypography variant="h6" textTransform="capitalize" fontWeight="medium">
                 {title}
               </SoftTypography>
             </SoftBox>
+
             {members.length > -1 ? <SoftBox display="flex">{renderMembers}</SoftBox> : null}
           </SoftBox>
-          {dropdown && (
+          {
             <SoftTypography
               color="secondary"
-              onClick={dropdown.action}
               sx={{
                 ml: "auto",
                 alignSelf: "flex-start",
                 py: 1.25,
               }}
             >
-              <Icon fontSize="default" sx={{ cursor: "pointer" }}>
-                more_vert
-              </Icon>
+              <SoftBox ml={2} lineHeight={0}>
+                <SoftBox  lineHeight={0}>
+                  <SoftTypography
+                    variant="button"
+                    justifyContent="flex-end"
+                    fontWeight="regular"
+                    color="text"
+                  >
+                    - started on
+                  </SoftTypography>
+                </SoftBox>
+                <SoftTypography
+                  variant="button"
+                  justifyContent="flex-end"
+                  fontWeight="bold"
+                  color="text"
+                >
+                  {dateTime}
+                </SoftTypography>
+              </SoftBox>
             </SoftTypography>
-          )}
-          {dropdown.menu}
+          }
         </SoftBox>
         <SoftBox my={2} lineHeight={1}>
-          <SoftTypography variant="button" fontWeight="regular" color="text">
+          <SoftTypography variant="button" fontWeight="regular" color="text" style={{ textTransform: 'none' }}>
             {description}
           </SoftTypography>
         </SoftBox>
@@ -111,7 +141,7 @@ function ComplexProjectCard({ id,stepOrder,stepId, color, image, title, dateTime
           {members.length > -1 ? (
             <SoftBox display="flex" flexDirection="column" lineHeight={0}>
               <SoftTypography variant="button" fontWeight="medium">
-                2/5 completed
+                {stepOrder}/{length} completed
               </SoftTypography>
               {/* <SoftTypography variant="button" fontWeight="medium" color="secondary">
                 Participants
@@ -157,7 +187,9 @@ ComplexProjectCard.propTypes = {
   ]),
   id: PropTypes.string.isRequired,
   stepOrder: PropTypes.number.isRequired, // Add this line for stepOrder
-  stepId:PropTypes.number.isRequired,
+  stepId: PropTypes.number.isRequired,
+  createdOn: PropTypes.number.isRequired,
+  length: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   dateTime: PropTypes.string,
