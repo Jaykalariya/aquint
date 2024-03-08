@@ -34,14 +34,14 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
         : selectedItemData["type"] == "Temperature"
         ?   { value: 4, label: "Temperature"}
 
-        // : selectedItemData["type"] == "Electric Current"
-        // ?   { value: 2, label: "Electric Current"}
+        : selectedItemData["type"] == "Electric Current"
+        ?   { value: 2, label: "Electric Current"}
 
-        // : selectedItemData["type"] == "Amount of Substance"
-        // ?   { value: 2, label: "Amount of Substance"}
+        : selectedItemData["type"] == "Amount of Substance"
+        ?   { value: 2, label: "Amount of Substance"}
 
-        // : selectedItemData["type"] == "Luminous Intensity"
-        // ?   { value: 2, label: "Luminous Intensity"}
+        : selectedItemData["type"] == "Luminous Intensity"
+        ?   { value: 2, label: "Luminous Intensity"}
 
         :  { value: 8, label: "Others"}
     setType(sv);
@@ -53,9 +53,9 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
     { value: 2, label: "Mass"},
     { value: 3, label: "Time"},
     { value: 4, label: "Temperature"},
-    // { value: 5, label: "Electric Current"},
-    // { value: 6, label: "Amount of Substance"},
-    // { value: 7, label: "Luminous Intensity"},
+    { value: 5, label: "Electric Current"},
+    { value: 6, label: "Amount of Substance"},
+    { value: 7, label: "Luminous Intensity"},
     { value: 8, label: "Others"},
   ]
 
@@ -103,19 +103,9 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
   };
 
   return (
-    <Card className="mx-24">
+    <Card className="mx-24" style={{ overflow: "visible" }}>
       <SoftBox p={2}>
-        <SoftBox>
-        <label className="text-xs font-bold p-1">Type</label>
-          <SoftSelect
-          placeholder="Select Unit Type"
-          options={options}
-          value={type}
-            onChange={handleTypeChange}
-            error={typeError}
-          />
-          {typeError && <span style={{ color: "red", fontSize: "12px" }}>Please select Unit type</span>}
-     
+        <SoftBox>   
           <label className="text-xs font-bold p-1">Name</label>
           <SoftInput mt={1}
             onChange={handleNameChange}
@@ -124,8 +114,17 @@ function UpdateForm({ selectedItemData, itemId, sethide, fetchData }) {
           />
           {nameError && <span style={{ color: "red", fontSize: "12px" }}>Please enter Unit name</span>}
         
-        
-          <SoftBox mt={7} width="100%" display="flex" justifyContent="space-between">
+          <label className="text-xs font-bold p-1">Type</label>
+          <SoftSelect
+          placeholder="Select Unit Type"
+          options={options}
+          value={type}
+          onChange={handleTypeChange}
+          error={typeError}
+          />
+          {typeError && <span style={{ color: "red", fontSize: "12px" }}>Please select Unit type</span>}
+  
+          <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">
             <SoftButton onClick={handleBack} variant="gradient" color="light">
               Back
             </SoftButton>

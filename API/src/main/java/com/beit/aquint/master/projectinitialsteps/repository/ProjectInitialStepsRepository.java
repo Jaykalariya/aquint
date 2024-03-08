@@ -29,4 +29,6 @@ public interface ProjectInitialStepsRepository extends JpaRepository<ProjectInit
     @Modifying
     @Query(value = Constant.ProjectQuery.UPDATE_INITIAL_STEPS_ORDER, nativeQuery = true)
     void updateAllStepOrder(@Param("incrementOrDecrement") Integer incrementOrDecrement, @Param("stepOrder") Integer stepOrder);
+
+    ProjectInitialSteps findByStepOrder(Integer stepOrder);
 }

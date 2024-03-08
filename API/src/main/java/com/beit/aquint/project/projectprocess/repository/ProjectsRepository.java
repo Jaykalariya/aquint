@@ -23,6 +23,14 @@ public interface ProjectsRepository extends JpaRepository<Projects, Long> {
 
     List<Projects> findAllByProgressLessThan(int progress);
 
+    List<Projects> findAllByInitialStepsStatus(int initialStepsStatus);
+
+    List<Projects> findAllByInitialStepsStatusLessThan(int initialStepsStatus);
+
+    List<Projects> findAllByInitialStepsStatusGreaterThan(int initialStepsStatus);
+
+    List<Projects> findAllByInitialStepsStatusGreaterThanAndInitialStepsStatusLessThan(int initialStepsStatus, int initialStepsStatus1);
+
     @Query(value = Constant.ProjectQuery.PROJECT_LIST_ONGOING_WITH_STEID ,nativeQuery = true)
     List<Map<String, Object>> findAllByProgressLessThanByStepId();
 }

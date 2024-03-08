@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ProjectInitialStepsService {
 
-    public ResponseMessage addNewProjectInitialSteps(ProjectInitialSteps projectInitialSteps) throws AquintCommonException;
+    public ResponseMessage addNewProjectInitialSteps(ProjectInitialSteps projectInitialSteps, String process) throws AquintCommonException;
 
     public List<ProjectInitialSteps> getAllProjectInitialSteps() throws AquintCommonException;
 
@@ -21,5 +21,7 @@ public interface ProjectInitialStepsService {
 
     public Page<ProjectInitialSteps> getProjectInitialStepsPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
 
-    public MessageResponse changeProjectInitialStepsStatus(ProjectInitialStepsDto projectInitialStepsDto) throws AquintCommonException;
+    public MessageResponse changeProjectInitialStepsStatus(ProjectInitialStepsDto projectInitialStepsDto, String process) throws AquintCommonException;
+
+    public ResponseMessage updateProjectInitialSteps(ProjectInitialSteps projectInitialSteps) throws AquintCommonException;
 }

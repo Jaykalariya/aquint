@@ -27,7 +27,8 @@ public class ProjectInitialStepsController {
     public ResponseEntity<?> addProjectInitialSteps(@Valid @RequestBody ProjectInitialSteps projectInitialSteps) {
         try {
             log.debug("Creating Project Initial Steps");
-            return ResponseEntity.ok().body(projectInitialStepsService.addNewProjectInitialSteps(projectInitialSteps));
+            String add = "ADD";
+            return ResponseEntity.ok().body(projectInitialStepsService.addNewProjectInitialSteps(projectInitialSteps,add));
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Project Initial Steps Not saved Properly"));
@@ -67,10 +68,22 @@ public class ProjectInitialStepsController {
         }
     }
 
+    @PutMapping(value = Constant.Mappping.UPDATE)
+    public ResponseEntity<?> updateProjectInitialSteps(@Valid @RequestBody ProjectInitialSteps projectInitialSteps) {
+        try {
+            log.debug("Updating Project Initial Steps");
+            return ResponseEntity.ok().body(projectInitialStepsService.updateProjectInitialSteps(projectInitialSteps));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Project Initial Steps Updated"));
+        }
+    }
+
     @PostMapping(value = Constant.Mappping.CHANGE_STATUS)
     public ResponseEntity<?> changeProjectInitialStepsStatus(@RequestBody ProjectInitialStepsDto projectInitialStepsStatusDto) {
         try {
-            return ResponseEntity.ok().body(projectInitialStepsService.changeProjectInitialStepsStatus(projectInitialStepsStatusDto));
+            String statusChange = "STATUS_CHANGE";
+            return ResponseEntity.ok().body(projectInitialStepsService.changeProjectInitialStepsStatus(projectInitialStepsStatusDto, statusChange));
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Some issue occurred"));
