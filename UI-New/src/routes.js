@@ -116,6 +116,7 @@ import List from "layouts/applications/kanban/components/List";
 import Tender from "layouts/dashboards/tender";
 import Gstslab from "layouts/pages/projects/gst-slabs";
 import Unit from "layouts/pages/projects/unit";
+import Initialsteps from "layouts/pages/projects/initial-steps";
 import Project from "layouts/pages/project";
 import FileUpload from "layouts/pages/project/components/FileUpload";
 
@@ -240,6 +241,12 @@ const routes = [
             key: "gst-slabs",
             route: "/configuration/System-Configuration/gstslabs",
             component: <Gstslab />,
+          },
+          {
+            name: "Initial Steps",
+            key: "initial-steps",
+            route: "/configuration/System-Configuration/initialsteps",
+            component: <Initialsteps />,
           }
         ],
       },

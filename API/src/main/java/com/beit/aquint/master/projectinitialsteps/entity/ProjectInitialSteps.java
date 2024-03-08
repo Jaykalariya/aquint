@@ -4,14 +4,19 @@ import com.beit.aquint.common.config.audit.EntityAuditInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "project_initial_steps")
-
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProjectInitialSteps extends EntityAuditInfo implements Serializable {
 
     @Id

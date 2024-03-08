@@ -9,7 +9,9 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "unit")
+@Table(name = "unit", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "unit_name")
+})
 @Data
 public class Unit extends EntityAuditInfo implements Serializable {
 

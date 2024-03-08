@@ -16,4 +16,12 @@ public interface ProjectsRepository extends JpaRepository<Projects, Long> {
     List<Projects> findAllByProgress(int progress);
 
     List<Projects> findAllByProgressLessThan(int progress);
+
+    List<Projects> findAllByInitialStepsStatus(int initialStepsStatus);
+
+    List<Projects> findAllByInitialStepsStatusLessThan(int initialStepsStatus);
+
+    List<Projects> findAllByInitialStepsStatusGreaterThan(int initialStepsStatus);
+
+    List<Projects> findAllByInitialStepsStatusGreaterThanAndInitialStepsStatusLessThan(int initialStepsStatus, int initialStepsStatus1);
 }
