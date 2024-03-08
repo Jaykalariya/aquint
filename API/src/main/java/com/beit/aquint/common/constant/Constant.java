@@ -594,7 +594,31 @@ ORDER BY
         
     """;
 
+            public static final String PROJECT_LIST_ONGOING_WITH_STEID = """
+                   SELECT
+                               p.*,
+                               pis.id AS stepId,
+                               (
+                                   SELECT COUNT(*)
+                                   FROM project_initial_steps
+                                   WHERE status = true
+                               ) AS completedStepLength,
+                               td.project_name
+                           FROM
+                               projects p
+                           JOIN
+                               project_initial_steps pis ON p.initial_steps_status = pis.step_order
+                           JOIN
+                               tender_details td ON p.tender_id = td.id;
+                           
+        
+    """;
+
+
+
         }
+
+
 
 
     public class TenderHistoryConstant {

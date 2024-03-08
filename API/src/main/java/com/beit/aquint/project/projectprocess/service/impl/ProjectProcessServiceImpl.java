@@ -4,10 +4,10 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
-import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.common.file.FileUploadService;
 import com.beit.aquint.master.projectinitialsteps.repository.ProjectInitialStepsRepository;
-import com.beit.aquint.master.projectinitialsteps.service.ProjectInitialStepsService;
+import com.beit.aquint.project.projectprocess.dto.ProjectCard;
+import com.beit.aquint.project.projectprocess.dto.ProjectCardDto;
 import com.beit.aquint.project.projectprocess.dto.ProjectIdAndStepIdDto;
 import com.beit.aquint.project.projectprocess.entity.ProjectDocuments;
 import com.beit.aquint.project.projectprocess.entity.Projects;
@@ -55,9 +55,9 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
     }
 
     @Override
-    public List<Projects> getAllIngoingProject() throws AquintCommonException {
+    public List<Map<String, Object>> getAllIngoingProject() throws AquintCommonException {
      try{
-            return projectsRepository.findAllByProgressLessThan(100);
+            return projectsRepository.findAllByProgressLessThanByStepId();
     } catch (Exception exception) {
         throw new AquintCommonException("Something went wrong");
         }
