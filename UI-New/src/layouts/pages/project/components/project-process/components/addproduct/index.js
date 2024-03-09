@@ -72,6 +72,14 @@ const handleBasicValueChange = (event) => {
 
 const handleEsclTypeChange = (selectedOption) => {
   setEsclType(selectedOption);
+  if(selectedOption["value"]=="NONE"){
+    setEsclPercentage(0);
+  }
+  else{
+    if(esclPercentage ==0){
+    setEsclPercentage(null);
+    }
+  }
   setEsclTypeError(false);
 };
 
@@ -190,7 +198,7 @@ const handleBiddingUnitChange = (event) => {
       biddingUnit
     );
     if (result === true) {
-      addToast("Product Type added successfully!", {
+      addToast("Product added successfully!", {
         appearance: "success",
       });
       setShow(false);
@@ -203,7 +211,7 @@ const handleBiddingUnitChange = (event) => {
   return (
     <Card className="mx-24" style={{ overflow: "visible" }}>
     <SoftBox p={2}>
-
+    <div className="md:grid md:grid-cols-3 md:gap-5">
       <div>
         <label className="text-xs font-bold p-1">Product Type</label>
         <SoftSelect
@@ -238,7 +246,10 @@ const handleBiddingUnitChange = (event) => {
         />
         {itemQuantityError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid item quantity</span>}
       </div>
+      </div>
 
+
+<div className="md:grid md:grid-cols-3 md:gap-5">
       <div>
         <label className="text-xs font-bold p-1">Unit</label>
         <SoftSelect
@@ -274,7 +285,21 @@ const handleBiddingUnitChange = (event) => {
         />
         {basicValueError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid basic value</span>}
       </div>
+</div>
 
+
+<div className="md:grid md:grid-cols-3 md:gap-5">
+ <div>
+        <label className="text-xs font-bold p-1">GST Slab</label>
+        <SoftSelect
+    placeholder="Select GST slab"
+    value={gstSlabsId}
+    options={gstSlabsOptions}
+    onChange={handleGstSlabsIdChange}
+    error={gstSlabsIdError}
+  />
+        {gstSlabsIdError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid GST slab</span>}
+      </div>
       <div>
         <label className="text-xs font-bold p-1">ESCL Type</label>
         <SoftSelect
@@ -287,6 +312,7 @@ const handleBiddingUnitChange = (event) => {
         {esclTypeError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid ESCL type</span>}
       </div>
 
+{esclPercentage!=0 ?
       <div>
         <label className="text-xs font-bold p-1">ESCL Percentage</label>
         <SoftInput
@@ -298,19 +324,11 @@ const handleBiddingUnitChange = (event) => {
         />
         {esclPercentageError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid ESCL percentage</span>}
       </div>
-
-      <div>
-        <label className="text-xs font-bold p-1">GST Slab</label>
-        <SoftSelect
-    placeholder="Select GST slab"
-    value={gstSlabsId}
-    options={gstSlabsOptions}
-    onChange={handleGstSlabsIdChange}
-    error={gstSlabsIdError}
-  />
-        {gstSlabsIdError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid GST slab</span>}
+      :<div></div>
+  }
       </div>
 
+ <div className="md:grid md:grid-cols-3 md:gap-5">
       <div>
         <label className="text-xs font-bold p-1">Amount</label>
         <SoftInput
@@ -322,6 +340,7 @@ const handleBiddingUnitChange = (event) => {
         />
         {amountError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid amount</span>}
       </div>
+
 
       <div>
         <label className="text-xs font-bold p-1">With GST</label>
@@ -345,6 +364,7 @@ const handleBiddingUnitChange = (event) => {
           type="number"
         />
         {biddingUnitError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid bidding unit</span>}
+      </div>
       </div>
         <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">
           <SoftButton onClick={handleCancel} variant="gradient" color="light">

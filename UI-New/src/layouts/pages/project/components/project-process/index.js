@@ -25,6 +25,9 @@ import {
 } from "@mui/material";
 import Producttype from "./components/producttype";
 import Addproduct from "./components/addproduct";
+import Update from "./components/addproduct/update/Update";
+
+
 function Projectprocess() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -195,6 +198,7 @@ const withGstOptions=[
         { value: false, label: "No" },
       ];
 
+      
   const fetchData = async () => {
     try {
       const result = await axiosInstance.get(`/_v1/project/product/getDetails/${id}`, {
@@ -251,6 +255,7 @@ biddingUnit: item.biddingUnit,
   };
 
 
+
   const showProductType=()=>{
     console.log("hiiiii");
     navigate(`/Projects/${id}/producttype`);
@@ -267,7 +272,9 @@ biddingUnit: item.biddingUnit,
 //       navigate(`/Projects/${id}/addProduct`, { replace: true });
 //     }
 //   };
-
+const viewDocument=()=>{
+    navigate(`/Projects/${id}`);
+  }
   const handleEdit = (itemId) => {
     setSelectedItemId(itemId);
     sethide(true);
@@ -300,7 +307,7 @@ biddingUnit: item.biddingUnit,
               <SoftButton color="info" onClick={()=>showProductType()}>
                   Product Type
                 </SoftButton>
-                <SoftButton color="info" onClick={() => setshow(!show)}>
+                <SoftButton color="info" onClick={() => viewDocument()}>
                   View Document
                 </SoftButton>
                 <SoftButton color="info" onClick={() =>     setshow(!show)}>
@@ -312,15 +319,18 @@ biddingUnit: item.biddingUnit,
               ) : (
                 <>
                   {hide ? (
-                    <Producttype></Producttype>
-                    // <UpdateForm
-                    // options={productTypeOptions}
-                    //   selectedItemData={selectedInitialStepData}
-                    //   itemId={selectedItemId}
-                    //   sethide={sethide}
-                    //   fetchData={fetchData}
-                    // />
+                    <Update
+                    withGstOptions={withGstOptions} 
+                    esclTypeOptions={esclTypeOptions} 
+                    unitOptions={unitOptions} gstSlabsOptions={gstSlabsOptions}  
+                    productTypeOptions={productTypeOptions} 
+                    fetchData={fetchData}
+                    selectedItemData={selectedInitialStepData}
+                      itemId={selectedItemId}
+                      sethide={sethide}
+                    />
                   ) : (
+                    // <div style={{ maxHeight: "500px", overflowY: "auto" }}>
                     <DataTable
                       entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
                       canSearch={true}
@@ -330,6 +340,7 @@ biddingUnit: item.biddingUnit,
                       isSorted={true}
                       noEndBorder={false}
                     />
+                    // </div>
                   )}
                 </>
               )}
