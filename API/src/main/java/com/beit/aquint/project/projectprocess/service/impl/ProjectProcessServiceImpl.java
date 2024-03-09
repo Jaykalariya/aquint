@@ -4,6 +4,7 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
 import com.beit.aquint.common.constant.Constant;
+import com.beit.aquint.project.projectprocess.dto.ProjectCustomId;
 import com.beit.aquint.project.projectprocess.repository.ProjectsRepository;
 
 import com.beit.aquint.common.file.FileUploadService;
@@ -86,6 +87,18 @@ public class ProjectProcessServiceImpl implements ProjectProcessService {
             return projectsRepository.save(updatedProject);
         }
         catch (Exception exception) {
+            throw new RuntimeException("Error updating project", exception);
+        }
+    }
+
+    @Override
+    public Projects updateProjectCustomId(ProjectCustomId projectCustomId){
+       try{
+           Projects project = projectsRepository.findById(projectCustomId.getId()).orElseThrow(() -> new NotFoundException("Project id Not found"));
+           project.setProjectCustomId(projectCustomId.getProjectCustomId());
+           return projectsRepository.save(project);
+       }
+                catch (Exception exception) {
             throw new RuntimeException("Error updating project", exception);
         }
     }

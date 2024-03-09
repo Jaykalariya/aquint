@@ -8,6 +8,7 @@ import com.beit.aquint.project.product.productprocess.service.ProductProcessServ
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,17 @@ public class ProductProcessController {
         try {
             log.debug("Getting all product");
             return ResponseEntity.ok().body(productProcessService.getAllProducts());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Product Has Some Issue"));
+        }
+    }
+
+    @GetMapping(value = Constant.Mappping.GET_DETAILS + "/{projectId}")
+    public ResponseEntity<?> getAllProductsByProjectId(@PathVariable("projectId") Long projectId) {
+        try {
+            log.debug("Getting all products by project Id");
+            return ResponseEntity.ok().body(productProcessService.getAllProductsByProjectId(projectId));
         } catch (Exception exception) {
             log.error(exception.getMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Product Has Some Issue"));

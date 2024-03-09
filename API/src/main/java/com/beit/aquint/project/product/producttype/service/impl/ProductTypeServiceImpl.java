@@ -47,6 +47,16 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     }
 
     @Override
+    public List<ProductType> getAllProductTypesByProjectId(Long projectId) throws AquintCommonException{
+        try {
+            log.debug("Product type Getting");
+            return productTypeRepository.findAllByProjectId(projectId);
+        } catch (Exception exception) {
+            throw new AquintCommonException("Product types Not fetched Properly");
+        }
+    }
+
+    @Override
     public Page<ProductType> getProductTypePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
         try {
             log.debug("Page Data Creating");

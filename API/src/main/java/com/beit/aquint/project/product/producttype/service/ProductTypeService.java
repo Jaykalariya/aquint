@@ -14,4 +14,6 @@ public interface ProductTypeService {
     public List<ProductType> getAllProductType() throws AquintCommonException;
 
     public Page<ProductType> getProductTypePage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
+
+    public List<ProductType> getAllProductTypesByProjectId(Long projectId) throws AquintCommonException;
 }

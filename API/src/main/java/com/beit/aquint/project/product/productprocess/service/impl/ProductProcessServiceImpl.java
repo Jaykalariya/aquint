@@ -47,6 +47,17 @@ public class ProductProcessServiceImpl implements ProductProcessService {
     }
 
     @Override
+    public List<Products> getAllProductsByProjectId(Long projectId) throws AquintCommonException{
+        try {
+            log.debug("Product Getting");
+            return productsRepository.findAllByProjectId(projectId);
+        } catch (Exception exception) {
+            throw new AquintCommonException("Product Not fetched Properly");
+        }
+
+    }
+
+    @Override
     public Page<Products> getProductsPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException {
         try {
             log.debug("Page Data Creating");

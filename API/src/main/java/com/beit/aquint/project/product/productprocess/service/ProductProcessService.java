@@ -14,4 +14,6 @@ public interface ProductProcessService {
     public List<Products> getAllProducts() throws AquintCommonException;
 
     public Page<Products> getProductsPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
+
+    public List<Products> getAllProductsByProjectId(Long projectId) throws AquintCommonException;
 }

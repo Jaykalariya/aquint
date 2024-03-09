@@ -43,6 +43,17 @@ public class ProductTypeController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.GET_DETAILS + "/{projectId}")
+    public ResponseEntity<?> getAllProductTypesByProjectId(@PathVariable("projectId") Long projectId) {
+        try {
+            log.debug("Getting all product types by project Id");
+            return ResponseEntity.ok().body(productTypeService.getAllProductTypesByProjectId(projectId));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Product types Has Some Issue"));
+        }
+    }
+
     @PostMapping(value = Constant.Mappping.PAGE)
     public ResponseEntity<?> getProductTypePage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {

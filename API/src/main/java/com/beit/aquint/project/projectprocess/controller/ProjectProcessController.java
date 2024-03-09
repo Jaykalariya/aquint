@@ -4,6 +4,7 @@ import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.config.responses.ErrorResponse;
 import com.beit.aquint.common.constant.Constant;
 import com.beit.aquint.project.projectprocess.dto.ProjectCardDto;
+import com.beit.aquint.project.projectprocess.dto.ProjectCustomId;
 import com.beit.aquint.project.projectprocess.dto.ProjectIdAndStepIdDto;
 import com.beit.aquint.project.projectprocess.entity.Projects;
 import com.beit.aquint.project.projectprocess.service.ProjectProcessService;
@@ -78,6 +79,18 @@ public class ProjectProcessController {
     public ResponseEntity<?> updateProject(@PathVariable(value = "projectId") Long projectId, @RequestBody Projects project) {
         try {
             return ResponseEntity.ok().body(projectProcessService.updateProject(projectId,project));
+        } catch (Exception exception) {
+            return ResponseEntity.internalServerError().body(
+                    new ErrorResponse(
+                            "Data Not Updated Properly",
+                            HttpStatus.INTERNAL_SERVER_ERROR));
+        }
+    }
+
+    @PutMapping(value = Constant.Mappping.UPDATE + Constant.Mappping.PROJECT_CUSTOM_ID)
+    public ResponseEntity<?> updateProject(@RequestBody ProjectCustomId projectCustomId) {
+        try {
+            return ResponseEntity.ok().body(projectProcessService.updateProjectCustomId(projectCustomId));
         } catch (Exception exception) {
             return ResponseEntity.internalServerError().body(
                     new ErrorResponse(

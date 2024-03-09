@@ -27,10 +27,13 @@ import SoftTypography from "components/SoftTypography";
 import SoftAvatar from "components/SoftAvatar";
 import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axiosInstance from "config/https";
 
 // Custom styles for ComplexProjectCard
 function ComplexProjectCard({
   id,
+  projectCustomId,
   stepOrder,
   stepId,
   color,
@@ -45,9 +48,9 @@ function ComplexProjectCard({
 }) {
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
   const renderMembers = members.map((member, key) => {
     const memberKey = `member-${key}`;
-
     return (
       <SoftAvatar
         key={memberKey}
@@ -72,9 +75,109 @@ function ComplexProjectCard({
   });
 
   const handleUpload = () => {
-    // Use the `navigate` function to redirect to the desired route
     navigate(`/Projects/fileupload/${id}/${stepOrder}/${stepId}`);
   };
+
+  const fetchData = async (login) => {
+    try {
+      const result = await axiosInstance.post(`/existedCredential/projectCustomId/${login}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return result.data; 
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error; 
+    }
+  };
+
+  const saveProjectCustomId = async ( login) => {
+    try {
+      const result = await axiosInstance.put(
+        `/_v1/project/update/projectCustomId`,
+        {
+          id: id,
+          projectCustomId: login,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      return result.data; 
+    } catch (error) {
+      console.error("Error saving data:", error);
+      throw error; 
+    }
+  };
+  
+
+
+  
+  const showAlert = () => {
+    const newSwal = Swal.mixin({
+      title: "Submit your Project Custom Id",
+      customClass: {
+        confirmButton: "button button-success",
+        cancelButton: "button button-error",
+      },
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Submit',
+      showLoaderOnConfirm: true,
+      preConfirm: async (login) => {
+        try {
+          if (login) {
+            const data = await fetchData(login);
+            if (data) {
+              throw new Error('Custom ID not available');
+            } else {
+              const data = await saveProjectCustomId(login);
+              if(data.projectCustomId){
+              navigate(`/Projects/${id}`);
+              }
+              else{
+                throw new Error('Custom ID not saved');
+              }
+            }
+          }
+          else{
+            Swal.showValidationMessage("Please enter the project Custom ID");
+          }
+        } catch (error) {
+          Swal.showValidationMessage("Project Custom Already Taken");
+        }
+      },
+    });
+  
+    newSwal.fire().then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Project Custom ID added successfully!',
+        });
+      }
+    });
+  };
+    
+
+
+
+
+const handleProcess = () => {
+  if (projectCustomId) {
+
+    navigate(`/Projects/${id}`);
+  } else {
+    showAlert();
+  }
+};
 
  
   
@@ -150,6 +253,7 @@ function ComplexProjectCard({
           ) : null}
           <SoftBox display="flex">
             <SoftButton
+            onClick={() => handleProcess()}
               variant="gradient"
               sx={{ fontSize: "12px", padding: "8px 16px", marginRight: "12px" }}
             >
@@ -186,6 +290,7 @@ ComplexProjectCard.propTypes = {
     "light",
   ]),
   id: PropTypes.string.isRequired,
+  projectCustomId : PropTypes.string,
   stepOrder: PropTypes.number.isRequired, // Add this line for stepOrder
   stepId: PropTypes.number.isRequired,
   createdOn: PropTypes.number.isRequired,

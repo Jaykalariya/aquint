@@ -119,6 +119,9 @@ import Unit from "layouts/pages/projects/unit";
 import Initialsteps from "layouts/pages/projects/initial-steps";
 import Project from "layouts/pages/project";
 import FileUpload from "layouts/pages/project/components/FileUpload";
+import Projectprocess from "layouts/pages/project/components/project-process";
+import Producttype from "layouts/pages/project/components/project-process/components/producttype";
+import Addproduct from "layouts/pages/project/components/project-process/components/addproduct";
 
 const routes = [
   {
@@ -184,6 +187,13 @@ const routes = [
         component: <Project />,
         
       },
+      // {
+      //   name: "projectsprocess",
+      //   key: "projects-process",
+      //   route: "/Projects/process",
+      //   component: <Projectprocess />,
+        
+      // },
       
     ],
   },
@@ -824,6 +834,24 @@ const routes = [
     key: "tender-profile",
     route: "/Tender/:id",
     component: <Tenderprofile />,
+  },
+  {
+    name: "Projectprocess",
+    key: "project-process",
+    route: "/Projects/:id",
+    component: <Projectprocess />,
+  },
+  {
+    name: "Producttype",
+    key: "product-type",
+    route: "/Projects/:id/producttype",
+    component: <Producttype />,
+  },
+  {
+    name: "Addproduct",
+    key: "add-product",
+    route: "/Projects/:id/addproduct",
+    component: <Addproduct />,
   },
   {
     name: "Settings",

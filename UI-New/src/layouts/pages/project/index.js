@@ -35,7 +35,7 @@ function Project() {
       });
 
       setProjectDetails(result.data);
-      
+      console.log(projectDetails);
     } catch (error) {
       console.error(error);
     }
@@ -75,10 +75,13 @@ function Project() {
         <SoftBox mt={{ xs: 1, lg: 3 }} mb={1}>
           <Grid container spacing={3}>
             {projectDetails ? (
+              
               projectDetails.map((project, index) => (
                 <Grid item xs={12} md={6} lg={4} key={index}>
+                  <p>{project.project_custom_id}</p>
                   <ComplexProjectCard
                     id={project.id}
+                    projectCustomId={project.project_custom_id}
                     length={project.completedsteplength}
                     stepOrder={project.initial_steps_status}
                     stepId={project.stepid}
@@ -93,9 +96,11 @@ function Project() {
                     }}
                   />
                 </Grid>
+
+
               ))
             ) : (
-              <Nodata /> // You may replace this with your loading indicator or message
+              <Nodata /> 
             )}
           </Grid>
         </SoftBox>

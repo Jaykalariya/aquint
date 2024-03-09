@@ -2,6 +2,7 @@ package com.beit.aquint.project.projectprocess.service;
 
 import com.beit.aquint.common.config.exception.AquintCommonException;
 import com.beit.aquint.common.config.responses.ResponseMessage;
+import com.beit.aquint.project.projectprocess.dto.ProjectCustomId;
 import com.beit.aquint.project.projectprocess.dto.ProjectIdAndStepIdDto;
 import com.beit.aquint.project.projectprocess.entity.Projects;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,4 +27,6 @@ public interface ProjectProcessService {
     public Boolean existsByProjectCustomId(String projectCustomId);
 
     public Projects updateProject(Long projectId, Projects project);
+
+    Projects updateProjectCustomId(ProjectCustomId projectCustomId);
 }

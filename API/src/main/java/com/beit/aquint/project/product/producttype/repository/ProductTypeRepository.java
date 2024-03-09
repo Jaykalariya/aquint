@@ -21,4 +21,6 @@ public interface ProductTypeRepository extends JpaRepository<ProductType, Long> 
 
     @Query(value = "from ProductType pt")
     Page<ProductType> findProductTypePageWithoutSearch(Pageable pageable);
+
+    List<ProductType> findAllByProjectId(Long projectId);
 }
