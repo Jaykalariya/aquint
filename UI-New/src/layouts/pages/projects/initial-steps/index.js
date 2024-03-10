@@ -83,6 +83,9 @@ function Initialsteps() {
   ];
 
   useEffect(() => {
+      fetchStepOrderData();
+    }, []);
+
     const fetchStepOrderData = async () => {
       try {
         const result = await axiosInstance.get("/_v1/project/projectInitialSteps/getAllActive", {
@@ -107,10 +110,6 @@ function Initialsteps() {
         console.error(error);
       }
     };
-      fetchStepOrderData();
-    }, []);
-
-
 
   const fetchData = async () => {
     try {
@@ -123,7 +122,6 @@ function Initialsteps() {
       const transformedData = transformData(result.data);
       setTransformedRows(transformedData);
     } catch (error) {
-      //  throw error
       console.log(error);
     }
   };
@@ -172,9 +170,10 @@ function Initialsteps() {
         />
       ),
       Action: (
+        item.status==true ?
         <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
           edit
-        </Icon>
+        </Icon> :<div> </div>
       ),
     }));
 
@@ -216,11 +215,15 @@ function Initialsteps() {
       addToast(response.data.message, {
         appearance: toastAppearance,
       });
-      setStatusChangeDialogOpen(false);
-      console.log(statusChangeDialogOpen);
-      fetchStepOrderData();
       fetchData();
+      fetchStepOrderData();
+      setStatusChangeDialogOpen(false);
+ 
+      console.log(statusChangeDialogOpen);
     } catch (error) {
+      fetchData();
+      fetchStepOrderData();
+      setStatusChangeDialogOpen(false);
       toast.error("Error changing status");
       console.error("Error changing status:", error);
     }
@@ -272,7 +275,10 @@ function Initialsteps() {
                 </SoftButton>
               </div>
               <Forms 
-                    options={stepOrderOptions} setShow={setshow} fetchData={fetchData} />
+                    options={stepOrderOptions} 
+                    fetchStepOrderData={fetchStepOrderData}  
+                    setShow={setshow} 
+                    fetchData={fetchData} />
             </>
           ) : (
             <>
@@ -288,6 +294,7 @@ function Initialsteps() {
                   {hide ? (
                     <UpdateForm
                     options={stepOrderOptions}
+                    fetchStepOrderData={fetchStepOrderData}
                       selectedItemData={selectedInitialStepData}
                       itemId={selectedItemId}
                       sethide={sethide}

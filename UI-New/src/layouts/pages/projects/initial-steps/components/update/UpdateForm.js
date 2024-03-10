@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import Service from "./Service";
 import { useToasts } from "react-toast-notifications";
 
-function UpdateForm({options, selectedItemData, itemId, sethide, fetchData }) {
+function UpdateForm({options,fetchStepOrderData, selectedItemData, itemId, sethide, fetchData }) {
   const [stepName, setstepName] = useState(null);
   const [stepOrder, setstepOrder] = useState(null);
   const [isCompulsory, setisCompulsory] = useState(null);
@@ -104,8 +104,9 @@ function UpdateForm({options, selectedItemData, itemId, sethide, fetchData }) {
       addToast("Update Initial Step successful!", {
         appearance: "success",
       });
-      sethide(false);
       fetchData();
+      fetchStepOrderData();
+      sethide(false);
     } else {
       addToast("failed. Please try again.", { appearance: "error" });
     }

@@ -9,7 +9,7 @@ import SoftInput from "components/SoftInput";
 import { useToasts } from "react-toast-notifications";
 
 // eslint-disable-next-line react/prop-types
-const Forms = ({options, setShow, fetchData }) => {
+const Forms = ({options,fetchStepOrderData, setShow, fetchData }) => {
   const [stepName, setstepName] = useState(null);
   const [stepOrder, setstepOrder] = useState(null);
   const [isCompulsory, setisCompulsory] = useState(null);
@@ -78,6 +78,7 @@ const Forms = ({options, setShow, fetchData }) => {
       });
       setShow(false);
       fetchData();
+      fetchStepOrderData();
     } else {
       addToast("failed. Please try again.", { appearance: "error" });
     }
