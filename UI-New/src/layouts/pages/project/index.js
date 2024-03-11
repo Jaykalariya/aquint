@@ -78,7 +78,6 @@ function Project() {
               
               projectDetails.map((project, index) => (
                 <Grid item xs={12} md={6} lg={4} key={index}>
-                  <p>{project.project_custom_id}</p>
                   <ComplexProjectCard
                     id={project.id}
                     projectCustomId={project.project_custom_id}

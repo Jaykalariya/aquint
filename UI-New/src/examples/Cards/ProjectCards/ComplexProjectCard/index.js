@@ -80,19 +80,23 @@ function ComplexProjectCard({
 
   const fetchData = async (login) => {
     try {
-      const result = await axiosInstance.post(`/existedCredential/projectCustomId/${login}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return result.data; 
+      const result = await axiosInstance.post(
+        `/existedCredential/projectCustomId/${login}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return result.data;
     } catch (error) {
       console.error("Error fetching data:", error);
-      throw error; 
+      throw error;
     }
   };
 
-  const saveProjectCustomId = async ( login) => {
+  const saveProjectCustomId = async (login) => {
     try {
       const result = await axiosInstance.put(
         `/_v1/project/update/projectCustomId`,
@@ -103,20 +107,17 @@ function ComplexProjectCard({
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
-      return result.data; 
+      return result.data;
     } catch (error) {
       console.error("Error saving data:", error);
-      throw error; 
+      throw error;
     }
   };
-  
 
-
-  
   const showAlert = () => {
     const newSwal = Swal.mixin({
       title: "Submit your Project Custom Id",
@@ -124,30 +125,28 @@ function ComplexProjectCard({
         confirmButton: "button button-success",
         cancelButton: "button button-error",
       },
-      input: 'text',
+      input: "text",
       inputAttributes: {
-        autocapitalize: 'off',
+        autocapitalize: "off",
       },
       showCancelButton: true,
-      confirmButtonText: 'Submit',
+      confirmButtonText: "Submit",
       showLoaderOnConfirm: true,
       preConfirm: async (login) => {
         try {
           if (login) {
             const data = await fetchData(login);
             if (data) {
-              throw new Error('Custom ID not available');
+              throw new Error("Custom ID not available");
             } else {
               const data = await saveProjectCustomId(login);
-              if(data.projectCustomId){
-              navigate(`/Projects/${id}`);
-              }
-              else{
-                throw new Error('Custom ID not saved');
+              if (data.projectCustomId) {
+                navigate(`/Projects/${id}`);
+              } else {
+                throw new Error("Custom ID not saved");
               }
             }
-          }
-          else{
+          } else {
             Swal.showValidationMessage("Please enter the project Custom ID");
           }
         } catch (error) {
@@ -155,32 +154,25 @@ function ComplexProjectCard({
         }
       },
     });
-  
+
     newSwal.fire().then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          icon: 'success',
-          title: 'Project Custom ID added successfully!',
+          icon: "success",
+          title: "Project Custom ID added successfully!",
         });
       }
     });
   };
-    
 
+  const handleProcess = () => {
+    if (projectCustomId) {
+      navigate(`/Projects/${id}`);
+    } else {
+      showAlert();
+    }
+  };
 
-
-
-const handleProcess = () => {
-  if (projectCustomId) {
-
-    navigate(`/Projects/${id}`);
-  } else {
-    showAlert();
-  }
-};
-
- 
-  
   return (
     <Card>
       <SoftBox p={2}>
@@ -196,7 +188,7 @@ const handleProcess = () => {
           <SoftBox ml={2} lineHeight={0}>
             <SoftBox mb={1} lineHeight={0}>
               <SoftTypography variant="h6" textTransform="capitalize" fontWeight="medium">
-                {title}
+                {projectCustomId !== null ? projectCustomId : title}
               </SoftTypography>
             </SoftBox>
 
@@ -212,7 +204,7 @@ const handleProcess = () => {
               }}
             >
               <SoftBox ml={2} lineHeight={0}>
-                <SoftBox  lineHeight={0}>
+                <SoftBox lineHeight={0}>
                   <SoftTypography
                     variant="button"
                     justifyContent="flex-end"
@@ -235,7 +227,12 @@ const handleProcess = () => {
           }
         </SoftBox>
         <SoftBox my={2} lineHeight={1}>
-          <SoftTypography variant="button" fontWeight="regular" color="text" style={{ textTransform: 'none' }}>
+          <SoftTypography
+            variant="button"
+            fontWeight="regular"
+            color="text"
+            style={{ textTransform: "none" }}
+          >
             {description}
           </SoftTypography>
         </SoftBox>
@@ -253,7 +250,7 @@ const handleProcess = () => {
           ) : null}
           <SoftBox display="flex">
             <SoftButton
-            onClick={() => handleProcess()}
+              onClick={() => handleProcess()}
               variant="gradient"
               sx={{ fontSize: "12px", padding: "8px 16px", marginRight: "12px" }}
             >
@@ -290,7 +287,7 @@ ComplexProjectCard.propTypes = {
     "light",
   ]),
   id: PropTypes.string.isRequired,
-  projectCustomId : PropTypes.string,
+  projectCustomId: PropTypes.string,
   stepOrder: PropTypes.number.isRequired, // Add this line for stepOrder
   stepId: PropTypes.number.isRequired,
   createdOn: PropTypes.number.isRequired,
