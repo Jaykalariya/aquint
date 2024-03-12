@@ -561,12 +561,16 @@ ORDER BY
                         pd.document_name AS documentName,
                         pd.document_url AS documentUrl,
                         pd.extension AS extension,
+                        pd.step_id As stepId,
                         COALESCE(ud.firstname,'') || COALESCE(' ' || ud.middlename || ' ',' ')  || COALESCE(ud.lastname,'') AS createdBy,
-                        ud.image_url as profileUrl
+                        ud.image_url as profileUrl,
+                        pis.step_name as stepName
                     FROM
                         project_documents pd
                     LEFT JOIN
                         user_detail ud ON pd.created_by = ud.user_id
+                    LEFT JOIN
+                        project_initial_steps pis ON pd.step_id = pis.id
                     WHERE
                         pd.project_id = :projectId
                     ORDER BY
