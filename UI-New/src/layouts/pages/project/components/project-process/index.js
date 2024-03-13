@@ -419,25 +419,29 @@ function Projectprocess() {
               },
             }}
           >
-            {steps.map((step, index) => (
-              <Step key={index}>
-                <StepLabel>
-                  <div style={{ fontWeight: "bold", fontSize: "20px" }}>{step.stepname}</div>
-                </StepLabel>
-                <StepContent>
-                  {stepsDocuments[step.stepname]?.map((document, docIndex) => (
-                    <div key={docIndex}>
-                      <a href={document.documenturl} target="_blank" rel="noopener noreferrer">
-                        <div style={{ fontSize: "18px" }}>
-                          <span style={{ fontSize: "18px", marginRight: "5px" }}>•</span>
-                          {document.documentname}
-                        </div>
-                      </a>
-                    </div>
-                  ))}
-                </StepContent>
-              </Step>
-            ))}
+            {steps && steps.length > 0 ? (
+              steps.map((step, index) => (
+                <Step key={index}>
+                  <StepLabel>
+                    <div style={{ fontWeight: "bold", fontSize: "20px" }}>{step.stepname}</div>
+                  </StepLabel>
+                  <StepContent>
+                    {stepsDocuments[step.stepname]?.map((document, docIndex) => (
+                      <div key={docIndex}>
+                        <a href={document.documenturl} target="_blank" rel="noopener noreferrer">
+                          <div style={{ fontSize: "18px" }}>
+                            <span style={{ fontSize: "18px", marginRight: "5px" }}>•</span>
+                            {document.documentname}
+                          </div>
+                        </a>
+                      </div>
+                    ))}
+                  </StepContent>
+                </Step>
+              ))
+            ) : (
+              <div style={{fontSize:"30px", textAlign: "center", }}>No files uploaded</div>
+            )}
           </Stepper>
         </DialogContent>
         <DialogActions>

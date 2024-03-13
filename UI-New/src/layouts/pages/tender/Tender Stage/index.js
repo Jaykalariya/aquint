@@ -206,7 +206,7 @@ function Tenderstage() {
               </p>
             </>
           ) : null}{" "}
-          <p >Are you sure you want to delete this stage?</p>
+          <p >Are you sure you want to change the status?</p>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseStatusChangeDialog} color="secondary">

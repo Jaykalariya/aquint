@@ -33,17 +33,20 @@ import BirthdateFormatter from "examples/BirthdateFormatter";
 
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
+import { useToasts } from "react-toast-notifications";
 
 const { default: DashboardLayout } = require("examples/LayoutContainers/DashboardLayout");
 
 function FileUpload() {
   const { id, stepOrder, stepId } = useParams();
+  // const [steps, setSteps] = useState([]);
+  // const [isCompulsory, setIsCompulsory] = useState([]);
   const [steps, setSteps] = useState([]);
-  const [stepIds, setstepIds] = useState([]);
   const [currentStep, setCurrentStep] = useState(stepOrder - 1);
-  const [Filelist, setfilelist] = useState([]);
+  const [filelist, setFilelist] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
+  const { addToast } = useToasts();
 
   useEffect(() => {
     handleFileUpload();
@@ -58,17 +61,21 @@ function FileUpload() {
         },
       });
 
-      const existingArray = [];
-      const newStepNames = result.data.map((step) => step.stepName);
+      // const existingArray = [];
+      // const newStepNames = result.data.map((step) => step.stepName);
 
-      const updatedArray = [...existingArray, ...newStepNames];
-      console.log(updatedArray);
-      setSteps(updatedArray);
-      setstepIds(result.data.map((step) => step.id));
-      console.log(
-        "stepIds",
-        result.data.map((step) => step.id)
-      );
+      // const updatedArray = [...existingArray, ...newStepNames];
+      // console.log(updatedArray);
+      const transformData = result.data.map((step, index) => ({
+        stepId: step.id,
+        stepName: step.stepName,
+        stepIsCompulsory: step.isCompulsory,
+      }));
+
+      setSteps(transformData);
+
+      // setstepIds(result.data.map((step) => step.id));
+      console.log("steps", transformData);
     } catch (error) {
       console.error(error);
     }
@@ -85,8 +92,9 @@ function FileUpload() {
     // Convert the projectIdAndStepIdDto object to a JSON string
     const projectIdAndStepIdDto = {
       projectId: id,
-      stepId: stepIds[currentStep],
+      stepId: steps[currentStep].stepId,
     };
+    console.log("projectIdAndStepIdDto", projectIdAndStepIdDto);
     // Convert the JSON string to a blob and append it to the FormData
     const jsonBlob = new Blob([JSON.stringify(projectIdAndStepIdDto)], {
       type: "application/json",
@@ -120,7 +128,7 @@ function FileUpload() {
         "/_v1/project/allDocuments",
         {
           projectId: id,
-          stepId: stepIds[currentStep] || parseInt(stepId),
+          stepId: steps[currentStep]?.stepId || parseInt(stepId),
         },
         {
           headers: {
@@ -129,7 +137,7 @@ function FileUpload() {
         }
       );
 
-      setfilelist(responseForList.data);
+      setFilelist(responseForList.data);
       console.log(responseForList);
     } catch (error) {
       console.error(error);
@@ -137,6 +145,15 @@ function FileUpload() {
   };
 
   const handleNext = (currentStep) => {
+    if (steps[currentStep].stepIsCompulsory == true) {
+      if (filelist == 0) {
+        addToast("Upload your document", {
+          appearance: "error",
+        });
+        return;
+      }
+    }
+
     setCurrentStep(currentStep + 1);
   };
 
@@ -204,6 +221,21 @@ function FileUpload() {
     }
   };
 
+  const onDownload = (file) => {
+    const fileUrl = getFileUrl(file);
+
+    if (fileUrl) {
+      const link = document.createElement("a");
+      link.href = fileUrl;
+      link.download = file.documentname;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      console.error("Unsupported file type or error in downloading file.");
+    }
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -256,7 +288,7 @@ function FileUpload() {
           }}
         >
           {steps?.map((step, index) => (
-            <Step key={step}>
+            <Step key={index}>
               <StepLabel>
                 <SoftTypography
                   // className="border-b"
@@ -266,7 +298,10 @@ function FileUpload() {
                   color="dark"
                   // style={{ textDecoration: "underline"}}
                 >
-                  {step}
+                  {step.stepName}{" "}
+                  {step.stepIsCompulsory && (
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  )}
                 </SoftTypography>
               </StepLabel>
               <StepContent>
@@ -293,7 +328,7 @@ function FileUpload() {
                       minHeight: "10vh",
                     }}
                   >
-                    {Filelist.length === 0 ? (
+                    {filelist.length === 0 ? (
                       <div className="flex justify-center items-center">
                         <div
                           className="p-4 rounded-md"
@@ -311,7 +346,7 @@ function FileUpload() {
                           style={{ maxHeight: "400px" }}
                         >
                           <ul className="divide-y divide-gray-200 border-b">
-                            {Filelist.map((file, index) => (
+                            {filelist.map((file, index) => (
                               <li key={index} className="py-2 flex justify-between items-center">
                                 <div className="flex items-center gap-1.5">
                                   <div
@@ -337,7 +372,7 @@ function FileUpload() {
                                     <Visibility />
                                   </button>
                                   <button
-                                    // onClick={() => onDownload(file)}
+                                    onClick={() => onDownload(file)}
                                     className="text-green-500 hover:text-green-700 mr-2"
                                   >
                                     <GetApp />
