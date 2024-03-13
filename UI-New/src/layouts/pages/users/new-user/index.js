@@ -50,6 +50,8 @@ function NewUser() {
   const [transformedRows, setTransformedRows] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [hide, sethide] = useState(false);
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [clickedImageURL, setClickedImageURL] = useState("");
   const [selectedTenderData, setSelectedTenderData] = useState(null);
   const [statusChangeDialogOpen, setStatusChangeDialogOpen] = useState(false);
   const [statusChangeConfirmationData, setStatusChangeConfirmationData] = useState({
@@ -121,7 +123,6 @@ function NewUser() {
   };
 
   const handleCloseStatusChangeDialog = () => {
-    // Close the confirmation dialog without making any changes
     setStatusChangeDialogOpen(false);
   };
 
@@ -137,7 +138,7 @@ function NewUser() {
           size: 100,
           sortBy: "username",
           orderBy: true,
-          searchBy: "", 
+          searchBy: "",
         },
         {
           headers: {
@@ -163,6 +164,7 @@ function NewUser() {
         <div style={{ display: "flex", alignItems: "center" }}>
           {item.imageUrl ? (
             <img
+              onClick={() => handleOpenImageDialog(item.imageUrl)}
               src={item.imageUrl}
               alt={item.firstname.charAt(0)}
               style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
@@ -267,6 +269,17 @@ function NewUser() {
     const selectedTender = transformedRows.find((item) => item.id === selectedItemId);
     setSelectedTenderData(selectedTender);
   }, [transformedRows, selectedItemId]);
+
+  const handleOpenImageDialog = (imageUrl) => {
+    setClickedImageURL(imageUrl);
+    setImageDialogOpen(true);
+  };
+
+  const handleCloseImageDialog = () => {
+    setImageDialogOpen(false);
+    setClickedImageURL(null);
+  };
+
   return (
     <DashboardLayout>
       <Dialog open={statusChangeDialogOpen} onClose={handleCloseStatusChangeDialog}>
@@ -274,10 +287,7 @@ function NewUser() {
         <DialogContent>
           <p>
             Are you sure you want to change the status of user{" "}
-            <strong>
-              {statusChangeConfirmationData?.userName}
-            </strong>{" "}
-            from &ldquo;
+            <strong>{statusChangeConfirmationData?.userName}</strong> from &ldquo;
             {statusChangeConfirmationData?.currentStatus}&rdquo; to &ldquo;
             {statusChangeConfirmationData?.currentStatus === "Active" ? "Inactive" : "Active"}
             &rdquo;?
@@ -339,6 +349,16 @@ function NewUser() {
           )}
         </div>
       </SoftBox>
+      <Dialog open={imageDialogOpen} onClose={handleCloseImageDialog}>
+        <DialogContent>
+          <img src={clickedImageURL} alt="User" style={{ width: "100%" }} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseImageDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </DashboardLayout>
   );
 }

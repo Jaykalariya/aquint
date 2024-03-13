@@ -208,20 +208,19 @@ function FileUpload() {
     <DashboardLayout>
       <DashboardNavbar />
       <Card>
-      <div style={{ width: "100%" }}>
-        <h1 className="border-b"
+        <SoftBox
+          className="border-b"
           style={{
-            width:"350px",
+            width: "18%",
             marginLeft: "20px",
             marginTop: "20px",
             fontSize: "30px",
             fontWeight: "bold",
             // textDecoration: "underline",
-            
           }}
         >
-           Project Documents
-        </h1>
+          Project Documents
+        </SoftBox>
         <div
           style={{
             display: "flex",
@@ -243,35 +242,36 @@ function FileUpload() {
             </SoftButton>
           </SoftBox>
         </div>
-      </div>
 
-      <Stepper
-        activeStep={currentStep}
-        orientation="vertical"
-        sx={{
-          "& .MuiStepConnector-lineVertical": {
-            display: "block",
-            borderLeftStyle: "solid",
-            borderWidth: "0px !important",
-            minHeight: "6px",
-          },
-        }}
-      >
-        {steps?.map((step, index) => (
-          <Step key={step}>
-            <StepLabel>
-              <SoftTypography
-                fontWeight="bold"
-                textTransform="none"
-                color="dark"
-                // style={{ textDecoration: "underline"}}
-              >
-                {step}
-              </SoftTypography>
-            </StepLabel>
-            <StepContent>
-              {/* <Typography>{step.description}</Typography> */}
-              {/* <div className="flex justify-between">
+        <Stepper
+          activeStep={currentStep}
+          orientation="vertical"
+          sx={{
+            "& .MuiStepConnector-lineVertical": {
+              display: "block",
+              borderLeftStyle: "solid",
+              borderWidth: "0px !important",
+              minHeight: "4px",
+            },
+          }}
+        >
+          {steps?.map((step, index) => (
+            <Step key={step}>
+              <StepLabel>
+                <SoftTypography
+                  // className="border-b"
+                  width="100%"
+                  // fontWeight="bold"
+                  textTransform="none"
+                  color="dark"
+                  // style={{ textDecoration: "underline"}}
+                >
+                  {step}
+                </SoftTypography>
+              </StepLabel>
+              <StepContent>
+                {/* <Typography>{step.description}</Typography> */}
+                {/* <div className="flex justify-between">
                 <SoftBox mt={2}>
                   <SoftTypography
                     style={{ textDecoration: "underline" }}
@@ -284,76 +284,80 @@ function FileUpload() {
                   </SoftTypography>
                 </SoftBox>
               </div> */}
-              <Card>
-              <div
-                style={{
-                  flex: 1,
-                  display: "flex justify-start",
-                  flexDirection: "column",
-                  minHeight: "10vh",
-                }}
-              >
-                {Filelist.length === 0 ? (
-                  <div className="flex justify-center items-center">
-                    <div
-                      className="p-4 rounded-md"
-                      style={{ marginBottom: "30px", maxHeight: "600px", width: "100%" }}
-                    >
-                      <div style={{ marginTop: "15px", marginLeft: "5px" }}>
-                        <span>No Files Uploaded</span>
+                <Card>
+                  <div
+                    style={{
+                      flex: 1,
+                      display: "flex justify-start",
+                      flexDirection: "column",
+                      minHeight: "10vh",
+                    }}
+                  >
+                    {Filelist.length === 0 ? (
+                      <div className="flex justify-center items-center">
+                        <div
+                          className="p-4 rounded-md"
+                          style={{ marginBottom: "30px", maxHeight: "600px", width: "100%" }}
+                        >
+                          <div style={{ marginTop: "15px", marginLeft: "5px" }}>
+                            <span>No Files Uploaded</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex overflow-y-auto">
+                        <div
+                          className=" p-4 rounded-md w-screen overflow-y-auto"
+                          style={{ maxHeight: "400px" }}
+                        >
+                          <ul className="divide-y divide-gray-200 border-b">
+                            {Filelist.map((file, index) => (
+                              <li key={index} className="py-2 flex justify-between items-center">
+                                <div className="flex items-center gap-1.5">
+                                  <div
+                                    className="my-auto"
+                                    style={{ fontSize: "40px", marginRight: "3px" }}
+                                  >
+                                    <FileListItem extension={file.extension} size="larger" />
+                                  </div>
+                                  <div>
+                                    <span style={{ color: "" }} className="text-lg ">
+                                      {file.documentname}
+                                    </span>
+                                    <p className="text-sm text-gray-500">
+                                      {file.createdby} - {formatDateTime(file.createdon)}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex">
+                                  <button
+                                    onClick={() => onView(file)}
+                                    className="text-blue-500 hover:text-blue-700 mr-2"
+                                  >
+                                    <Visibility />
+                                  </button>
+                                  <button
+                                    // onClick={() => onDownload(file)}
+                                    className="text-green-500 hover:text-green-700 mr-2"
+                                  >
+                                    <GetApp />
+                                  </button>
+                                  <button
+                                    // onClick={() => showAlert(file.documentId)}
+                                    className="text-red-500 hover:text-red-700"
+                                  >
+                                    <Delete />
+                                  </button>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="flex overflow-y-auto">
-                    <div
-                      className=" p-4 rounded-md w-screen overflow-y-auto"
-                      style={{ maxHeight: "400px" }}
-                    >
-                      <ul className="divide-y divide-gray-200 border-b">
-                        {Filelist.map((file, index) => (
-                          <li key={index} className="py-2 flex justify-between items-center">
-                            <div className="flex items-center gap-1.5">
-                              <div className="my-auto">
-                                <FileListItem extension={file.extension} />
-                              </div>
-                              <div>
-                                <span style={{color:""}} className="text-lg ">{file.documentname}</span>
-                                <p className="text-sm text-gray-500">
-                                  {file.createdby} - {formatDateTime(file.createdon)}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex">
-                              <button
-                                onClick={() => onView(file)}
-                                className="text-blue-500 hover:text-blue-700 mr-2"
-                              >
-                                <Visibility />
-                              </button>
-                              <button
-                                // onClick={() => onDownload(file)}
-                                className="text-green-500 hover:text-green-700 mr-2"
-                              >
-                                <GetApp />
-                              </button>
-                              <button
-                                // onClick={() => showAlert(file.documentId)}
-                                className="text-red-500 hover:text-red-700"
-                              >
-                                <Delete />
-                              </button>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
-                
-              </div>
-              </Card>
-              {currentStep > 0 && (
+                </Card>
+                {currentStep > 0 && (
                   <SoftButton
                     onClick={() => handleBack(currentStep)}
                     variant="gradient"
@@ -385,13 +389,11 @@ function FileUpload() {
                     Next <ArrowRightAlt style={{ fontSize: "60px", marginLeft: "8px" }} />
                   </SoftButton>
                 )}
-              
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
       </Card>
-      
     </DashboardLayout>
   );
 }

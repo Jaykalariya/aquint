@@ -35,7 +35,6 @@ function Projectprocess() {
   const [gstSlabsOptions, setGstSlabsOptions] = useState([]);
   const [unitOptions, setUnitOptions] = useState([]);
   const { addToast } = useToasts();
-
   const [openDialog, setOpenDialog] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [steps, setSteps] = useState([]);
@@ -273,7 +272,6 @@ function Projectprocess() {
   };
 
   const showProductType = () => {
-    console.log("hiiiii");
     navigate(`/Projects/${id}/producttype`);
   };
   //   const showAddProduct=()=>{
@@ -288,9 +286,7 @@ function Projectprocess() {
   //       navigate(`/Projects/${id}/addProduct`, { replace: true });
   //     }
   //   };
-  const viewDocument = () => {
-    navigate(`/Projects/${id}`);
-  };
+
   const handleEdit = (itemId) => {
     setSelectedItemId(itemId);
     sethide(true);
@@ -390,11 +386,11 @@ function Projectprocess() {
       </SoftBox>
 
       <Dialog open={openDialog} onClose={handleDialogClose} maxWidth="md" fullWidth>
-        {/* <DialogTitle
+        <DialogTitle
           style={{ fontSize: "25px", marginTop: "10px", marginLeft: "10px", marginBottom: "0" }}
         >
           View Document
-        </DialogTitle> */}
+        </DialogTitle>
         <IconButton
           edge="end"
           color="inherit"
@@ -419,7 +415,7 @@ function Projectprocess() {
                 minHeight: "5px",
               },
               "& .MuiStepLabel-label": {
-                fontSize: "25px", // Adjust the font size of step labels as needed
+                fontSize: "25px",
               },
             }}
           >

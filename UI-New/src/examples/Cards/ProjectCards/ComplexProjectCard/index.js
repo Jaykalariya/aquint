@@ -233,7 +233,7 @@ function ComplexProjectCard({
             color="text"
             style={{ textTransform: "none" }}
           >
-            {description}
+            {description.length >80 ? `${description.substring(0, 160)} ...` : description}
           </SoftTypography>
         </SoftBox>
         <Divider />
