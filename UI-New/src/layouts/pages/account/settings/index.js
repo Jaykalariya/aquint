@@ -30,6 +30,10 @@ import Accounts from "layouts/pages/account/settings/components/Accounts";
 import Notifications from "layouts/pages/account/settings/components/Notifications";
 import Sessions from "layouts/pages/account/settings/components/Sessions";
 import DeleteAccount from "layouts/pages/account/settings/components/DeleteAccount";
+import Bankinfo from "./components/BankInfo";
+import Familyinfo from "./components/Familyinfo";
+import Healthissue from "./components/Healthissue";
+import QualificationTable from "./components/Qualification";
 
 function Settings() {
   return (
@@ -49,6 +53,18 @@ function Settings() {
                   <BasicInfo />
                 </Grid>
                 <Grid item xs={12}>
+                  <Bankinfo />
+                </Grid>
+                <Grid item xs={12}>
+                  <Familyinfo />
+                </Grid>
+                <Grid item xs={12}>
+                  <Healthissue/>
+                </Grid>
+                <Grid item xs={12}>
+                  <QualificationTable/>
+                </Grid>
+                {/* <Grid item xs={12}>
                   <ChangePassword />
                 </Grid>
                 <Grid item xs={12}>
@@ -65,7 +81,7 @@ function Settings() {
                 </Grid>
                 <Grid item xs={12}>
                   <DeleteAccount />
-                </Grid>
+                </Grid> */}
               </Grid>
             </SoftBox>
           </Grid>

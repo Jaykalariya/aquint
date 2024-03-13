@@ -29,15 +29,22 @@ import Office from "examples/Icons/Office";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import Settings from "examples/Icons/Settings";
 import CreditCard from "examples/Icons/CreditCard";
+import InfoIcon from '@mui/icons-material/Info';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
+
 
 function Sidenav() {
   const sidenavItems = [
-    { icon: <SpaceShip />, label: "BasicInfo", href: "profile" },
-    // { icon: <Document />, label: "basic info", href: "basic-info" },
-    // { icon: <Cube />, label: "change password", href: "change-password" },
-    // { icon: <Shop />, label: "2FA", href: "2fa" },
-    // { icon: <Office />, label: "accounts", href: "accounts" },
-    // { icon: <CustomerSupport />, label: "notifications", href: "notifications" },
+    { icon: <InfoIcon fontSize="small"/>, label: "Basic-Info", href: "profile" },
+    { icon: <AccountBalanceIcon fontSize="small" />, label: "Bank-Info", href: "Bank-Info" },
+    { icon: <FamilyRestroomIcon fontSize="small"/>, label: "Family-info", href: "Family-info" },
+    { icon: <LocalHospitalIcon fontSize="small"/>, label: "Health-info", href: "Healthissue-info" },
+    { icon: <SchoolIcon fontSize="small"/>, label: "Qualification-info", href: "Qualification-info" },
+    { icon: <WorkIcon fontSize="small"/>, label: "Work-Experience", href: "notifications" },
     // { icon: <Settings />, label: "sessions", href: "sessions" },
     // { icon: <CreditCard />, label: "delete account", href: "delete-account" },
   ];
