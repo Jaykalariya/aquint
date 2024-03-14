@@ -44,8 +44,8 @@ function Sidenav() {
     { icon: <FamilyRestroomIcon fontSize="small"/>, label: "Family-info", href: "Family-info" },
     { icon: <LocalHospitalIcon fontSize="small"/>, label: "Health-info", href: "Healthissue-info" },
     { icon: <SchoolIcon fontSize="small"/>, label: "Qualification-info", href: "Qualification-info" },
-    { icon: <WorkIcon fontSize="small"/>, label: "Work-Experience", href: "notifications" },
-    // { icon: <Settings />, label: "sessions", href: "sessions" },
+    { icon: <WorkIcon fontSize="small"/>, label: "Work-Experience", href: "Work-Experience" },
+    { icon: <Settings />, label: "Training-Info", href: "Training-Info" },
     // { icon: <CreditCard />, label: "delete account", href: "delete-account" },
   ];
 

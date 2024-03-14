@@ -62,7 +62,6 @@ function Header() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-
   useEffect(() => {
     fetchData();
   }, [userId]);
@@ -107,26 +106,25 @@ function Header() {
       fileInputRef.current.click();
     }
   };
-  
 
   // const handleImageChange = (event) => {
   //   const file = event.target.files[0];
   //   console.log(file.name);
   //   setSelectedImage(file);
-    
+
   //   handleImageChange(user.id,)
   // };
 
-  const handleImageChange= async (event) => {
+  const handleImageChange = async (event) => {
     try {
-    const file = event.target.files[0];
+      const file = event.target.files[0];
 
-    const formData = new FormData();
-    formData.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file);
 
       console.log(file);
       console.log(formData);
-  
+
       const result = await axiosInstance.post(`_v1/user/upload/profilePhoto`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -145,16 +143,18 @@ function Header() {
 
   const handleImageUpload = async (updatedUser) => {
     try {
-      const result = await axiosInstance.put(`_v1/user/changeProfileImage`,
-      {
-        "id": user.id,
-        "imageUrl": updatedUser
-    }
-    , {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const result = await axiosInstance.put(
+        `_v1/user/changeProfileImage`,
+        {
+          id: user.id,
+          imageUrl: updatedUser,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       console.log("Photo uploaded");
       Swal.fire("Good job!", "Profile picture updated", "success");
@@ -212,45 +212,59 @@ function Header() {
         }}
       >
         <Grid container spacing={3} alignItems="center">
-        <SoftBox className="ml-5 pt-5" position="relative" height="max-content">
-        <SoftBox alt="spotify logo" position="absolute" right={0} bottom={0} mr={-1} mb={-1} style={{ zIndex: editMode ? 3 : 2  }}>
-        {id==null? (
-          <SoftBox
-            alt="spotify logo"
-            position="absolute"
-            right={0}
-            bottom={0}
-            mr={-1}
-            mb={-1}
-            style={{ zIndex: editMode ? 3 : 2 }}
-          >
-            <SoftButton variant="gradient" color="light" size="small" iconOnly onClick={handleEditClick}>
-              <Icon>edit</Icon>
-            </SoftButton>
+          <SoftBox className="ml-5 pt-5" position="relative" height="max-content">
+            <SoftBox
+              alt="spotify logo"
+              position="absolute"
+              right={0}
+              bottom={0}
+              mr={-1}
+              mb={-1}
+              style={{ zIndex: editMode ? 3 : 2 }}
+            >
+              {id == null ? (
+                <SoftBox
+                  alt="spotify logo"
+                  position="absolute"
+                  right={0}
+                  bottom={0}
+                  mr={-1}
+                  mb={-1}
+                  style={{ zIndex: editMode ? 3 : 2 }}
+                >
+                  <SoftButton
+                    variant="gradient"
+                    color="light"
+                    size="small"
+                    iconOnly
+                    onClick={handleEditClick}
+                  >
+                    <Icon>edit</Icon>
+                  </SoftButton>
+                </SoftBox>
+              ) : null}
+            </SoftBox>
+            <Grid item>
+              <div>
+                {user.imageUrl ? (
+                  <SoftAvatar
+                    src={user.imageUrl}
+                    alt="profile-image"
+                    variant="rounded"
+                    size="xl"
+                    shadow="sm"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center bg-gray-400 text-white text-xl shadow-md h-14 w-14 rounded-full">
+                    {user &&
+                      user.firstname &&
+                      user.lastname &&
+                      `${user.firstname.charAt(0)}${user.lastname.charAt(0)}`}
+                  </div>
+                )}
+              </div>
+            </Grid>
           </SoftBox>
-        ) : null}
-              </SoftBox>
-        <Grid item>
-            <div>
-              {user.imageUrl ? (
-                <SoftAvatar
-                  src={user.imageUrl}
-                  alt="profile-image"
-                  variant="rounded"
-                  size="xl"
-                  shadow="sm"
-                />
-              ) : (
-                <div className="flex items-center justify-center bg-gray-400 text-white text-xl shadow-md h-14 w-14 rounded-full">
-                  {user &&
-                    user.firstname &&
-                    user.lastname &&
-                    `${user.firstname.charAt(0)}${user.lastname.charAt(0)}`}
-                </div>
-              )}
-            </div>
-          </Grid>
-        </SoftBox>
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">

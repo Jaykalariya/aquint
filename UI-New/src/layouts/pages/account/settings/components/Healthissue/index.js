@@ -64,15 +64,16 @@ function Healthissue() {
     const errors = validateForm();
     if (Object.keys(errors).length === 0) {
       try {
-        const result = await axiosInstance.put(`/_v1/user/healthIssue/update/${userId}`, formdata, {
+        const result = await axiosInstance.post(`/_v1/user/healthIssue/add`, formdata, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        addToast("Update successful:", {
-          appearance: "success",
-        });
-
+        if (result) {
+          addToast("Update successful:", {
+            appearance: "success",
+          });
+        }
         setFormModified(false);
       } catch (error) {
         console.error("Update error:", error);

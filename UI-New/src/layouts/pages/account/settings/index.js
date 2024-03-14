@@ -34,6 +34,9 @@ import Bankinfo from "./components/BankInfo";
 import Familyinfo from "./components/Familyinfo";
 import Healthissue from "./components/Healthissue";
 import QualificationTable from "./components/Qualification";
+import Workexperience from "./components/Workexperience";
+import Traininginfo from "./components/Traininginfo";
+import Achievement from "./components/Achievement";
 
 function Settings() {
   return (
@@ -63,6 +66,15 @@ function Settings() {
                 </Grid>
                 <Grid item xs={12}>
                   <QualificationTable/>
+                </Grid>
+                <Grid item xs={12}>
+                  <Workexperience/>
+                </Grid>
+                <Grid item xs={12}>
+                  <Traininginfo/>
+                </Grid>
+                <Grid item xs={12}>
+                  <Achievement/>
                 </Grid>
                 {/* <Grid item xs={12}>
                   <ChangePassword />

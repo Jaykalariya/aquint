@@ -1,29 +1,30 @@
-import { Card,Typography, Icon } from "@mui/material";
+import { Card, Icon, Typography } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
-import axiosInstance from "config/https";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Table from "examples/Tables/Table";
-import Addform from "./Componets/Addform";
-import Updateform from "./Componets/Updateform";
+import { useEffect, useState } from "react";
+import Updateform from "./componets/Updateform";
+import Addform from "./componets/Addform";
+import axiosInstance from "config/https";
+import BirthdateFormatter from "examples/BirthdateFormatter";
+import { useParams } from "react-router-dom";
 
-const QualificationTable = () => {
+function Workexperience() {
   const token = localStorage.getItem("token");
-  const [qualifications, setQualifications] = useState([]);
+  const [show, setshow] = useState(true);
+  const [hide, sethide] = useState(true);
+  const [Workexperience, setWorkexperience] = useState([]);
+  const [Selecteddata, setSelecteddata] = useState();
   const { id } = useParams();
   const userId = id;
   const columns = [
-    { name: "Qualification Name", align: "left", width: "auto" },
-    { name: "Board/University", align: "left", width: "auto" },
-    { name: "Percentage", align: "left", width: "auto" },
-    { name: "Year", align: "left", width: "auto" },
-    { name: "Subject", align: "left", width: "auto" },
+    { name: "Company Name", align: "center", width: "auto" },
+    { name: "Designation", align: "left", width: "auto" },
+    { name: "StartDate", align: "left", width: "auto" },
+    { name: "EndDate", align: "left", width: "auto" },
+    { name: "GrossSalary", align: "left", width: "auto" },
     { name: "Action", align: "center", width: "auto" },
   ];
-  const [show, setshow] = useState(true);
-  const [hide, sethide] = useState(true);
-  const [Selecteddata, setSelecteddata] = useState();
 
   useEffect(() => {
     fetchData();
@@ -31,31 +32,30 @@ const QualificationTable = () => {
 
   const fetchData = async () => {
     try {
-      const result = await axiosInstance.get(`/_v1/user/qualification/getDetails/${userId}`, {
+      const result = await axiosInstance.get(`/_v1/user/workExperience/getDetails/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setQualifications(result.data);
+      setWorkexperience(result.data);
+      console.log(result);
     } catch (error) {
       console.error(error);
     }
   };
-
   function handleEdit(id) {
-    console.log("id", id);
-    const result = qualifications.filter((item) => item.id === id);
+    const result = Workexperience.filter((item) => item.id === id);
     if (result) {
       sethide(false);
       setSelecteddata(result[0]);
+      console.log(result);
     }
-    console.log("result");
   }
 
   return (
-    <Card id="Qualification-info" sx={{ overflow: "visible" }}>
-      <SoftBox p={3}>
-        <Typography variant="h5">Qualification Info</Typography>
+    <Card id="Work-Experience" sx={{ overflow: "visible" }}>
+      <SoftBox pt={3} pl={3}>
+        <Typography variant="h5">Work Experience Info</Typography>
       </SoftBox>
       <div className="flex justify-end mr-5">
         {hide ? (
@@ -76,15 +76,15 @@ const QualificationTable = () => {
                 <div className="px-5 m-5">
                   <Table
                     columns={columns}
-                    rows={qualifications.map((qualification, index) => ({
-                      "Qualification Name": qualification.qualificationName,
-                      "Board/University": qualification.universityName,
-                      Percentage: qualification.percentage,
-                      Year: qualification.passingYear,
-                      Subject: qualification.subject,
+                    rows={Workexperience.map((Workexperience) => ({
+                      "Company Name": Workexperience.companyName,
+                      Designation: Workexperience.designation,
+                      StartDate: BirthdateFormatter(Workexperience.startDate),
+                      EndDate: BirthdateFormatter(Workexperience.endDate),
+                      GrossSalary: Workexperience.grossSalary,
                       Action: (
                         <Icon
-                          onClick={() => handleEdit(qualification.id)}
+                          onClick={() => handleEdit(Workexperience.id)}
                           style={{ cursor: "pointer" }}
                         >
                           edit
@@ -104,6 +104,6 @@ const QualificationTable = () => {
       </>
     </Card>
   );
-};
+}
 
-export default QualificationTable;
+export default Workexperience;

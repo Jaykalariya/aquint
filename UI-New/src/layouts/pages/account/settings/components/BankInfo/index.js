@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -7,8 +6,7 @@ import SoftBox from "components/SoftBox";
 import SoftTypography from "components/SoftTypography";
 import SoftInput from "components/SoftInput";
 import axiosInstance from "config/https";
-import { useNavigate, useParams } from "react-router-dom";
-import { MenuItem, Select } from "@mui/material";
+import { useParams } from "react-router-dom";
 import SoftButton from "components/SoftButton";
 import { useToasts } from "react-toast-notifications";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -33,7 +31,6 @@ function Bankinfo() {
   });
 
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
   const { addToast } = useToasts();
   const [aadhaarUploaded, setAadhaarUploaded] = useState(false);
   const [panUploaded, setPanUploaded] = useState(false);
@@ -59,11 +56,29 @@ function Bankinfo() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          },    
+          },
         }
       );
-      //   setFormData(result.data);
-      console.log("account ",result);
+      setFormData({
+        userId: result.data.userId,
+        aadhaarNumber: result.data.aadhaarNumber,
+        panNumber: result.data.panNumber,
+        bankName: result.data.bankName,
+        accountHolderName: result.data.accountHolderName,
+        accountNumber: result.data.accountNumber,
+        ifsc: result.data.ifsc,
+        drivingLicenceNumber: result.data.drivingLicenceNumber,
+        aadhaarUrl: result.data.aadhaarUrl,
+        panUrl: result.data.panUrl,
+        drivingLicenceUrl: result.data.drivingLicenceUrl,
+        accountStatementUrl: result.data.accountStatementUrl,
+      });
+      if (result) {
+        setAadhaarUploaded(true);
+        setPanUploaded(true);
+        setDrivingLicenceUploaded(true);
+        setaccountStatementUploaded(true);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -73,13 +88,13 @@ function Bankinfo() {
     console.log(formData);
     setSubmitted(true);
     try {
-      const response = await axiosInstance.post(`/_v1/user/personalAccountDetails/add`, formData, {
+      const response = await axiosInstance.put(`/_v1/user/personalAccountDetails/update/${userId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (response) {
-        alert("done");
+        addToast("Update Successfully", { appearance: "success" });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -211,7 +226,7 @@ function Bankinfo() {
           </Grid>
           <Grid item xs={6}>
             <label className="text-xs font-bold p-1">
-              ifsc Code<span style={{ color: "red" }}>*</span>
+              IFSC Code<span style={{ color: "red" }}>*</span>
             </label>
             <SoftInput
               value={formData.ifsc}
