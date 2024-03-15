@@ -122,6 +122,7 @@ import FileUpload from "layouts/pages/project/components/FileUpload";
 import Projectprocess from "layouts/pages/project/components/project-process";
 import Producttype from "layouts/pages/project/components/project-process/components/producttype";
 import Addproduct from "layouts/pages/project/components/project-process/components/addproduct";
+import ProductDetailsPage from "layouts/pages/project/components/project-process/components/ProductDetails";
 
 const routes = [
   {
@@ -846,6 +847,12 @@ const routes = [
     key: "product-type",
     route: "/Projects/:id/producttype",
     component: <Producttype />,
+  },
+  {
+    name: "ProductDetailsPage",
+    key: "product-details-page",
+    route: "/Projects/product/:id",
+    component: <ProductDetailsPage />,
   },
   {
     name: "Addproduct",

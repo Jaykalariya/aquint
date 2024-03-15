@@ -29,9 +29,10 @@ import SoftButton from "components/SoftButton";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axiosInstance from "config/https";
+import SoftProgress from "components/SoftProgress";
 
 // Custom styles for ComplexProjectCard
-function ComplexProjectCard({
+function ProductPageCard({
   id,
   projectCustomId,
   stepOrder,
@@ -165,9 +166,9 @@ function ComplexProjectCard({
     });
   };
 
-  const handleProcess = () => {
+  const handleDetails = () => {
     if (projectCustomId) {
-      navigate(`/Projects/${id}`);
+      navigate(`/Projects/product/${id}`);
     } else {
       showAlert();
     }
@@ -177,24 +178,24 @@ function ComplexProjectCard({
     <Card>
       <SoftBox p={2}>
         <SoftBox display="flex" alignItems="center">
-          <SoftAvatar
+          {/* <SoftAvatar
             src={image}
             alt={title}
             size="xl"
             variant="rounded"
             bgColor={color}
             sx={{ p: 1 }}
-          />
-          <SoftBox ml={2} lineHeight={0}>
+          /> */}
+          <SoftBox  lineHeight={0}>
             <SoftBox mb={1} lineHeight={0}>
               <SoftTypography variant="h6" textTransform="capitalize" fontWeight="medium">
-                {projectCustomId !== null ? projectCustomId : title}
+                Product Code ( {projectCustomId } )
               </SoftTypography>
             </SoftBox>
 
             {members.length > -1 ? <SoftBox display="flex">{renderMembers}</SoftBox> : null}
           </SoftBox>
-          {
+          {/* { 
             <SoftTypography
               color="secondary"
               sx={{
@@ -224,7 +225,7 @@ function ComplexProjectCard({
                 </SoftTypography>
               </SoftBox>
             </SoftTypography>
-          }
+          } */}
         </SoftBox>
         <SoftBox my={2} lineHeight={1}>
           <SoftTypography
@@ -236,7 +237,7 @@ function ComplexProjectCard({
               display: "-webkit-box",
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
-              WebkitLineClamp: 3,
+              WebkitLineClamp: 2,
             }}
           >
             {description}
@@ -245,25 +246,25 @@ function ComplexProjectCard({
         <Divider />
         <SoftBox display="flex" justifyContent="space-between" alignItems="center">
           {members.length > -1 ? (
-            <SoftBox display="flex" flexDirection="column" lineHeight={0}>
-              <SoftTypography variant="button" fontWeight="medium">
-                {stepOrder}/{length} completed
+            <SoftBox width="25%"  >
+              <SoftTypography display="block" variant="caption" fontWeight="medium" color="text">
+                60%
               </SoftTypography>
-              {/* <SoftTypography variant="button" fontWeight="medium" color="secondary">
-                Participants
-              </SoftTypography> */}
+              <SoftBox mt={0.25}>
+                <SoftProgress variant="gradient" color="info" value={60} />
+              </SoftBox>
             </SoftBox>
           ) : null}
           <SoftBox display="flex">
             <SoftButton
-              onClick={() => handleProcess()}
+              onClick={() => handleDetails()}
               variant="gradient"
               sx={{ fontSize: "12px", padding: "8px 16px", marginRight: "12px" }}
             >
-              Process
+              Details
             </SoftButton>
-            <SoftButton onClick={handleUpload} variant="gradient" color="primary">
-              Upload
+            <SoftButton onClick={handleUpload} variant="gradient" color="info">
+              Progress
             </SoftButton>
           </SoftBox>
         </SoftBox>
@@ -273,7 +274,7 @@ function ComplexProjectCard({
 }
 
 // Setting default values for the props of ComplexProjectCard
-ComplexProjectCard.defaultProps = {
+ProductPageCard.defaultProps = {
   color: "dark",
   dateTime: "",
   members: [],
@@ -281,7 +282,7 @@ ComplexProjectCard.defaultProps = {
 };
 
 // Typechecking props for the ProfileInfoCard
-ComplexProjectCard.propTypes = {
+ProductPageCard.propTypes = {
   color: PropTypes.oneOf([
     "primary",
     "secondary",
@@ -312,4 +313,4 @@ ComplexProjectCard.propTypes = {
   ]),
 };
 
-export default ComplexProjectCard;
+export default ProductPageCard;

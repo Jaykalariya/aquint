@@ -66,18 +66,17 @@ function Todo({ color, title, date, project, company, defaultChecked, noDivider 
     >
       <SoftBox width="100%" pl={1} ml={2}>
         <SoftBox display="flex" alignItems="center">
-          <Checkbox defaultChecked={defaultChecked} />
           <SoftBox ml={0.2} lineHeight={1}>
-            <SoftTypography variant="button" fontWeight="medium">
-              {title}
+            <SoftTypography fontSize="15px" fontWeight="bold">
+              Product Code : ( {title} )
             </SoftTypography>
           </SoftBox>
           <SoftBox ml="auto" color="secondary" pr={3} lineHeight={0}>
-            <Icon fontSize="default" sx={{ cursor: "pointer" }} onClick={handleOpenMenu}>
-              more_horiz
-            </Icon>
+            <SoftTypography fontSize="15px" fontWeight="medium">
+              GST: <span style={{ display: "inline-block" }}>{company}</span>
+            </SoftTypography>
           </SoftBox>
-          {renderMenu()}
+          {/* {/* {renderMenu()} */}
         </SoftBox>
         <SoftBox
           display="flex"
@@ -101,6 +100,22 @@ function Todo({ color, title, date, project, company, defaultChecked, noDivider 
             </SoftTypography>
             <SoftTypography variant="caption" fontWeight="bold" color="text">
               {project}
+            </SoftTypography>
+          </SoftBox>
+          <SoftBox mx={{ xs: 0, sm: "auto" }} lineHeight={1}>
+            <SoftTypography display="block" variant="caption" fontWeight="medium" color="secondary">
+              Company
+            </SoftTypography>
+            <SoftTypography variant="caption" fontWeight="bold" color="text">
+              {company}
+            </SoftTypography>
+          </SoftBox>
+          <SoftBox mx={{ xs: 0, sm: "auto" }} lineHeight={1}>
+            <SoftTypography display="block" variant="caption" fontWeight="medium" color="secondary">
+              Company
+            </SoftTypography>
+            <SoftTypography variant="caption" fontWeight="bold" color="text">
+              {company}
             </SoftTypography>
           </SoftBox>
           <SoftBox mx={{ xs: 0, sm: "auto" }} lineHeight={1}>

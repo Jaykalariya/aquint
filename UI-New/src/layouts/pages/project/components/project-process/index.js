@@ -7,7 +7,20 @@ import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import { useEffect, useState } from "react";
 import axiosInstance from "config/https";
-import { Chip, Icon, IconButton, Step, StepContent, StepLabel, Stepper } from "@mui/material";
+
+import {
+  AppBar,
+  Chip,
+  Grid,
+  Icon,
+  IconButton,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import Nodata from "components/Nodata";
 import DataTable from "examples/Tables/DataTable";
 import { useToasts } from "react-toast-notifications";
@@ -21,6 +34,11 @@ import Addproduct from "./components/addproduct";
 import Update from "./components/addproduct/update/Update";
 import SoftAlertCloseIcon from "components/SoftAlert/SoftAlertCloseIcon";
 import CloseIcon from "@mui/icons-material/Close";
+import BaseLayout from "layouts/pages/account/components/BaseLayout";
+import SoftSelect from "components/SoftSelect";
+import ProductPageTable from "examples/Tables/ProductPageTable";
+import ProductPageCard from "examples/Cards/ProjectCards/ProductPageCard";
+import { Description, Add, ShoppingCart } from "@mui/icons-material";
 
 function Projectprocess() {
   const { id } = useParams();
@@ -28,6 +46,7 @@ function Projectprocess() {
   const [show, setshow] = useState(false);
   const token = localStorage.getItem("token");
   const [transformedRows, setTransformedRows] = useState([]);
+  const [productsByType, setProductsByType] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [selectedInitialStepData, setSelectedInitialStepData] = useState(null);
   const [hide, sethide] = useState(false);
@@ -39,6 +58,8 @@ function Projectprocess() {
   const [activeStep, setActiveStep] = useState(0);
   const [steps, setSteps] = useState([]);
   const [stepsDocuments, setStepDocuments] = useState([]);
+  const [productTypeId, setProductTypeId] = useState(null);
+  const [tabValue, setTabValue] = useState(0);
 
   const tableData = {
     columns: [
@@ -128,7 +149,8 @@ function Projectprocess() {
           ),
         }));
         setproductTypeOptions([...manualEntries, ...apiEntries]);
-        console.log(productTypeOptions);
+        setProductsByType(apiEntries[0]?.value)
+        console.log("productTypeOptions", apiEntries);
       } catch (error) {
         console.error(error);
       }
@@ -163,7 +185,7 @@ function Projectprocess() {
           },
         });
         const apiEntries = result.data.map((item) => ({
-          value: item.id,
+          value: id.productTypeId,
           label: (
             <div className="flex">
               <p className="my-auto">{item.unitName}</p>
@@ -201,6 +223,7 @@ function Projectprocess() {
       });
       console.log(result);
       const transformedData = transformData(result.data);
+      setProductTypeId(result.data);
       setTransformedRows(transformedData);
 
       const documents = await axiosInstance.get(`/_v1/project/allDocuments/${id}`, {
@@ -314,9 +337,16 @@ function Projectprocess() {
     setActiveStep((prevStep) => prevStep - 1);
   };
 
+  const handleSetTabValue = (event, value) => {
+    console.log("value of tab", value);
+    console.log("productByType", productTypeOptions[value].value);
+    setProductsByType(productTypeOptions[value].value);
+    setTabValue(value);
+  };
   return (
     <DashboardLayout>
       <DashboardNavbar />
+
       <SoftBox className="mt-2 h-screen">
         <div className="mt-3">
           {show ? (
@@ -338,17 +368,39 @@ function Projectprocess() {
             </>
           ) : (
             <>
-              <div className="flex justify-end gap-2 mb-3">
-                <SoftButton color="info" onClick={() => showProductType()}>
-                  Product Type
-                </SoftButton>
-                <SoftButton color="info" onClick={handleDialogOpen}>
-                  View Document
-                </SoftButton>
-                <SoftButton color="info" onClick={() => setshow(!show)}>
-                  Add Product
-                </SoftButton>
+              <div className="flex justify-between gap-9 mb-3">
+                <div>
+                  <Grid container>
+                    <Grid item xs={12} sm={20} lg={50}>
+                      <AppBar position="static">
+                        <Tabs
+                          orientation="horizontal"
+                          value={tabValue}
+                          onChange={handleSetTabValue}
+                          sx={{ "& .MuiTab-root": { marginRight: "20px" } }}
+                        >
+                          {productTypeOptions.map((option, index) => (
+                            <Tab key={index} label={option.label} />
+                          ))}
+                        </Tabs>
+                      </AppBar>
+                    </Grid>
+                  </Grid>
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <SoftButton color="info" onClick={() => showProductType()}>
+                    <ShoppingCart /> {/* Icon for Product Type */}
+                  </SoftButton>
+                  <SoftButton color="info" onClick={handleDialogOpen}>
+                    <Description /> {/* Icon for View Document */}
+                  </SoftButton>
+                  <SoftButton color="info" onClick={() => setshow(!show)}>
+                    <Add /> {/* Icon for Add Product */}
+                  </SoftButton>
+                </div>
               </div>
+
               {transformedRows.length === 0 ? (
                 <Nodata />
               ) : (
@@ -367,16 +419,47 @@ function Projectprocess() {
                     />
                   ) : (
                     // <div style={{ maxHeight: "500px", overflowY: "auto" }}>
-                    <DataTable
-                      entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
-                      canSearch={true}
-                      showTotalEntries={true}
-                      table={tableData}
-                      pagination={{ variant: "gradient", color: "info" }}
-                      isSorted={true}
-                      noEndBorder={false}
-                    />
-                    // </div>
+                    //   <ProductPageTable
+                    //     entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
+                    //     canSearch={true}
+                    //     showTotalEntries={true}
+                    //     table={tableData}
+                    //     pagination={{ variant: "gradient", color: "info" }}
+                    //     isSorted={true}
+                    //     noEndBorder={false}
+                    //   />
+                    //   // </div>
+                    <SoftBox mt={{ xs: 1, lg: 3 }} mb={1}>
+                      <Grid container spacing={3}>
+                        {productTypeId ? (
+                          productTypeId
+                            .filter((product) => product.productTypeId === productsByType)
+                            .map((project, index) => (
+                              <Grid item xs={12} md={6} lg={4} key={index}>
+                                <ProductPageCard
+                                  id={project.id}
+                                  projectCustomId={project.itemCode}
+                                  // length={project.completedsteplength}
+                                  // stepOrder={project.initial_steps_status}
+                                  // stepId={project.stepid}
+                                  // title={project.project_display_name}
+                                  description={project.productDescription}
+                                  // dateTime={formatDateTime(project.created_on)}
+                                  // members={[team1, team2, team3, team4]}
+                                  // createdOn={project.created_on}
+                                  // dropdown={{
+                                  //   action: openSlackBotMenu,
+                                  //   menu: renderMenu(slackBotMenu, closeSlackBotMenu),
+                                  // }}
+                                />
+                                
+                              </Grid>
+                            ))
+                        ) : (
+                          <Nodata />
+                        )}
+                      </Grid>
+                    </SoftBox>
                   )}
                 </>
               )}
@@ -440,7 +523,7 @@ function Projectprocess() {
                 </Step>
               ))
             ) : (
-              <div style={{fontSize:"30px", textAlign: "center", }}>No files uploaded</div>
+              <div style={{ fontSize: "30px", textAlign: "center" }}>No files uploaded</div>
             )}
           </Stepper>
         </DialogContent>

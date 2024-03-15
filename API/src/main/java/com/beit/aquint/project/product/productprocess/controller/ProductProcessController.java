@@ -55,6 +55,17 @@ public class ProductProcessController {
         }
     }
 
+    @GetMapping(value = Constant.Mappping.GET_DETAILS +"/id"+"/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable("id") Long id) {
+        try {
+            log.debug("Getting all products by project Id");
+            return ResponseEntity.ok().body(productProcessService.getProductById(id));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Product Has Some Issue"));
+        }
+    }
+
     @PostMapping(value = Constant.Mappping.PAGE)
     public ResponseEntity<?> getProductPage(@RequestBody PaginationRequestDto paginationRequestDto) {
         try {

@@ -7,9 +7,19 @@ import { useToasts } from "react-toast-notifications";
 import { useParams } from "react-router-dom";
 import Service from "./Service";
 import SoftSelect from "components/SoftSelect";
+import PropTypes from "prop-types";
+import SoftTypography from "components/SoftTypography";
 
 // eslint-disable-next-line react/prop-types
-  const Addproduct = ({withGstOptions,esclTypeOptions,unitOptions, gstSlabsOptions,productTypeOptions, setShow, fetchData}) => {
+const Addproduct = ({
+  withGstOptions,
+  esclTypeOptions,
+  unitOptions,
+  gstSlabsOptions,
+  productTypeOptions,
+  setShow,
+  fetchData,
+}) => {
   const { id } = useParams();
   const [productTypeId, setProductTypeId] = useState(null);
   const [itemCode, setItemCode] = useState(null);
@@ -23,6 +33,7 @@ import SoftSelect from "components/SoftSelect";
   const [amount, setAmount] = useState(null);
   const [withGst, setWithGst] = useState(null);
   const [biddingUnit, setBiddingUnit] = useState(null);
+  const [productDescription, setProductDescription] = useState(null);
 
   const [productTypeIdError, setProductTypeIdError] = useState(null);
   const [itemCodeError, setItemCodeError] = useState(null);
@@ -36,84 +47,87 @@ import SoftSelect from "components/SoftSelect";
   const [amountError, setAmountError] = useState(null);
   const [withGstError, setWithGstError] = useState(null);
   const [biddingUnitError, setBiddingUnitError] = useState(null);
+  const [productDescriptionError, setProductDescriptionError] = useState(null);
 
   const { addToast } = useToasts();
 
-//handle
-const handleProductTypeIdChange = (selectedOption) => {
-  setProductTypeId(selectedOption);
-  setProductTypeIdError(false);
-};
+  //handle
+  const handleProductTypeIdChange = (selectedOption) => {
+    setProductTypeId(selectedOption);
+    setProductTypeIdError(false);
+  };
 
-const handleItemCodeChange = (event) => {
-  setItemCode(event.target.value);
-  setItemCodeError(false);
-};
+  const handleItemCodeChange = (event) => {
+    setItemCode(event.target.value);
+    setItemCodeError(false);
+  };
 
-const handleItemQuantityChange = (event) => {
-  setItemQuantity(event.target.value);
-  setItemQuantityError(false);
-};
+  const handleItemQuantityChange = (event) => {
+    setItemQuantity(event.target.value);
+    setItemQuantityError(false);
+  };
 
-const handleUnitIdChange = (selectedOption) => {
-  setUnitId(selectedOption);
-  setUnitIdError(false);
-};
+  const handleUnitIdChange = (selectedOption) => {
+    setUnitId(selectedOption);
+    setUnitIdError(false);
+  };
 
-const handleUnitRateChange = (event) => {
-  setUnitRate(event.target.value);
-  setUnitRateError(false);
-};
+  const handleUnitRateChange = (event) => {
+    setUnitRate(event.target.value);
+    setUnitRateError(false);
+  };
 
-const handleBasicValueChange = (event) => {
-  setBasicValue(event.target.value);
-  setBasicValueError(false);
-};
+  const handleBasicValueChange = (event) => {
+    setBasicValue(event.target.value);
+    setBasicValueError(false);
+  };
 
-const handleEsclTypeChange = (selectedOption) => {
-  setEsclType(selectedOption);
-  if(selectedOption["value"]=="NONE"){
-    setEsclPercentage(0);
-  }
-  else{
-    if(esclPercentage ==0){
-    setEsclPercentage(null);
+  const handleEsclTypeChange = (selectedOption) => {
+    setEsclType(selectedOption);
+    if (selectedOption["value"] == "NONE") {
+      setEsclPercentage(0);
+    } else {
+      if (esclPercentage == 0) {
+        setEsclPercentage(null);
+      }
     }
-  }
-  setEsclTypeError(false);
-};
+    setEsclTypeError(false);
+  };
 
-const handleEsclPercentageChange = (event) => {
-  setEsclPercentage(event.target.value);
-  setEsclPercentageError(false);
-};
+  const handleEsclPercentageChange = (event) => {
+    setEsclPercentage(event.target.value);
+    setEsclPercentageError(false);
+  };
 
-const handleGstSlabsIdChange = (selectedOption) => {
-  setGstSlabsId(selectedOption);
-  setGstSlabsIdError(false);
-};
+  const handleGstSlabsIdChange = (selectedOption) => {
+    setGstSlabsId(selectedOption);
+    setGstSlabsIdError(false);
+  };
 
-const handleAmountChange = (event) => {
-  setAmount(event.target.value);
-  setAmountError(false);
-};
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+    setAmountError(false);
+  };
 
-const handleWithGstChange = (selectedOption) => {
-  setWithGst(selectedOption);
-  setWithGstError(false);
-};
+  const handleWithGstChange = (selectedOption) => {
+    setWithGst(selectedOption);
+    setWithGstError(false);
+  };
 
-const handleBiddingUnitChange = (event) => {
-  setBiddingUnit(event.target.value);
-  setBiddingUnitError(false);
-};
+  const handleBiddingUnitChange = (event) => {
+    setBiddingUnit(event.target.value);
+    setBiddingUnitError(false);
+  };
 
+  const handleProductDescriptionChange = (event) => {
+    setProductDescription(event.target.value);
+    setProductDescriptionError(false);
+  };
 
   const handleCancel = () => {
     setShow(false);
   };
 
-  //save
   const handleSave = async (event) => {
     event.preventDefault();
     let hasError = false;
@@ -178,6 +192,11 @@ const handleBiddingUnitChange = (event) => {
       hasError = true;
     }
 
+    if (productDescription === null) {
+      setProductDescriptionError(true);
+      hasError = true;
+    }
+
     if (hasError) {
       return addToast("Please fill in all the details", { appearance: "error" });
     }
@@ -195,7 +214,8 @@ const handleBiddingUnitChange = (event) => {
       gstSlabsId,
       amount,
       withGst,
-      biddingUnit
+      biddingUnit,
+      productDescription
     );
     if (result === true) {
       addToast("Product added successfully!", {
@@ -210,162 +230,231 @@ const handleBiddingUnitChange = (event) => {
 
   return (
     <Card className="mx-24" style={{ overflow: "visible" }}>
-    <SoftBox p={2}>
-    <div className="md:grid md:grid-cols-3 md:gap-5">
-      <div>
-        <label className="text-xs font-bold p-1">Product Type</label>
-        <SoftSelect
-    placeholder="Select Product Type"
-    value={productTypeId}
-    options={productTypeOptions}
-    onChange={handleProductTypeIdChange}
-    error={productTypeIdError}
-  />
- {productTypeIdError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid Product type</span>}
-      </div>
+      <SoftBox p={2}>
+        <div className="md:grid md:grid-cols-3 md:gap-5">
+          <div>
+            <label className="text-xs font-bold p-1">Product Type</label>
+            <SoftSelect
+              placeholder="Select Product Type"
+              value={productTypeId}
+              options={productTypeOptions}
+              onChange={handleProductTypeIdChange}
+              error={productTypeIdError}
+            />
+            {productTypeIdError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                Please enter a valid Product type
+              </span>
+            )}
+          </div>
 
-      <div>
-        <label className="text-xs font-bold p-1">Item Code</label>
-        <SoftInput
-          mt={1}
-          onChange={handleItemCodeChange}
-          value={itemCode}
-          error={itemCodeError}
-        />
-        {itemCodeError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid item code</span>}
-      </div>
+          <div>
+            <label className="text-xs font-bold p-1">Item Code</label>
+            <SoftInput
+              mt={1}
+              onChange={handleItemCodeChange}
+              value={itemCode}
+              error={itemCodeError}
+            />
+            {itemCodeError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid item code</span>
+            )}
+          </div>
 
-      <div>
-        <label className="text-xs font-bold p-1">Item Quantity</label>
-        <SoftInput
-          mt={1}
-          onChange={handleItemQuantityChange}
-          value={itemQuantity}
-          error={itemQuantityError}
-          type="number"
-        />
-        {itemQuantityError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid item quantity</span>}
-      </div>
-      </div>
+          <div>
+            <label className="text-xs font-bold p-1">Item Quantity</label>
+            <SoftInput
+              mt={1}
+              onChange={handleItemQuantityChange}
+              value={itemQuantity}
+              error={itemQuantityError}
+              type="number"
+            />
+            {itemQuantityError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                Please enter a valid item quantity
+              </span>
+            )}
+          </div>
+        </div>
 
+        <div className="md:grid md:grid-cols-3 md:gap-5">
+          <div>
+            <label className="text-xs font-bold p-1">Unit</label>
+            <SoftSelect
+              placeholder="Select Unit"
+              value={unitId}
+              options={unitOptions}
+              onChange={handleUnitIdChange}
+              error={unitIdError}
+            />
+            {unitIdError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid Unit</span>
+            )}
+          </div>
 
-<div className="md:grid md:grid-cols-3 md:gap-5">
-      <div>
-        <label className="text-xs font-bold p-1">Unit</label>
-        <SoftSelect
-    placeholder="Select Unit"
-    value={unitId}
-    options={unitOptions}
-    onChange={handleUnitIdChange}
-    error={unitIdError}
-  />
-        {unitIdError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid Unit</span>}
-      </div>
+          <div>
+            <label className="text-xs font-bold p-1">Unit Rate</label>
+            <SoftInput
+              mt={1}
+              onChange={handleUnitRateChange}
+              value={unitRate}
+              error={unitRateError}
+              type="number"
+            />
+            {unitRateError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid unit rate</span>
+            )}
+          </div>
 
-      <div>
-        <label className="text-xs font-bold p-1">Unit Rate</label>
-        <SoftInput
-          mt={1}
-          onChange={handleUnitRateChange}
-          value={unitRate}
-          error={unitRateError}
-          type="number"
-        />
-        {unitRateError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid unit rate</span>}
-      </div>
+          <div>
+            <label className="text-xs font-bold p-1">Basic Value</label>
+            <SoftInput
+              mt={1}
+              onChange={handleBasicValueChange}
+              value={basicValue}
+              error={basicValueError}
+              type="number"
+            />
+            {basicValueError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                Please enter a valid basic value
+              </span>
+            )}
+          </div>
+        </div>
 
-      <div>
-        <label className="text-xs font-bold p-1">Basic Value</label>
-        <SoftInput
-          mt={1}
-          onChange={handleBasicValueChange}
-          value={basicValue}
-          error={basicValueError}
-          type="number"
-        />
-        {basicValueError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid basic value</span>}
-      </div>
-</div>
+        <div className="md:grid md:grid-cols-3 md:gap-5">
+          <div>
+            <label className="text-xs font-bold p-1">GST Slab</label>
+            <SoftSelect
+              placeholder="Select GST slab"
+              value={gstSlabsId}
+              options={gstSlabsOptions}
+              onChange={handleGstSlabsIdChange}
+              error={gstSlabsIdError}
+            />
+            {gstSlabsIdError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid GST slab</span>
+            )}
+          </div>
+          <div>
+            <label className="text-xs font-bold p-1">ESCL Type</label>
+            <SoftSelect
+              placeholder="Select ESCL Type"
+              value={esclType}
+              options={esclTypeOptions}
+              onChange={handleEsclTypeChange}
+              error={esclTypeError}
+            />
+            {esclTypeError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid ESCL type</span>
+            )}
+          </div>
 
+          {esclPercentage != 0 ? (
+            <div>
+              <label className="text-xs font-bold p-1">ESCL Percentage</label>
+              <SoftInput
+                mt={1}
+                onChange={handleEsclPercentageChange}
+                value={esclPercentage}
+                error={esclPercentageError}
+                type="number"
+              />
+              {esclPercentageError && (
+                <span style={{ color: "red", fontSize: "12px" }}>
+                  Please enter a valid ESCL percentage
+                </span>
+              )}
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
 
-<div className="md:grid md:grid-cols-3 md:gap-5">
- <div>
-        <label className="text-xs font-bold p-1">GST Slab</label>
-        <SoftSelect
-    placeholder="Select GST slab"
-    value={gstSlabsId}
-    options={gstSlabsOptions}
-    onChange={handleGstSlabsIdChange}
-    error={gstSlabsIdError}
-  />
-        {gstSlabsIdError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid GST slab</span>}
-      </div>
-      <div>
-        <label className="text-xs font-bold p-1">ESCL Type</label>
-        <SoftSelect
-    placeholder="Select ESCL Type"
-    value={esclType}
-    options={esclTypeOptions}
-    onChange={handleEsclTypeChange}
-    error={esclTypeError}
-  />
-        {esclTypeError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid ESCL type</span>}
-      </div>
+        <div className="md:grid md:grid-cols-3 md:gap-5">
+          <div>
+            <label className="text-xs font-bold p-1">Amount</label>
+            <SoftInput
+              mt={1}
+              onChange={handleAmountChange}
+              value={amount}
+              error={amountError}
+              type="number"
+            />
+            {amountError && (
+              <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid amount</span>
+            )}
+          </div>
 
-{esclPercentage!=0 ?
-      <div>
-        <label className="text-xs font-bold p-1">ESCL Percentage</label>
-        <SoftInput
-          mt={1}
-          onChange={handleEsclPercentageChange}
-          value={esclPercentage}
-          error={esclPercentageError}
-          type="number"
-        />
-        {esclPercentageError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid ESCL percentage</span>}
-      </div>
-      :<div></div>
-  }
-      </div>
+          <div>
+            <label className="text-xs font-bold p-1">With GST</label>
+            <SoftSelect
+              placeholder="Select if with GST"
+              value={withGst}
+              options={withGstOptions}
+              onChange={handleWithGstChange}
+              error={withGstError}
+            />
+            {withGstError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                Please enter a valid value for with GST
+              </span>
+            )}
+          </div>
 
- <div className="md:grid md:grid-cols-3 md:gap-5">
-      <div>
-        <label className="text-xs font-bold p-1">Amount</label>
-        <SoftInput
-          mt={1}
-          onChange={handleAmountChange}
-          value={amount}
-          error={amountError}
-          type="number"
-        />
-        {amountError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid amount</span>}
-      </div>
-
-
-      <div>
-        <label className="text-xs font-bold p-1">With GST</label>
-        <SoftSelect
-    placeholder="Select if with GST"
-    value={withGst}
-    options={withGstOptions}
-    onChange={handleWithGstChange}
-    error={withGstError}
-  />
-        {withGstError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid value for with GST</span>}
-      </div>
-
-      <div>
-        <label className="text-xs font-bold p-1">Bidding Unit</label>
-        <SoftInput
-          mt={1}
-          onChange={handleBiddingUnitChange}
-          value={biddingUnit}
-          error={biddingUnitError}
-          type="number"
-        />
-        {biddingUnitError && <span style={{ color: "red", fontSize: "12px" }}>Please enter a valid bidding unit</span>}
-      </div>
-      </div>
+          <div>
+            <label className="text-xs font-bold p-1">Bidding Unit</label>
+            <SoftInput
+              mt={1}
+              onChange={handleBiddingUnitChange}
+              value={biddingUnit}
+              error={biddingUnitError}
+              type="number"
+            />
+            {biddingUnitError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                Please enter a valid bidding unit
+              </span>
+            )}
+          </div>
+        </div>
+        <SoftBox
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-end"
+          height="100%"
+          style={{ width: "100%" }}
+        >
+          <div className="mr-4">
+            <SoftBox ml={0.5} lineHeight={0} display="inline-block">
+              <SoftTypography component="label" variant="caption" fontWeight="bold">
+                Project Description
+              </SoftTypography>
+            </SoftBox>
+            <textarea
+              style={{
+                width: "100%",
+                height: "100px",
+                borderRadius: "8px",
+                borderColor: productDescriptionError ? "red" : "#ced4da",
+                borderWidth: "1px",
+                padding: "8px", //
+                resize: "vertical",
+                overflowX: "hidden",
+                fontSize: "14px",
+              }}
+              onChange={handleProductDescriptionChange}
+              value={productDescription}
+            />
+            {productDescriptionError && (
+              <span style={{ color: "red", fontSize: "12px" }}>
+                Please enter a valid Description
+              </span>
+            )}
+          </div>
+        </SoftBox>
         <SoftBox mt={6} width="100%" display="flex" justifyContent="space-between">
           <SoftButton onClick={handleCancel} variant="gradient" color="light">
             Cancel
@@ -379,5 +468,14 @@ const handleBiddingUnitChange = (event) => {
   );
 };
 
+Addproduct.propTypes = {
+  withGstOptions: PropTypes.array.isRequired,
+  esclTypeOptions: PropTypes.array.isRequired,
+  unitOptions: PropTypes.array.isRequired,
+  gstSlabsOptions: PropTypes.array.isRequired,
+  productTypeOptions: PropTypes.array.isRequired,
+  setShow: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
+};
 
 export default Addproduct;

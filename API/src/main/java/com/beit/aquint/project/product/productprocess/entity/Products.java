@@ -74,4 +74,8 @@ public class Products extends EntityAuditInfo implements Serializable {
     @NotNull
     @Column(name = "bidding_unit")
     private Double biddingUnit;
+
+//    @NotNull
+    @Column(name = "product_description")
+    private  String productDescription;
 }

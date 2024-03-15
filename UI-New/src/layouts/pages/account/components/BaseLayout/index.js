@@ -35,7 +35,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
-function BaseLayout({ stickyNavbar, children }) {
+function BaseLayout({ children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
@@ -63,18 +63,17 @@ function BaseLayout({ stickyNavbar, children }) {
 
   return (
     <DashboardLayout>
-      <DashboardNavbar absolute={!stickyNavbar} isMini />
-      <SoftBox mt={stickyNavbar ? 3 : 10}>
+      <SoftBox >
         <Grid container>
-          <Grid item xs={12} sm={8} lg={4}>
-            {/* <AppBar position="static">
+          <Grid item  sm={8} lg={4}>
+            <AppBar position="static">
               <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
                 <Tab label="Messages" />
                 <Tab label="Social" />
                 <Tab label="Notifications" />
                 <Tab label="Backup" />
               </Tabs>
-            </AppBar> */}
+            </AppBar>
           </Grid>
         </Grid>
         {children}
