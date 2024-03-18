@@ -18,7 +18,7 @@ function Addform({ setshow, fetchData }) {
     userId: userId,
     familyMemberName: "",
     occupation: "",
-    birthDate: "",
+    birthDate: new Date(),
     mobileNumber: "",
     relation: "",
   });
@@ -107,7 +107,7 @@ function Addform({ setshow, fetchData }) {
             <label className="text-xs font-bold p-1">
               BirthDate<span style={{ color: "red" }}>*</span>
             </label>
-            <SoftDatePicker onChange={handleDateChange} />
+            <SoftDatePicker value={formdata.birthDate} onChange={handleDateChange} />
             {submitted && !formdata.birthDate && (
               <span style={{ color: "red", fontSize: "12px" }}>Please Selecte BirthDate</span>
             )}

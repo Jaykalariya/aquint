@@ -70,10 +70,10 @@ function Workexperience() {
       </div>
       <>
         {show ? (
-          <div style={{ overflowX: "auto" }}>
+          <div className="px-5 m-5">
             {hide ? (
               <SoftBox component="form">
-                <div className="px-5 m-5">
+                <div className="h-96 overflow-y-auto">
                   <Table
                     columns={columns}
                     rows={Workexperience.map((Workexperience) => ({

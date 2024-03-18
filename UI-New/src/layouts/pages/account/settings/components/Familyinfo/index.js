@@ -84,21 +84,23 @@ function Familyinfo() {
         {show ? (
           <div className="px-5 m-5">
             {hide ? (
-              <Table
-                columns={columns}
-                rows={familyMemberDetails.map((item) => ({
-                  "Family MemberName": item.familyMemberName,
-                  Occupation: item.occupation,
-                  BirthDate: BirthdateFormatter(item.birthDate),
-                  MobileNumber: item.mobileNumber,
-                  Relation: item.relation,
-                  Action: (
-                    <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
-                      edit
-                    </Icon>
-                  ),
-                }))}
-              />
+              <div className="h-96 overflow-y-auto">
+                <Table
+                  columns={columns}
+                  rows={familyMemberDetails.map((item) => ({
+                    "Family MemberName": item.familyMemberName,
+                    Occupation: item.occupation,
+                    BirthDate: BirthdateFormatter(item.birthDate),
+                    MobileNumber: item.mobileNumber,
+                    Relation: item.relation,
+                    Action: (
+                      <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
+                        edit
+                      </Icon>
+                    ),
+                  }))}
+                />
+              </div>
             ) : (
               <Updateform Selecteddata={Selecteddata} fetchData={fetchData} sethide={sethide} />
             )}

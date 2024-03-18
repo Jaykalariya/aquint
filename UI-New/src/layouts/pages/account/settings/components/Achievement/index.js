@@ -49,7 +49,7 @@ function Achievement() {
   }
 
   return (
-    <Card id="Training-Info" sx={{ overflow: "visible" }}>
+    <Card id="Achievement-Info" sx={{ overflow: "visible" }}>
       <SoftBox pt={3} pl={3}>
         <Typography variant="h5">Achievement Info</Typography>
       </SoftBox>
@@ -66,10 +66,10 @@ function Achievement() {
       </div>
       <>
         {show ? (
-          <div style={{ overflowX: "auto" }}>
+          <div className="px-5 m-5">
             {hide ? (
               <SoftBox component="form">
-                <div className="px-5 m-5">
+                <div className="h-96 overflow-y-auto">
                   <Table
                     columns={columns}
                     rows={Achievement.map((Traininginfo) => ({

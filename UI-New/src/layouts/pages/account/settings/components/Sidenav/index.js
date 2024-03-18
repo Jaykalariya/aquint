@@ -29,23 +29,44 @@ import Office from "examples/Icons/Office";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import Settings from "examples/Icons/Settings";
 import CreditCard from "examples/Icons/CreditCard";
-import InfoIcon from '@mui/icons-material/Info';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import SchoolIcon from '@mui/icons-material/School';
-import WorkIcon from '@mui/icons-material/Work';
-
+import InfoIcon from "@mui/icons-material/Info";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import SchoolIcon from "@mui/icons-material/School";
+import WorkIcon from "@mui/icons-material/Work";
+// import Achievement from '@mui/icons-material/Achievement';
+import { Icon } from "@mui/material";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 function Sidenav() {
   const sidenavItems = [
-    { icon: <InfoIcon fontSize="small"/>, label: "Basic-Info", href: "profile" },
+    { icon: <InfoIcon fontSize="small" />, label: "Basic-Info", href: "profile" },
     { icon: <AccountBalanceIcon fontSize="small" />, label: "Bank-Info", href: "Bank-Info" },
-    { icon: <FamilyRestroomIcon fontSize="small"/>, label: "Family-info", href: "Family-info" },
-    { icon: <LocalHospitalIcon fontSize="small"/>, label: "Health-info", href: "Healthissue-info" },
-    { icon: <SchoolIcon fontSize="small"/>, label: "Qualification-info", href: "Qualification-info" },
-    { icon: <WorkIcon fontSize="small"/>, label: "Work-Experience", href: "Work-Experience" },
-    { icon: <Settings />, label: "Training-Info", href: "Training-Info" },
+    { icon: <FamilyRestroomIcon fontSize="small" />, label: "Family-info", href: "Family-info" },
+    {
+      icon: <LocalHospitalIcon fontSize="small" />,
+      label: "Health-info",
+      href: "Healthissue-info",
+    },
+    {
+      icon: <SchoolIcon fontSize="small" />,
+      label: "Qualification-info",
+      href: "Qualification-info",
+    },
+    { icon: <WorkIcon fontSize="small" />, label: "Work-Experience", href: "Work-Experience" },
+    { icon: <SpaceShip fontSize="small" />, label: "Training-Info", href: "Training-Info" },
+    {
+      icon: <Icon fontSize="small">emoji_events</Icon>,
+      label: "Achievement-Info",
+      href: "Achievement-Info",
+    },
+    {
+      icon: <Icon fontSize="small">person</Icon>,
+      label: "Employe-Info",
+      href: "Employe-Info",
+    },
+
     // { icon: <CreditCard />, label: "delete account", href: "delete-account" },
   ];
 

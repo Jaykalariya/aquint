@@ -19,8 +19,8 @@ function Addform({ fetchData, setshow }) {
     userId: userId,
     companyName: "",
     designation: "",
-    startDate: "",
-    endDate: "",
+    startDate: new Date(),  
+    endDate: new Date(),
     grossSalary: "",
     supporitngDocumentUrl: "",
   });
@@ -144,7 +144,7 @@ function Addform({ fetchData, setshow }) {
             <label className="text-xs font-bold p-1">
               StartDate<span style={{ color: "red" }}>*</span>
             </label>
-            <SoftDatePicker onChange={handlestartDateChange} />
+            <SoftDatePicker  value={formData.startDate}  onChange={handlestartDateChange} />
             {submitted && !formData.startDate && (
               <span style={{ color: "red", fontSize: "12px" }}>Please Enter StartDate</span>
             )}
@@ -153,7 +153,7 @@ function Addform({ fetchData, setshow }) {
             <label className="text-xs font-bold p-1">
               EndDate<span style={{ color: "red" }}>*</span>
             </label>
-            <SoftDatePicker onChange={handleendDateChange} />
+            <SoftDatePicker value={formData.endDate} onChange={handleendDateChange} />
             {submitted && !formData.endDate && (
               <span style={{ color: "red", fontSize: "12px" }}>Please Enter EndDate</span>
             )}

@@ -1,4 +1,4 @@
-import { Card,Typography, Icon } from "@mui/material";
+import { Card, Typography, Icon } from "@mui/material";
 import SoftBox from "components/SoftBox";
 import SoftButton from "components/SoftButton";
 import axiosInstance from "config/https";
@@ -70,30 +70,28 @@ const QualificationTable = () => {
       </div>
       <>
         {show ? (
-          <div style={{ overflowX: "auto" }}>
+          <div className="px-5 m-5">
             {hide ? (
-              <SoftBox component="form">
-                <div className="px-5 m-5">
-                  <Table
-                    columns={columns}
-                    rows={qualifications.map((qualification, index) => ({
-                      "Qualification Name": qualification.qualificationName,
-                      "Board/University": qualification.universityName,
-                      Percentage: qualification.percentage,
-                      Year: qualification.passingYear,
-                      Subject: qualification.subject,
-                      Action: (
-                        <Icon
-                          onClick={() => handleEdit(qualification.id)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          edit
-                        </Icon>
-                      ),
-                    }))}
-                  />
-                </div>
-              </SoftBox>
+              <div className="h-96 overflow-y-auto">
+                <Table
+                  columns={columns}
+                  rows={qualifications.map((qualification, index) => ({
+                    "Qualification Name": qualification.qualificationName,
+                    "Board/University": qualification.universityName,
+                    Percentage: qualification.percentage,
+                    Year: qualification.passingYear,
+                    Subject: qualification.subject,
+                    Action: (
+                      <Icon
+                        onClick={() => handleEdit(qualification.id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        edit
+                      </Icon>
+                    ),
+                  }))}
+                />
+              </div>
             ) : (
               <Updateform Selecteddata={Selecteddata} fetchData={fetchData} sethide={sethide} />
             )}

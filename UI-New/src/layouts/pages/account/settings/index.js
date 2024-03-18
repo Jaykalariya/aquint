@@ -37,6 +37,7 @@ import QualificationTable from "./components/Qualification";
 import Workexperience from "./components/Workexperience";
 import Traininginfo from "./components/Traininginfo";
 import Achievement from "./components/Achievement";
+import Employerdetails from "./components/EmployerDetails";
 
 function Settings() {
   return (
@@ -76,6 +77,10 @@ function Settings() {
                 <Grid item xs={12}>
                   <Achievement/>
                 </Grid>
+                <Grid item xs={12}>
+                  <Employerdetails/>
+                </Grid>
+                
                 {/* <Grid item xs={12}>
                   <ChangePassword />
                 </Grid>
