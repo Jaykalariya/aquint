@@ -13,18 +13,19 @@ import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import team5 from "assets/images/team-5.jpg";
 import axiosInstance from "config/https";
+import BirthdateFormatter from "examples/BirthdateFormatter";
 
 function Project() {
-    const [slackBotMenu, setSlackBotMenu] = useState(null);
+  const [slackBotMenu, setSlackBotMenu] = useState(null);
   const [premiumSupportMenu, setPremiumSupportMenu] = useState(null);
   const [designToolsMenu, setDesignToolsMenu] = useState(null);
   const [lookingGreatMenu, setLookingGreatMenu] = useState(null);
   const [developerFirstMenu, setDeveloperFirstMenu] = useState(null);
   const [projectDetails, setProjectDetails] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchProjects();
-  },[])
+  }, []);
 
   const fetchProjects = async () => {
     try {
@@ -58,11 +59,6 @@ function Project() {
     </Menu>
   );
 
-  const formatDateTime = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString(); 
-  };
-  
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -75,7 +71,6 @@ function Project() {
         <SoftBox mt={{ xs: 1, lg: 3 }} mb={1}>
           <Grid container spacing={3}>
             {projectDetails ? (
-              
               projectDetails.map((project, index) => (
                 <Grid item xs={12} md={6} lg={4} key={index}>
                   <ComplexProjectCard
@@ -86,8 +81,8 @@ function Project() {
                     stepId={project.stepid}
                     title={project.project_display_name}
                     description={project.project_name}
-                    dateTime={formatDateTime(project.created_on)}
-                    members={[team1,team2,team3,team4]}
+                    dateTime={BirthdateFormatter(project.created_on)}
+                    members={[team1, team2, team3, team4]}
                     createdOn={project.created_on}
                     dropdown={{
                       action: openSlackBotMenu,
@@ -95,11 +90,9 @@ function Project() {
                     }}
                   />
                 </Grid>
-
-
               ))
             ) : (
-              <Nodata /> 
+              <Nodata />
             )}
           </Grid>
         </SoftBox>
@@ -107,6 +100,5 @@ function Project() {
     </DashboardLayout>
   );
 }
-
 
 export default Project;

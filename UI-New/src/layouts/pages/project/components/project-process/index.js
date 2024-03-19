@@ -147,9 +147,11 @@ function Projectprocess() {
               </p>
             </div>
           ),
+          name:item.productTypeName
         }));
         setproductTypeOptions([...manualEntries, ...apiEntries]);
         setProductsByType(apiEntries[0]?.value)
+
         console.log("productTypeOptions", apiEntries);
       } catch (error) {
         console.error(error);
@@ -390,13 +392,13 @@ function Projectprocess() {
 
                 <div className="flex justify-end gap-2">
                   <SoftButton color="info" onClick={() => showProductType()}>
-                    <ShoppingCart /> {/* Icon for Product Type */}
+                    <ShoppingCart /> 
                   </SoftButton>
                   <SoftButton color="info" onClick={handleDialogOpen}>
-                    <Description /> {/* Icon for View Document */}
+                    <Description /> 
                   </SoftButton>
                   <SoftButton color="info" onClick={() => setshow(!show)}>
-                    <Add /> {/* Icon for Add Product */}
+                    <Add /> 
                   </SoftButton>
                 </div>
               </div>
@@ -418,32 +420,22 @@ function Projectprocess() {
                       sethide={sethide}
                     />
                   ) : (
-                    // <div style={{ maxHeight: "500px", overflowY: "auto" }}>
-                    //   <ProductPageTable
-                    //     entriesPerPage={{ defaultValue: 10, entries: [5, 10, 15, 20, 25] }}
-                    //     canSearch={true}
-                    //     showTotalEntries={true}
-                    //     table={tableData}
-                    //     pagination={{ variant: "gradient", color: "info" }}
-                    //     isSorted={true}
-                    //     noEndBorder={false}
-                    //   />
-                    //   // </div>
                     <SoftBox mt={{ xs: 1, lg: 3 }} mb={1}>
                       <Grid container spacing={3}>
                         {productTypeId ? (
                           productTypeId
                             .filter((product) => product.productTypeId === productsByType)
-                            .map((project, index) => (
+                            .map((product, index) => (
                               <Grid item xs={12} md={6} lg={4} key={index}>
                                 <ProductPageCard
-                                  id={project.id}
-                                  projectCustomId={project.itemCode}
+                                  projectId={id}
+                                  id={product.id}
+                                  projectCustomId={product.itemCode}
                                   // length={project.completedsteplength}
-                                  // stepOrder={project.initial_steps_status}
+                                  productTypeId={product.productTypeId}
                                   // stepId={project.stepid}
                                   // title={project.project_display_name}
-                                  description={project.productDescription}
+                                  description={product.productDescription}
                                   // dateTime={formatDateTime(project.created_on)}
                                   // members={[team1, team2, team3, team4]}
                                   // createdOn={project.created_on}

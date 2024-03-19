@@ -12,18 +12,12 @@ import Nodata from "components/Nodata";
 import DataTable from "examples/Tables/DataTable";
 import { useToasts } from "react-toast-notifications";
 import { toast } from "react-toastify";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import Form from "./components/Form";
 import Update from "./components/update/Update";
 function Producttype() {
-    const {id} = useParams();
+  const { id } = useParams();
 
   const navigate = useNavigate();
   const [show, setshow] = useState(false);
@@ -49,7 +43,6 @@ function Producttype() {
         accessor: "name",
       },
 
-
       {
         Header: "Action",
         accessor: "Action",
@@ -63,7 +56,14 @@ function Producttype() {
   }, []);
 
   const manualEntries = [
-    { value: 1, label: <div className="flex"><p className="my-auto">First Step (1)</p></div> },
+    {
+      value: 1,
+      label: (
+        <div className="flex">
+          <p className="my-auto">First Step (1)</p>
+        </div>
+      ),
+    },
   ];
 
   const fetchData = async () => {
@@ -86,7 +86,7 @@ function Producttype() {
       id: item.id,
       "#": index + 1,
       code: item.code,
-      name : item.productTypeName,
+      name: item.productTypeName,
       Action: (
         <Icon onClick={() => handleEdit(item.id)} style={{ cursor: "pointer" }}>
           edit
@@ -96,10 +96,10 @@ function Producttype() {
     return rows;
   };
 
-  const showProduct=()=>{
+  const showProduct = () => {
     navigate(`/Projects/${id}`);
-  }
-  
+  };
+
   const handleEdit = (itemId) => {
     setSelectedItemId(itemId);
     sethide(true);
@@ -122,22 +122,22 @@ function Producttype() {
                   Back
                 </SoftButton>
               </div>
-<Form setShow={setshow} fetchData={fetchData} />
+              <Form setShow={setshow} fetchData={fetchData} />
             </>
           ) : (
             <>
-    <div className="flex justify-between mb-2">
-  <div className="flex justify-start">
-    <SoftButton color="info" onClick={() => showProduct()}>
-      Back
-    </SoftButton>
-  </div>
-  <div className="flex justify-end gap-2">
-    <SoftButton color="info" onClick={() => setshow(!show)}>
-      +Add
-    </SoftButton>
-  </div>
-</div>
+              <div className="flex justify-between mb-2">
+                <div className="flex justify-start">
+                  <SoftButton color="info" onClick={() => showProduct()}>
+                    Back
+                  </SoftButton>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <SoftButton color="info" onClick={() => setshow(!show)}>
+                    +Add
+                  </SoftButton>
+                </div>
+              </div>
 
               {transformedRows.length === 0 ? (
                 <Nodata />
@@ -168,8 +168,7 @@ function Producttype() {
         </div>
       </SoftBox>
     </DashboardLayout>
-  
-);
+  );
 }
 
 export default Producttype;

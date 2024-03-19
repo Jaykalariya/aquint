@@ -851,7 +851,7 @@ const routes = [
   {
     name: "ProductDetailsPage",
     key: "product-details-page",
-    route: "/Projects/product/:id",
+    route: "/Projects/product/:id/:productTypeId/:projectId",
     component: <ProductDetailsPage />,
   },
   {

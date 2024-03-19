@@ -33,6 +33,7 @@ import SoftProgress from "components/SoftProgress";
 
 // Custom styles for ComplexProjectCard
 function ProductPageCard({
+  projectId,
   id,
   projectCustomId,
   stepOrder,
@@ -46,6 +47,7 @@ function ProductPageCard({
   dropdown,
   length,
   createdOn,
+  productTypeId
 }) {
   const navigate = useNavigate();
 
@@ -168,7 +170,7 @@ function ProductPageCard({
 
   const handleDetails = () => {
     if (projectCustomId) {
-      navigate(`/Projects/product/${id}`);
+      navigate(`/Projects/product/${id}/${productTypeId}/${projectId}`);
     } else {
       showAlert();
     }
@@ -293,10 +295,12 @@ ProductPageCard.propTypes = {
     "dark",
     "light",
   ]),
+  projectId:PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   projectCustomId: PropTypes.string,
   stepOrder: PropTypes.number.isRequired, // Add this line for stepOrder
   stepId: PropTypes.number.isRequired,
+  productTypeId: PropTypes.number.isRequired,
   createdOn: PropTypes.number.isRequired,
   length: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
