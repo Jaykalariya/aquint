@@ -137,6 +137,9 @@ function Addtender() {
                 <SoftButton color="info" onClick={() => setshow(!show)}>
                   +Add
                 </SoftButton>
+                <SoftButton color="info" onClick={() => setshow(!show)}>
+                  +Add
+                </SoftButton>
               </div>
               {transformedRows.length === 0 ? (
                 <Nodata />

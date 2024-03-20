@@ -106,9 +106,15 @@ function Vender() {
           ) : (
             <>
               <div className="flex justify-end gap-2 mb-3">
-                <SoftButton color="info" onClick={() => setshow(!show)}>
-                  +Add
-                </SoftButton>
+                {hide ? (
+                  <SoftButton color="info" onClick={() => setshow(!show)}>
+                    +Add
+                  </SoftButton>
+                ) : (
+                  <SoftButton color="info" onClick={() => sethide(!hide)}>
+                    Back
+                  </SoftButton>
+                )}
               </div>
               {transformedRows.length === 0 ? (
                 <Nodata />
@@ -125,7 +131,11 @@ function Vender() {
                       noEndBorder={false}
                     />
                   ) : (
-                    <Updateform selecteddata={selecteddata} fetchData={fetchData} sethide={sethide}/>
+                    <Updateform
+                      selecteddata={selecteddata}
+                      fetchData={fetchData}
+                      sethide={sethide}
+                    />
                   )}
                 </>
               )}
