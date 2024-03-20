@@ -53,5 +53,16 @@ public class VendorController {
         }
     }
 
+    @PostMapping(value = Constant.Mappping.PAGE)
+    public ResponseEntity<?> getVendorPage(@RequestBody PaginationRequestDto paginationRequestDto) {
+        try {
+            log.debug("Getting all vendors");
+            return ResponseEntity.ok().body(vendorService.getVendorPage(paginationRequestDto));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Product Has Some Issue"));
+        }
+    }
+
 
 }

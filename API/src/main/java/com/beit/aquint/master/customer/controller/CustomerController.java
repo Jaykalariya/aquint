@@ -2,6 +2,7 @@ package com.beit.aquint.master.customer.controller;
 
 import com.beit.aquint.auth.payload.response.MessageResponse;
 import com.beit.aquint.common.constant.Constant;
+import com.beit.aquint.common.dto.PaginationRequestDto;
 import com.beit.aquint.master.customer.entity.Customer;
 import com.beit.aquint.master.customer.service.CustomerService;
 import com.beit.aquint.master.vendor.entity.Vendor;
@@ -53,6 +54,15 @@ public class CustomerController {
         }
     }
 
-
+    @PostMapping(value = Constant.Mappping.PAGE)
+    public ResponseEntity<?> getVendorPage(@RequestBody PaginationRequestDto paginationRequestDto) {
+        try {
+            log.debug("Getting all customers");
+            return ResponseEntity.ok().body(customerService.getCustomersPage(paginationRequestDto));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Product Has Some Issue"));
+        }
+    }
 
 }

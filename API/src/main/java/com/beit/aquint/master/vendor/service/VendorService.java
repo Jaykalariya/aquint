@@ -17,5 +17,8 @@ public interface VendorService{
 
     public Vendor getVendorByID(Long id) throws AquintCommonException;
 
+    public Page<Vendor> getVendorPage(PaginationRequestDto paginationRequestDto) throws AquintCommonException;
+
+
 
 }
