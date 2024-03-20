@@ -123,6 +123,7 @@ import Projectprocess from "layouts/pages/project/components/project-process";
 import Producttype from "layouts/pages/project/components/project-process/components/producttype";
 import Addproduct from "layouts/pages/project/components/project-process/components/addproduct";
 import ProductDetailsPage from "layouts/pages/project/components/project-process/components/ProductDetails";
+import Vender from "layouts/pages/Vender";
 
 const routes = [
   {
@@ -171,7 +172,6 @@ const routes = [
         key: "kanban",
         route: "/Tender",
         component: <Kanban />,
-        
       },
     ],
   },
@@ -186,19 +186,16 @@ const routes = [
         key: "projects",
         route: "/Projects",
         component: <Project />,
-        
       },
       // {
       //   name: "projectsprocess",
       //   key: "projects-process",
       //   route: "/Projects/process",
       //   component: <Projectprocess />,
-        
+
       // },
-      
     ],
   },
-
 
   { type: "title", title: "configuration", key: "configuration" },
   {
@@ -258,7 +255,7 @@ const routes = [
             key: "initial-steps",
             route: "/configuration/System-Configuration/initialsteps",
             component: <Initialsteps />,
-          }
+          },
         ],
       },
       {
@@ -285,12 +282,18 @@ const routes = [
           },
         ],
       },
-      
+
       {
         name: "Roles",
         key: "Roles",
         route: "/configuration/Roles",
         component: <Roles />,
+      },
+      {
+        name: "Vender",
+        key: "RolVenderes",
+        route: "/configuration/Vender",
+        component: <Vender />,
       },
       // {
       //   name: "Users",
@@ -387,7 +390,7 @@ const routes = [
       // },
     ],
   },
-  
+
   // {
   //   type: "collapse",
   //   name: "Applications",
@@ -871,7 +874,7 @@ const routes = [
     key: "Fileupload",
     route: "/Projects/fileupload/:id/:stepOrder/:stepId",
     component: <FileUpload />,
-  }
+  },
 ];
 
 export default routes;
