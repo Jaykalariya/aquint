@@ -43,7 +43,7 @@ function Addform({ fetchData, setshow }) {
     bankName: "",
     accountHolderName: "",
   });
-
+  const [hideAccountNumber, setHideAccountNumber] = useState(true);
   const steps = getSteps();
   const isLastStep = activeStep === steps.length - 1;
   const [submitted, setSubmitted] = useState({
@@ -53,7 +53,7 @@ function Addform({ fetchData, setshow }) {
   });
   const token = localStorage.getItem("token");
   const [reaccountNumber, setreaccountNumber] = useState(0);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleNext = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -128,9 +128,8 @@ function Addform({ fetchData, setshow }) {
       }
 
       if (formData.accountNumber === reaccountNumber) {
-        
       } else {
-        setError('Account numbers do not match. Please try again.');
+        setError("Account numbers do not match. Please try again.");
         return;
       }
 
@@ -159,6 +158,11 @@ function Addform({ fetchData, setshow }) {
   const handleInputChange = (e, field) => {
     let value = e.target.value;
     if (field === "accountNumber") {
+      if (formData.accountNumber == value) {
+        setHideAccountNumber(false);
+      } else {
+        setHideAccountNumber(true);
+      }
       if (!isNaN(value)) {
         value = parseFloat(value);
       } else {
@@ -208,6 +212,8 @@ function Addform({ fetchData, setshow }) {
                     reaccountNumber={reaccountNumber}
                     error={error}
                     setError={setError}
+                    hideAccountNumber={hideAccountNumber}
+                    setHideAccountNumber={setHideAccountNumber}
                   />
                 )}
                 <SoftBox mt={3} width="100%" display="flex" justifyContent="space-between">

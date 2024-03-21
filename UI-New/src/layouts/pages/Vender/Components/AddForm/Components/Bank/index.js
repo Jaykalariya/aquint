@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Grid } from "@mui/material";
-import SoftButton from "components/SoftButton";
 import SoftInput from "components/SoftInput";
 
 function Bank({
@@ -11,13 +10,15 @@ function Bank({
   reaccountNumber,
   error,
   setError,
+  hideAccountNumber,
+  setHideAccountNumber,
 }) {
   const handleReEnterAccountNumberChange = (e) => {
-    let value = e.target.value;
-    if (!isNaN(value)) {
-      value = parseFloat(value);
+    const value = e.target.value;
+    if (formdata.accountNumber == value) {
+      setHideAccountNumber(false);
     } else {
-      value = "";
+      setHideAccountNumber(true);
     }
     setreaccountNumber(value);
     setError("");
@@ -55,6 +56,7 @@ function Bank({
             Account Number<span style={{ color: "red" }}>*</span>
           </label>
           <SoftInput
+            type={hideAccountNumber ? "password" : "text"}
             onChange={(e) => handleInputChange(e, "accountNumber")}
             value={formdata.accountNumber}
           />

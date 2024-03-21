@@ -290,8 +290,8 @@ const routes = [
         component: <Roles />,
       },
       {
-        name: "Vender",
-        key: "RolVenderes",
+        name: "Vendor",
+        key: "Vendor",
         route: "/configuration/Vender",
         component: <Vender />,
       },
